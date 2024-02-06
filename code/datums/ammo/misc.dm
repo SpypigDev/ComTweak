@@ -113,7 +113,7 @@
 /datum/ammo/flare/set_bullet_traits()
 	. = ..()
 	LAZYADD(traits_to_give, list(
-		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_incendiary)
+		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_incendiary, stacks = 2.5)
 	))
 
 /datum/ammo/flare/on_hit_mob(mob/M,obj/projectile/P)
@@ -156,11 +156,13 @@
 	name = "starshell ash"
 	icon_state = "starshell_bullet"
 	max_range = 5
+	damage = 2.5
 	flare_type = /obj/item/device/flashlight/flare/on/starshell_ash
 
 /datum/ammo/flare/starshell/set_bullet_traits()
 	LAZYADD(traits_to_give, list(
-		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_iff, /datum/element/bullet_trait_incendiary)
+		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_iff),
+		BULLET_TRAIT_ENTRY(/datum/element/bullet_trait_incendiary, stacks = 1)
 	))
 
 /datum/ammo/souto
@@ -178,7 +180,7 @@
 	accurate_range = 12
 	shell_speed = AMMO_SPEED_TIER_1
 
-/datum/ammo/souto/on_embed(mob/embedded_mob, obj/limb/target_organ)
+/datum/ammo/souto/on_embed(mob/embedded_mob, obj/limb/target_organ, silent = FALSE)
 	if(ishuman(embedded_mob) && !isyautja(embedded_mob))
 		if(istype(target_organ))
 			target_organ.embed(new can_type)
