@@ -57,11 +57,10 @@
 	targetTurfs = new()
 
 	//build affected area list
-	FOR_DVIEW(var/turf/T, range, location, HIDE_INVISIBLE_OBSERVER)
+	for(var/turf/T in view(range, location))
 		//cull turfs to circle
 		if(cheap_pythag(T.x - location.x, T.y - location.y) <= range)
 			targetTurfs += T
-	FOR_DVIEW_END
 
 	//make secondary list for reagents that affect walls
 	if(chemholder.reagents.has_reagent("thermite") || chemholder.reagents.has_reagent("plantbgone"))
@@ -71,7 +70,7 @@
 	smokeFlow(location, targetTurfs, wallList)
 
 	//set the density of the cloud - for diluting reagents
-	density = max(1, length(targetTurfs) / 4) //clamp the cloud density minimum to 1 so it cant multiply the reagents
+	density = max(1, targetTurfs.len / 4) //clamp the cloud density minimum to 1 so it cant multiply the reagents
 
 	//Admin messaging
 	var/contained = ""
@@ -111,7 +110,7 @@
 		return
 
 	//reagent application - only run if there are extra reagents in the smoke
-	if(length(chemholder.reagents.reagent_list))
+	if(chemholder.reagents.reagent_list.len)
 		for(var/datum/reagent/R in chemholder.reagents.reagent_list)
 			var/proba = 100
 			var/runs = 5
@@ -198,7 +197,7 @@
 //------------------------------------------
 /datum/effect_system/smoke_spread/chem/proc/spawnSmoke(turf/T, icon/I, dist = 1)
 	var/obj/effect/particle_effect/smoke/chem/smoke = new(location)
-	if(length(chemholder.reagents.reagent_list))
+	if(chemholder.reagents.reagent_list.len)
 		chemholder.reagents.copy_to(smoke, chemholder.reagents.total_volume / dist, safety = 1) //copy reagents to the smoke so mob/breathe() can handle inhaling the reagents
 	smoke.icon = I
 	smoke.layer = FLY_LAYER
@@ -231,7 +230,7 @@
 
 	pending += location
 
-	while(length(pending))
+	while(pending.len)
 		for(var/turf/current in pending)
 			for(var/D in GLOB.cardinals)
 				var/turf/target = get_step(current, D)

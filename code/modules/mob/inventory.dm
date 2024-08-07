@@ -164,7 +164,8 @@
 	if(pickup_recent_item_on_turf(user_turf))
 		return
 
-	for(var/turf/nearby_turf in orange(1, src))
+	var/range_list = orange(1, src)
+	for(var/turf/nearby_turf in range_list)
 		if(pickup_recent_item_on_turf(nearby_turf))
 			return
 
@@ -339,7 +340,7 @@
 		if(WEAR_IN_BACK)
 			if (src.back && isstorage(src.back))
 				var/obj/item/storage/B = src.back
-				if(length(B.contents) < B.storage_slots && W.w_class <= B.max_w_class)
+				if(B.contents.len < B.storage_slots && W.w_class <= B.max_w_class)
 					W.forceMove(B)
 					equipped = 1
 		if(WEAR_IN_SHOES)
@@ -352,7 +353,7 @@
 		if(WEAR_IN_SCABBARD)
 			if(src.back && istype(src.back, /obj/item/storage/large_holster))
 				var/obj/item/storage/large_holster/B = src.back
-				if(length(B.contents) < B.storage_slots && W.w_class <= B.max_w_class)
+				if(B.contents.len < B.storage_slots && W.w_class <= B.max_w_class)
 					W.forceMove(B)
 					equipped = 1
 		if(WEAR_IN_ACCESSORY)
@@ -376,25 +377,25 @@
 		if(WEAR_IN_BELT)
 			if(src.belt && isstorage(src.belt))
 				var/obj/item/storage/B = src.belt
-				if(length(B.contents) < B.storage_slots && W.w_class <= B.max_w_class)
+				if(B.contents.len < B.storage_slots && W.w_class <= B.max_w_class)
 					W.forceMove(B)
 					equipped = 1
 		if(WEAR_IN_J_STORE)
 			if(src.s_store && isstorage(src.s_store))
 				var/obj/item/storage/B = src.s_store
-				if(length(B.contents) < B.storage_slots && W.w_class <= B.max_w_class)
+				if(B.contents.len < B.storage_slots && W.w_class <= B.max_w_class)
 					W.forceMove(B)
 					equipped = 1
 		if(WEAR_IN_L_STORE)
 			if(src.l_store && istype(src.l_store, /obj/item/storage/pouch))
 				var/obj/item/storage/pouch/P = src.l_store
-				if(length(P.contents) < P.storage_slots && W.w_class <= P.max_w_class)
+				if(P.contents.len < P.storage_slots && W.w_class <= P.max_w_class)
 					W.forceMove(P)
 					equipped = 1
 		if(WEAR_IN_R_STORE)
 			if(src.r_store && istype(src.r_store, /obj/item/storage/pouch))
 				var/obj/item/storage/pouch/P = src.r_store
-				if(length(P.contents) < P.storage_slots && W.w_class <= P.max_w_class)
+				if(P.contents.len < P.storage_slots && W.w_class <= P.max_w_class)
 					W.forceMove(P)
 					equipped = 1
 

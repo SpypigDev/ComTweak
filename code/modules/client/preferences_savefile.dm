@@ -1,5 +1,5 @@
 #define SAVEFILE_VERSION_MIN 8
-#define SAVEFILE_VERSION_MAX 25
+#define SAVEFILE_VERSION_MAX 24
 
 //handles converting savefiles to new formats
 //MAKE SURE YOU KEEP THIS UP TO DATE!
@@ -57,8 +57,9 @@
 	if(savefile_version < 17) //remove omniglots
 		var/list/language_traits = list()
 		S["traits"] >> language_traits
-		if(LAZYLEN(language_traits) > 1)
-			language_traits = null
+		if(language_traits)
+			if(language_traits.len > 1)
+				language_traits = null
 		S["traits"] << language_traits
 
 	if(savefile_version < 18) // adds ambient occlusion by default
@@ -146,11 +147,6 @@
 		S["toggles_sound"] >> sound_toggles
 		sound_toggles |= (SOUND_FAX_MACHINE)
 		S["toggles_sound"] << sound_toggles
-
-	if(savefile_version < 25) //renemes nanotrasen to wy
-		var/relation
-		S["nanotrasen_relation"] >> relation
-		S["weyland_yutani_relation"] << relation
 
 	savefile_version = SAVEFILE_VERSION_MAX
 	return 1
@@ -545,7 +541,7 @@
 
 	S["preferred_squad"] >> preferred_squad
 	S["preferred_armor"] >> preferred_armor
-	S["weyland_yutani_relation"] >> weyland_yutani_relation
+	S["nanotrasen_relation"] >> nanotrasen_relation
 	//S["skin_style"] >> skin_style
 
 	S["uplinklocation"] >> uplinklocation
@@ -561,7 +557,7 @@
 
 	if(isnull(language)) language = "None"
 	if(isnull(spawnpoint)) spawnpoint = "Arrivals Shuttle"
-	if(isnull(weyland_yutani_relation)) weyland_yutani_relation = initial(weyland_yutani_relation)
+	if(isnull(nanotrasen_relation)) nanotrasen_relation = initial(nanotrasen_relation)
 	if(!real_name) real_name = random_name(gender)
 	be_random_name = sanitize_integer(be_random_name, 0, 1, initial(be_random_name))
 	be_random_body = sanitize_integer(be_random_body, 0, 1, initial(be_random_body))
@@ -598,7 +594,7 @@
 	b_eyes = sanitize_integer(b_eyes, 0, 255, initial(b_eyes))
 	underwear = sanitize_inlist(underwear, gender == MALE ? GLOB.underwear_m : GLOB.underwear_f, initial(underwear))
 	undershirt = sanitize_inlist(undershirt, gender == MALE ? GLOB.undershirt_m : GLOB.undershirt_f, initial(undershirt))
-	backbag = sanitize_integer(backbag, 1, length(GLOB.backbaglist), initial(backbag))
+	backbag = sanitize_integer(backbag, 1, GLOB.backbaglist.len, initial(backbag))
 	preferred_armor = sanitize_inlist(preferred_armor, GLOB.armor_style_list, "Random")
 	//b_type = sanitize_text(b_type, initial(b_type))
 
@@ -695,7 +691,7 @@
 	S["religion"] << religion
 	S["traits"] << traits
 
-	S["weyland_yutani_relation"] << weyland_yutani_relation
+	S["nanotrasen_relation"] << nanotrasen_relation
 	S["preferred_squad"] << preferred_squad
 	S["preferred_armor"] << preferred_armor
 	//S["skin_style"] << skin_style

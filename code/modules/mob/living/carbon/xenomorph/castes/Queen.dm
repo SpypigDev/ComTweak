@@ -361,10 +361,6 @@
 /mob/living/carbon/xenomorph/queen/can_destroy_special()
 	return TRUE
 
-/mob/living/carbon/xenomorph/queen/set_resting(new_resting, silent, instant)
-	if(ovipositor)
-		return
-	return ..()
 
 /mob/living/carbon/xenomorph/queen/get_organ_icon()
 	return "heart_t3"
@@ -472,9 +468,6 @@
 
 /mob/living/carbon/xenomorph/queen/proc/make_combat_effective()
 	queen_aged = TRUE
-	if(queen_age_timer_id != TIMER_ID_NULL)
-		deltimer(queen_age_timer_id)
-		queen_age_timer_id = TIMER_ID_NULL
 
 	give_combat_abilities()
 	recalculate_actions()
@@ -541,19 +534,20 @@
 			if(egg_amount >= 1)
 				if(isturf(loc))
 					var/turf/T = loc
-					if(length(T.contents) <= 25) //so we don't end up with a million object on that turf.
+					if(T.contents.len <= 25) //so we don't end up with a million object on that turf.
 						egg_amount--
 						new /obj/item/xeno_egg(loc, hivenumber)
 
 /mob/living/carbon/xenomorph/queen/get_status_tab_items()
 	. = ..()
 	var/stored_larvae = GLOB.hive_datum[hivenumber].stored_larva
-	var/xeno_leader_num = hive?.queen_leader_limit - length(hive?.open_xeno_leader_positions)
+	var/xeno_leader_num = hive?.queen_leader_limit - hive?.open_xeno_leader_positions.len
 
 	. += "Pooled Larvae: [stored_larvae]"
 	. += "Leaders: [xeno_leader_num] / [hive?.queen_leader_limit]"
-	if(!queen_aged && queen_age_timer_id != TIMER_ID_NULL)
-		. += "Maturity: [time2text(timeleft(queen_age_timer_id), "mm:ss")] remaining"
+	if(queen_age_timer_id != TIMER_ID_NULL)
+		var/time_left = time2text(timeleft(queen_age_timer_id) + 1 MINUTES, "mm") // We add a minute so that it basically ceilings the value.
+		. += "Maturity: [time_left == 1? "[time_left] minute" : "[time_left] minutes"] remaining"
 
 /mob/living/carbon/xenomorph/queen/proc/set_orders()
 	set category = "Alien"
@@ -813,10 +807,10 @@
 /mob/living/carbon/xenomorph/queen/proc/mount_ovipositor()
 	if(ovipositor)
 		return //sanity check
+	ovipositor = TRUE
 	ADD_TRAIT(src, TRAIT_IMMOBILIZED, OVIPOSITOR_TRAIT)
 	set_body_position(STANDING_UP)
 	set_resting(FALSE)
-	ovipositor = TRUE
 
 	set_resin_build_order(GLOB.resin_build_order_ovipositor) // This needs to occur before we update the abilities so we can update the choose resin icon
 	for(var/datum/action/xeno_action/action in actions)

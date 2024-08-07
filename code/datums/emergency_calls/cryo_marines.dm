@@ -37,11 +37,10 @@
 		human.create_hud()
 
 	if(!mind)
-		FOR_DVIEW(var/obj/structure/machinery/cryopod/pod, 7, human, HIDE_INVISIBLE_OBSERVER)
+		for(var/obj/structure/machinery/cryopod/pod in view(7,human))
 			if(pod && !pod.occupant)
 				pod.go_in_cryopod(human, silent = TRUE)
 				break
-		FOR_DVIEW_END
 
 	sleep(5)
 	var/datum/squad/marine/cryo/cryo_squad = GLOB.RoleAuthority.squads_by_type[/datum/squad/marine/cryo]

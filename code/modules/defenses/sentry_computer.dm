@@ -308,7 +308,7 @@
 	. = ..()
 	if(!on)
 		return UI_CLOSE
-	if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_TRAINED))
+	if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
 		return UI_UPDATE
 
 
@@ -383,7 +383,7 @@
 	. = ..()
 	if(.)
 		return
-	if(!skillcheck(usr, SKILL_ENGINEER, SKILL_ENGINEER_TRAINED))
+	if(!skillcheck(usr, SKILL_ENGINEER, SKILL_ENGINEER_ENGI))
 		to_chat(usr, SPAN_WARNING("You are not authorised to configure the sentry."))
 		return
 	if(params["index"])
@@ -402,7 +402,8 @@
 					var/obj/structure/machinery/defenses/sentry/defense = sentry
 					if (defense.has_camera)
 						defense.set_range()
-						SEND_SIGNAL(src, COMSIG_CAMERA_SET_AREA, defense.range_bounds, defense.loc.z)
+						var/datum/shape/rectangle/current_bb = defense.range_bounds
+						SEND_SIGNAL(src, COMSIG_CAMERA_SET_AREA, current_bb.center_x, current_bb.center_y, defense.loc.z, current_bb.width, current_bb.height)
 
 					return TRUE
 				if("ping")

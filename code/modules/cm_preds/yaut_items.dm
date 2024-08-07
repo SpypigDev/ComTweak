@@ -944,7 +944,7 @@
 	new /obj/item/tool/surgery/healing_gel/(src)
 
 /obj/item/storage/medicomp/update_icon()
-	if(!length(contents))
+	if(!contents.len)
 		icon_state = "medicomp_open"
 	else
 		icon_state = "medicomp"

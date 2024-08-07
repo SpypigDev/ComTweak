@@ -48,7 +48,7 @@
 	if(!..())
 		return FALSE
 
-	if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_NOVICE))
+	if(!skillcheck(user, SKILL_ENGINEER, SKILL_ENGINEER_TRAINED))
 		if(!silent)
 			to_chat(user, SPAN_WARNING("You're not trained to repair [src]..."))
 		return FALSE

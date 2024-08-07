@@ -2,7 +2,7 @@
 //crashlanding-upp-bar.dmm map.
 /datum/equipment_preset/survivor/upp
 	name = "Survivor - UPP"
-	paygrades = list(PAY_SHORT_UE1 = JOB_PLAYTIME_TIER_0)
+	paygrade = PAY_SHORT_UE1
 	origin_override = ORIGIN_UPP
 	rank = JOB_SURVIVOR
 	skills = /datum/skills/military/survivor/upp_private
@@ -40,7 +40,7 @@
 //crashlanding-upp-bar.dmm
 /datum/equipment_preset/survivor/upp/soldier
 	name = "Survivor - UPP Soldier"
-	paygrades = list(PAY_SHORT_UE1 = JOB_PLAYTIME_TIER_0, PAY_SHORT_UE2 = JOB_PLAYTIME_TIER_1)
+	paygrade = PAY_SHORT_UE2
 	assignment = JOB_UPP
 	rank = JOB_UPP
 	skills = /datum/skills/military/survivor/upp_private
@@ -62,11 +62,17 @@
 
 	..()
 
+/datum/equipment_preset/survivor/upp/soldier/load_rank(mob/living/carbon/human/new_human)
+	if(new_human.client)
+		if(get_job_playtime(new_human.client, rank) < JOB_PLAYTIME_TIER_1)
+			return PAY_SHORT_UE1
+	return paygrade
+
 // /obj/effect/landmark/survivor_spawner/upp_sapper
 //crashlanding-upp-bar.dmm
 /datum/equipment_preset/survivor/upp/sapper
 	name = "Survivor - UPP Sapper"
-	paygrades = list(PAY_SHORT_UE3 = JOB_PLAYTIME_TIER_0)
+	paygrade = PAY_SHORT_UE3
 	assignment = JOB_UPP_ENGI
 	rank = JOB_UPP_ENGI
 	skills = /datum/skills/military/survivor/upp_sapper
@@ -94,7 +100,7 @@
 //crashlanding-upp-bar.dmm
 /datum/equipment_preset/survivor/upp/medic
 	name = "Survivor - UPP Medic"
-	paygrades = list(PAY_SHORT_UE3 = JOB_PLAYTIME_TIER_0)
+	paygrade = PAY_SHORT_UE3
 	assignment = JOB_UPP_MEDIC
 	rank = JOB_UPP_MEDIC
 	skills = /datum/skills/military/survivor/upp_medic
@@ -126,7 +132,7 @@
 	name = "Survivor - UPP Specialist"
 	assignment = JOB_UPP_SPECIALIST
 	rank = JOB_UPP_SPECIALIST
-	paygrades = list(PAY_SHORT_UE4 = JOB_PLAYTIME_TIER_0)
+	paygrade = PAY_SHORT_UE4
 	skills = /datum/skills/military/survivor/upp_spec
 
 /datum/equipment_preset/survivor/upp/specialist/load_gear(mob/living/carbon/human/new_human)
@@ -145,7 +151,7 @@
 // /obj/effect/landmark/survivor_spawner/squad_leader
 /datum/equipment_preset/survivor/upp/squad_leader
 	name = "Survivor - UPP Squad Leader"
-	paygrades = list(PAY_SHORT_UE5 = JOB_PLAYTIME_TIER_0)
+	paygrade = PAY_SHORT_UE5
 	assignment = JOB_UPP_LEADER
 	rank = JOB_UPP_LEADER
 	languages = list(LANGUAGE_RUSSIAN, LANGUAGE_ENGLISH,  LANGUAGE_GERMAN,  LANGUAGE_CHINESE)
@@ -173,7 +179,7 @@
 	faction = FACTION_UPP
 	faction_group = list(FACTION_UPP, FACTION_SURVIVOR)
 	skills = /datum/skills/colonial_synthetic
-	paygrades = list(PAY_SHORT_SYN = JOB_PLAYTIME_TIER_0)
+	paygrade = PAY_SHORT_SYN
 	idtype = /obj/item/card/id/dogtag
 	role_comm_title = "173/RECON Syn"
 

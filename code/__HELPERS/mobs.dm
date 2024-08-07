@@ -26,7 +26,7 @@
 			continue
 		valid_hairstyles[hairstyle] = GLOB.hair_styles_list[hairstyle]
 
-	if(length(valid_hairstyles))
+	if(valid_hairstyles.len)
 		h_style = pick(valid_hairstyles)
 
 	return h_style
@@ -48,7 +48,7 @@
 			continue
 		valid_facialhairstyles[facialhairstyle] = GLOB.facial_hair_styles_list[facialhairstyle]
 
-	if(length(valid_facialhairstyles))
+	if(valid_facialhairstyles.len)
 		f_style = pick(valid_facialhairstyles)
 
 		return f_style

@@ -18,7 +18,6 @@
 
 	matter = list("metal" = 50,"glass" = 20)
 	inherent_traits = list(TRAIT_TOOL_MULTITOOL)
-	preferred_storage = list(/obj/item/clothing/accessory/storage/tool_webbing = WEAR_ACCESSORY)
 	var/hack_speed = 10 SECONDS // Only used for vendors right now
 	var/next_scan
 
@@ -47,7 +46,7 @@
 /obj/item/device/multitool/attack_self(mob/user)
 	..()
 
-	if(world.time < next_scan || !ishuman(user) || !skillcheck(user,SKILL_ENGINEER,SKILL_ENGINEER_NOVICE))
+	if(world.time < next_scan || !ishuman(user) || !skillcheck(user,SKILL_ENGINEER,SKILL_ENGINEER_TRAINED))
 		return
 
 	next_scan = world.time + 15

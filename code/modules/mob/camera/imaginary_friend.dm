@@ -280,7 +280,6 @@
 	action_icon_state = "joinmob"
 
 /datum/action/innate/imaginary_orbit/action_activate()
-	. = ..()
 	var/mob/camera/imaginary_friend/friend = owner
 	friend.recall()
 
@@ -289,7 +288,6 @@
 	action_icon_state = "hidemob"
 
 /datum/action/innate/imaginary_hide/action_activate()
-	. = ..()
 	var/mob/camera/imaginary_friend/friend = owner
 	if(friend.hidden)
 		friend.hidden = FALSE

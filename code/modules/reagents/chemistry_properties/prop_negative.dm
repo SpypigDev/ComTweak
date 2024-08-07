@@ -137,9 +137,11 @@
 				if(affecting)
 					if(affecting.take_damage(4, 2))
 						H.UpdateDamageIcon()
-					if(prob(meltprob))
+					if(prob(meltprob)) //Applies disfigurement
 						if(H.pain.feels_pain)
 							H.emote("scream")
+						H.status_flags |= DISFIGURED
+						H.name = H.get_visible_name()
 			else
 				M.take_limb_damage(min(6, volume))
 			return

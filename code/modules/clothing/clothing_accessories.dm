@@ -50,7 +50,7 @@
 /obj/item/clothing/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/clothing/accessory))
 
-		if(!LAZYLEN(valid_accessory_slots))
+		if(!valid_accessory_slots || !valid_accessory_slots.len)
 			to_chat(usr, SPAN_WARNING("You cannot attach accessories of any kind to \the [src]."))
 			return
 

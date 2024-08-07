@@ -132,7 +132,7 @@
 	icon_state = "workshop"
 
 /area/almayer/engineering/lower/workshop/hangar
-	name = "\improper Ordnance Workshop"
+	name = "\improper Ordnance workshop"
 
 /area/almayer/engineering/lower/engine_core
 	name = "\improper Engine Reactor Core Room"

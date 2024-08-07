@@ -805,7 +805,7 @@ GLOBAL_LIST_EMPTY_TYPED(crewmonitor, /datum/crewmonitor)
 		ui.open()
 
 /datum/crewmonitor/proc/show(mob/M, source)
-	if(!length(ui_sources))
+	if(!ui_sources.len)
 		START_PROCESSING(SSprocessing, src)
 	ui_sources[M] = source
 	tgui_interact(M)
@@ -823,7 +823,7 @@ GLOBAL_LIST_EMPTY_TYPED(crewmonitor, /datum/crewmonitor)
 /datum/crewmonitor/ui_close(mob/M)
 	. = ..()
 	ui_sources -= M
-	if(!length(ui_sources))
+	if(!ui_sources.len)
 		STOP_PROCESSING(SSprocessing, src)
 
 /datum/crewmonitor/ui_host(mob/user)

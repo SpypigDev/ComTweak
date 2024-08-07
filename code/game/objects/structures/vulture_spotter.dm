@@ -313,7 +313,6 @@
 	tripod = WEAKREF(spotting_tripod)
 
 /datum/action/vulture_tripod_unscope/action_activate()
-	. = ..()
 	if(!tripod)
 		return
 

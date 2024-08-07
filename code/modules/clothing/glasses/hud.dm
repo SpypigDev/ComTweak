@@ -40,7 +40,6 @@
 		return TRUE
 
 /datum/action/item_action/view_publications/action_activate()
-	. = ..()
 	var/obj/item/clothing/glasses/hud/health/hud = holder_item
 	hud.tgui_interact(owner)
 

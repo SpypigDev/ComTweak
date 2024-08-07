@@ -183,7 +183,6 @@
 	return ..()
 
 /datum/action/xeno_action/activable/fortify/action_activate()
-	. = ..()
 	..()
 	var/mob/living/carbon/xenomorph/xeno = owner
 	if(xeno.fortify && xeno.selected_ability != src)

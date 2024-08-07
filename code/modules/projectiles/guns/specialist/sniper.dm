@@ -62,7 +62,6 @@
 		ACTIONS SPECIALSIT SNIPER CAN TAKE
 */
 /datum/action/item_action/specialist/aimed_shot/action_activate()
-	. = ..()
 	if(!ishuman(owner))
 		return
 	var/mob/living/carbon/human/H = owner
@@ -223,7 +222,7 @@
 
 /datum/action/item_action/specialist/aimed_shot/proc/check_shot_is_blocked(mob/firer, mob/target, obj/projectile/P)
 	var/list/turf/path = get_line(firer, target, include_start_atom = FALSE)
-	if(!length(path) || get_dist(firer, target) > P.ammo.max_range)
+	if(!path.len || get_dist(firer, target) > P.ammo.max_range)
 		return TRUE
 
 	var/blocked = FALSE
@@ -277,7 +276,6 @@
 	return TRUE
 
 /datum/action/item_action/specialist/toggle_laser/action_activate()
-	. = ..()
 	var/obj/item/weapon/gun/rifle/sniper/sniper_rifle = holder_item
 
 	if(owner.get_held_item() != sniper_rifle)

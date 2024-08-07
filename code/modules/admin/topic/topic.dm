@@ -73,7 +73,7 @@
 
 		else if(task == "rank")
 			var/new_rank
-			if(length(GLOB.admin_ranks))
+			if(GLOB.admin_ranks.len)
 				new_rank = tgui_input_list(usr, "Please select a rank", "New rank", (GLOB.admin_ranks|"*New Rank*"))
 			else
 				new_rank = tgui_input_list(usr, "Please select a rank", "New rank", list("Game Master","Game Admin", "Trial Admin", "Admin Observer","*New Rank*"))
@@ -91,7 +91,7 @@
 						to_chat(usr, "<font color='red'>Error: Topic 'editrights': Invalid rank</font>")
 						return
 					if(CONFIG_GET(flag/admin_legacy_system))
-						if(length(GLOB.admin_ranks))
+						if(GLOB.admin_ranks.len)
 							if(new_rank in GLOB.admin_ranks)
 								rights = GLOB.admin_ranks[new_rank] //we typed a rank which already exists, use its rights
 							else
@@ -553,7 +553,7 @@
 				notbannedlist += job
 
 		//Banning comes first
-		if(length(notbannedlist))
+		if(notbannedlist.len)
 			if(!check_rights(R_BAN))  return
 			var/reason = input(usr,"Reason?","Please State Reason","") as text|null
 			if(reason)
@@ -565,7 +565,7 @@
 
 		//Unbanning joblist
 		//all jobs in joblist are banned already OR we didn't give a reason (implying they shouldn't be banned)
-		if(length(joblist)) //at least 1 banned job exists in joblist so we have stuff to unban.
+		if(joblist.len) //at least 1 banned job exists in joblist so we have stuff to unban.
 			for(var/job in joblist)
 				var/reason = jobban_isbanned(M, job, P1)
 				if(!reason) continue //skip if it isn't jobbanned anyway
@@ -1951,9 +1951,9 @@
 
 		var/list/offset = splittext(href_list["offset"],",")
 		var/number = clamp(text2num(href_list["object_count"]), 1, 100)
-		var/X = length(offset) > 0 ? text2num(offset[1]) : 0
-		var/Y = length(offset) > 1 ? text2num(offset[2]) : 0
-		var/Z = length(offset) > 2 ? text2num(offset[3]) : 0
+		var/X = offset.len > 0 ? text2num(offset[1]) : 0
+		var/Y = offset.len > 1 ? text2num(offset[2]) : 0
+		var/Z = offset.len > 2 ? text2num(offset[3]) : 0
 		var/tmp_dir = href_list["object_dir"]
 		var/obj_dir = tmp_dir ? text2num(tmp_dir) : 2
 		if(!obj_dir || !(obj_dir in list(1,2,4,8,5,6,9,10)))

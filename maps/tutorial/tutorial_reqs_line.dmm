@@ -13,11 +13,17 @@
 /area/misc/tutorial)
 "l" = (
 /obj/structure/surface/table/almayer,
-/turf/open/floor/almayer/green/west,
+/turf/open/floor/almayer{
+	dir = 8;
+	icon_state = "green"
+	},
 /area/misc/tutorial)
 "m" = (
 /obj/structure/surface/rack,
-/turf/open/floor/almayer/green/west,
+/turf/open/floor/almayer{
+	dir = 8;
+	icon_state = "green"
+	},
 /area/misc/tutorial)
 "n" = (
 /obj/structure/surface/table/almayer{
@@ -32,6 +38,9 @@
 	},
 /turf/open/floor/almayer,
 /area/misc/tutorial)
+"o" = (
+/turf/closed/wall/almayer/outer,
+/area/misc/tutorial)
 "w" = (
 /obj/structure/window/framed/almayer/hull,
 /turf/open/floor/almayer,
@@ -40,11 +49,17 @@
 /obj/structure/barricade/handrail{
 	dir = 8
 	},
-/turf/open/floor/almayer/green/east,
+/turf/open/floor/almayer{
+	dir = 4;
+	icon_state = "green"
+	},
 /area/misc/tutorial)
 "y" = (
 /obj/structure/machinery/line_nexter,
-/turf/open/floor/almayer/green/east,
+/turf/open/floor/almayer{
+	dir = 4;
+	icon_state = "green"
+	},
 /area/misc/tutorial)
 "E" = (
 /obj/structure/bed/chair/office/dark{
@@ -119,7 +134,7 @@ a
 K
 n
 w
-a
+o
 a
 a
 a

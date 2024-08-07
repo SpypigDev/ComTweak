@@ -178,7 +178,6 @@
 //---ability actions--\\
 
 /datum/action/item_action/smartgun/action_activate()
-	. = ..()
 	var/obj/item/weapon/gun/smartgun/G = holder_item
 	if(!ishuman(owner))
 		return
@@ -502,7 +501,7 @@
 
 		path = get_line(user, M)
 
-		if(length(path))
+		if(path.len)
 			var/blocked = FALSE
 			for(T in path)
 				if(T.density || T.opacity)
@@ -525,9 +524,9 @@
 			else
 				conscious_targets += M
 
-	if(length(conscious_targets))
+	if(conscious_targets.len)
 		. = pick(conscious_targets)
-	else if(length(unconscious_targets))
+	else if(unconscious_targets.len)
 		. = pick(unconscious_targets)
 
 /obj/item/weapon/gun/smartgun/proc/process_shot(mob/living/user, warned)
@@ -596,7 +595,6 @@
 // ID lock action \\
 
 /datum/action/item_action/co_sg/action_activate()
-	. = ..()
 	var/obj/item/weapon/gun/smartgun/co/protag_gun = holder_item
 	if(!ishuman(owner))
 		return

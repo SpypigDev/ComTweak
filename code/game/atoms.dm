@@ -238,7 +238,7 @@ directive is properly returned.
 				pass |= istype(A, type)
 			if(!pass)
 				continue
-		if(length(A.contents))
+		if(A.contents.len)
 			found += A.search_contents_for(path,filter_path)
 	return found
 

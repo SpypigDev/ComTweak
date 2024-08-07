@@ -150,7 +150,6 @@
 		return TRUE
 
 /datum/action/item_action/specialist/prepare_position/action_activate()
-	. = ..()
 	var/obj/item/clothing/suit/storage/marine/ghillie/GS = holder_item
 	GS.camouflage()
 
