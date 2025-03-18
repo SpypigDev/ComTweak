@@ -491,9 +491,6 @@ const CombinedSquadPanel = (props) => {
             );
           })}
         </Stack.Item>
-        <Stack.Item>
-          <Divider />
-        </Stack.Item>
       </Stack>
     </Section>
   );
