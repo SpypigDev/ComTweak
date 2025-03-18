@@ -1075,7 +1075,7 @@ const OrbitalBombardment = (props) => {
                 >
                   [ {ob_safety ? 'ENGAGED' : 'DISENGAGED'} ]
                 </Box>
-                <Box
+                <Button
                   fontSize="16px"
                   width="96%"
                   color="transperant"
@@ -1083,7 +1083,7 @@ const OrbitalBombardment = (props) => {
                   m="4px"
                 >
                   Keycard Override Required
-                </Box>
+                </Button>
               </Table.Cell>
             </Table>
           </Box>
