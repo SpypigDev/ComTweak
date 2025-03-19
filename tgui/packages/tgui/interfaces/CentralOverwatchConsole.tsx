@@ -220,7 +220,7 @@ const SecondaryFunctions = (props) => {
             </Tabs.Tab>
           </Tabs>
         </Stack.Item>
-        <Stack.Item grow>
+        <Stack.Item grow pt="3px">
           {secondarycategory === 'ob' && data.can_launch_obs && (
             <OrbitalBombardment />
           )}
