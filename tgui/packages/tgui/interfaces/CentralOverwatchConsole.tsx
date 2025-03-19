@@ -91,12 +91,12 @@ export const CentralOverwatchConsole = (props) => {
     >
       <Window.Content>
         {(!data.operator && <LoginPanel />) || (
-          <Section fill pl="2px" pr="2px" scrollable>
-            <Stack vertical fill>
-              <Stack.Item grow={0.5} m="0" p="0">
+          <Section fill scrollable>
+            <Stack vertical fill mr="1%">
+              <Stack.Item grow={0.5} mb="1%">
                 <CombinedSquadPanel />
               </Stack.Item>
-              <Stack.Item m="0" mt="2px" grow={0.5}>
+              <Stack.Item mt="-1%" mb="2px" grow={0.5}>
                 <SecondaryFunctions />
               </Stack.Item>
             </Stack>
@@ -265,11 +265,8 @@ const CombinedSquadPanel = (props) => {
         </>
       }
       fill
-      mb="2%"
-      mr="0"
-      ml="0"
     >
-      <Tabs fluid pr="0" pl="0" mb="0" fontSize="16px">
+      <Tabs fluid pr="8px" pl="9px" mb="0" fontSize="16px">
         {squad_data.length
           ? squad_data.map((squad, index) => {
               return (
@@ -287,13 +284,13 @@ const CombinedSquadPanel = (props) => {
             })
           : null}
       </Tabs>
-      <Stack fill width="100%">
-        <Stack.Item width="100%">
+      <Stack vertical fill width="100%" mb="1px">
+        <Stack.Item width="100%" align="baseline">
           {data.squad_data.map((squad, index) => {
             return (
-              <Stack.Item grow key={index} fontSize="13px">
+              <Stack.Item grow key={index} fontSize="13px" align="baseline">
                 {category === squad.name.toLowerCase() && (
-                  <Section m="2px" pb="2px" fill width="100%">
+                  <Section mt="1px" fill width="100%" ml="0.5px">
                     <Table>
                       <Table.Row>
                         <Table.Cell fontSize="15px" bold p="6px" colSpan={2}>
@@ -641,6 +638,7 @@ const ExecutivePanel = (props) => {
           </Box>
         </Stack.Item>
       </Stack>
+      <Divider />
     </Section>
   );
 };
@@ -787,6 +785,7 @@ const EmergencyPanel = (props) => {
             </Stack.Item>
           </Box>
         </Stack.Item>
+        <Divider />
       </Stack>
     </Section>
   );
