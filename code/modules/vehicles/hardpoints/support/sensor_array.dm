@@ -62,6 +62,42 @@
 		if(NIGHTVISION_MODE)
 			deactivate_nightvision(user)
 
+/obj/item/hardpoint/support/sensor_array/tgui_interact(mob/user, datum/tgui/ui)
+	. = ..()
+
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "VehicleRadar", "Vehicle Radar", 900, 600)
+		ui.open()
+
+/obj/item/hardpoint/support/sensor_array/ui_status(mob/user)
+	if(!(isatom(src)))
+		return UI_INTERACTIVE
+
+	if(user in owner.interior.get_passengers())
+		return UI_INTERACTIVE
+	else
+		return UI_CLOSE
+
+/obj/item/hardpoint/support/sensor_array/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+
+	switch (action)
+		if("fetch_radar")
+			return
+		else
+			playsound(src, 'sound/vehicles/vtol/buttonpress.ogg', 25, FALSE)
+
+/obj/item/hardpoint/support/sensor_array/ui_data(mob/user)
+	var/list/data = list()
+
+	var/datum/flattened_tacmap/map = get_unannounced_tacmap_data_png(FACTION_MARINE)
+	if(map)
+		data["radar_map"] = map.flat_tacmap
+
+	return data
+
+
 /obj/item/hardpoint/support/sensor_array/proc/on_update_sight(mob/user)
 	SIGNAL_HANDLER
 
@@ -95,6 +131,7 @@
 
 	switch(mode)
 		if(SENSOR_MODE)
+			tgui_interact(user)
 			START_PROCESSING(SSslowobj, src)
 		if(NIGHTVISION_MODE)
 			var/matrix_color = NV_COLOR_GREEN
