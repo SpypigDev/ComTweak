@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
 import { Box, Flex, Icon, Table } from '../components';
@@ -8,6 +6,11 @@ import { Window } from '../layouts';
 
 type RadarData = {
   radar_map: any;
+  interface_active: boolean;
+  volume: number;
+  map_zoom: number;
+  minimap_shown: boolean;
+  locking_mode: string;
 };
 
 const HexScrew = () => {
@@ -71,11 +74,6 @@ const SwitchButton = () => {
   );
 };
 
-interface ButtonProps {
-  readonly children?: ReactNode;
-  readonly onClick?: () => void;
-}
-
 export const VehicleRadar = (props) => {
   const { act, data } = useBackend<RadarData>();
 
@@ -104,7 +102,7 @@ export const VehicleRadar = (props) => {
               <LeftButtonsPanel />
             </Table.Cell>
             <Table.Cell width="82%" verticalAlign="bottom">
-              <VehicleRadarDebug />
+              {data.interface_active ? <VehicleRadarDisplay /> : <ScreenOff />}
             </Table.Cell>
             <Table.Cell>
               <RightButtonsPanel />
@@ -136,23 +134,47 @@ const LeftButtonsPanel = (props) => {
   return (
     <Box className="LeftButtons">
       <Box className="ButtonHolderL">
-        <Box className="ButtonL">POWR</Box>
+        <Box className="ButtonL" onClick={() => act('power')}>
+          POWR
+        </Box>
       </Box>
-      <Box className="ButtonHolderL">
-        <Box className="ButtonL">MODE</Box>
-      </Box>
-      <Box className="ButtonHolderL">
-        <Box className="ButtonL">+</Box>
-      </Box>
-      <Box className="ButtonHolderL">
-        <Box className="ButtonL">-</Box>
-      </Box>
-      <Box className="ButtonHolderL">
-        <Box className="ButtonL">ZLCK</Box>
-      </Box>
-      <Box className="ButtonHolderL">
-        <Box className="ButtonL">TLCK</Box>
-      </Box>
+      {data.interface_active ? (
+        <>
+          <Box className="ButtonHolderL">
+            <Box className="ButtonL" onClick={() => act('mode')}>
+              MODE
+            </Box>
+          </Box>
+          <Box className="ButtonHolderL">
+            <Box className="ButtonL" onClick={() => act('zoom_in')}>
+              +
+            </Box>
+          </Box>
+          <Box className="ButtonHolderL">
+            <Box className="ButtonL" onClick={() => act('zoom_out')}>
+              -
+            </Box>
+          </Box>
+          <Box className="ButtonHolderL">
+            <Box className="ButtonL" onClick={() => act('zone_lock')}>
+              ZLCK
+            </Box>
+          </Box>
+          <Box className="ButtonHolderL">
+            <Box className="ButtonL" onClick={() => act('target_lock')}>
+              TLCK
+            </Box>
+          </Box>
+        </>
+      ) : (
+        Array.from({ length: 5 }).map((_, s) => {
+          return (
+            <Box className="ButtonHolderL" key={s}>
+              <Box className="ButtonL" />
+            </Box>
+          );
+        })
+      )}
     </Box>
   );
 };
@@ -165,26 +187,38 @@ const RightButtonsPanel = (props) => {
 
   return (
     <Box className="RightButtons">
-      <Box className="ButtonHolderR">
-        <Box className="ButtonR" onClick={() => act('blink')}>
-          MPUL
-        </Box>
-      </Box>
-      <Box className="ButtonHolderR">
-        <Box className="ButtonR">APUL</Box>
-      </Box>
-      <Box className="ButtonHolderR">
-        <Box className="ButtonR">PUL+</Box>
-      </Box>
-      <Box className="ButtonHolderR">
-        <Box className="ButtonR">PUL-</Box>
-      </Box>
-      <Box className="ButtonHolderR">
-        <Box className="ButtonR">CLRT</Box>
-      </Box>
-      <Box className="ButtonHolderR">
-        <Box className="ButtonR">PROX</Box>
-      </Box>
+      {data.interface_active ? (
+        <>
+          <Box className="ButtonHolderR">
+            <Box className="ButtonR" onClick={() => act('blink')}>
+              MPUL
+            </Box>
+          </Box>
+          <Box className="ButtonHolderR">
+            <Box className="ButtonR">APUL</Box>
+          </Box>
+          <Box className="ButtonHolderR">
+            <Box className="ButtonR">PUL+</Box>
+          </Box>
+          <Box className="ButtonHolderR">
+            <Box className="ButtonR">PUL-</Box>
+          </Box>
+          <Box className="ButtonHolderR">
+            <Box className="ButtonR">CLRT</Box>
+          </Box>
+          <Box className="ButtonHolderR">
+            <Box className="ButtonR">PROX</Box>
+          </Box>
+        </>
+      ) : (
+        Array.from({ length: 6 }).map((_, s) => {
+          return (
+            <Box className="ButtonHolderR" key={s}>
+              <Box className="ButtonR" />
+            </Box>
+          );
+        })
+      )}
     </Box>
   );
 };
@@ -215,18 +249,30 @@ const BottomButtonsPanel = (props) => {
   return (
     <Flex>
       <Flex.Item>
-        <Box className="ButtonB" bold>
+        <Box
+          className="ButtonB"
+          bold
+          onClick={() => act('volume', { volume: 'mute' })}
+        >
           MUTE
         </Box>
       </Flex.Item>
       <Flex.Item>
         <Box className="RadarButtonHolder">
           <Flex height="90%">
-            <Flex.Item className="RadarButton" textAlign="left">
+            <Flex.Item
+              className="RadarButton"
+              textAlign="left"
+              onClick={() => act('volume', { volume: 'up' })}
+            >
               <Icon name="angle-left" />
             </Flex.Item>
             <Flex.Item className="RadarButtonDivider" />
-            <Flex.Item className="RadarButton" textAlign="right">
+            <Flex.Item
+              className="RadarButton"
+              textAlign="right"
+              onClick={() => act('volume', { volume: 'down' })}
+            >
               <Icon name="angle-right" />
             </Flex.Item>
           </Flex>
@@ -236,7 +282,13 @@ const BottomButtonsPanel = (props) => {
   );
 };
 
-const VehicleRadarDebug = (props) => {
+const ScreenOff = (props) => {
+  const { act, data } = useBackend<RadarData>();
+
+  return <Box width="100%" height="100%" className="ScreenOff" />;
+};
+
+const VehicleRadarDisplay = (props) => {
   const { act, data } = useBackend<RadarData>();
 
   return (
@@ -255,32 +307,39 @@ const VehicleRadarDebug = (props) => {
           </filter>
         </defs>
       </svg>
+
       <Box
-        className="SecondaryTester"
+        className="RadarTester"
         align="center"
         fontFamily="monospace"
         bold
         textColor="green"
         width="100%"
         height="100%"
-        style={{
-          backgroundImage: `url(${resolveAsset(data.radar_map)})`,
-          filter: `grayscale(0)` + `invert(1)` + `url(#colorMeGreen)`,
-        }}
+        style={
+          data.minimap_shown
+            ? {
+                backgroundImage: `url(${resolveAsset(data.radar_map)})`,
+                filter: `saturate(7.5)` + `invert(1)` + `url(#colorMeGreen)`,
+              }
+            : ``
+        }
       >
-        {Array.from({ length: 5 }).map((_, s) => {
-          return Array.from({ length: 12 }).map((_, i) => (
-            <Box
-              style={{
-                transform:
-                  `rotate(${0 + 30 * i}deg)` + `scale(${0.3 * s}, ${0.3 * s})`,
-              }}
-              key={i}
-            >
-              <Sector />
-            </Box>
-          ));
-        })}
+        {data.minimap_shown &&
+          Array.from({ length: 5 }).map((_, s) => {
+            return Array.from({ length: 12 }).map((_, i) => (
+              <Box
+                style={{
+                  transform:
+                    `rotate(${0 + 30 * i}deg)` +
+                    `scale(${0.3 * s}, ${0.3 * s})`,
+                }}
+                key={i}
+              >
+                <Sector />
+              </Box>
+            ));
+          })}
         {Array.from({ length: 6 }).map((_, i) => {
           return (
             <Box
@@ -298,6 +357,42 @@ const VehicleRadarDebug = (props) => {
           height="64px"
           style={{ position: `absolute` }}
         />
+      </Box>
+      <Box
+        className="SecondaryTester"
+        textAlign="center"
+        textColor="rgb(5, 165, 0)"
+        fontSize="12px"
+      >
+        <Box
+          className="WeyYuLogo"
+          style={{
+            filter: `invert(1)` + `url(#colorMeGreen)`,
+          }}
+        />
+        <Box
+          bold
+          fontSize="19px"
+          className="HomeScreenInfo"
+          inline
+          width="80%"
+          pt="5px"
+        >
+          REAPER AQ-133
+        </Box>
+        <Box fontFamily="monospace">Strategic target acquisition system</Box>
+
+        <Box
+          fontFamily="monospace"
+          inline
+          width="80%"
+          className="HomeScreenInfo"
+          mt="7px"
+          pt="5px"
+        >
+          Developed by Weyland Yutani Corp.
+        </Box>
+        <Box fontFamily="monospace">Property of USCMC Aerospace Command</Box>
       </Box>
     </Box>
   );

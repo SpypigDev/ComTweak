@@ -12,7 +12,11 @@
 	health = 250
 
 	var/active = FALSE
-
+	var/interface_active = FALSE
+	var/volume = 25
+	var/map_zoom = 200
+	var/minimap_shown = TRUE
+	var/locking_mode
 	/// Range of the wallhacks
 	var/sensor_radius = 45
 	/// weakrefs of xenos temporarily added to the marine minimap
@@ -83,10 +87,36 @@
 	. = ..()
 
 	switch (action)
-		if("fetch_radar")
+		if("power")
+			interface_active = !interface_active
+			if(interface_active)
+				playsound(src, 'sound/machines/tcomms_on.ogg', 10, FALSE)
+		if("mode")
+			minimap_shown = !minimap_shown
+		if("zoom_in")
 			return
-		else
-			playsound(src, 'sound/vehicles/vtol/buttonpress.ogg', 25, FALSE)
+		if("zoom_out")
+			return
+		if("zone_lock")
+			return
+		if("target_lock")
+			return
+		if("volume")
+			var/volume_change = params["volume"]
+			switch(volume_change)
+				if("up")
+					volume = volume + 5
+				if("down")
+					volume = volume - 5
+				if("mute")
+					volume = 0
+			volume = clamp(volume, 0, 25)
+	var/click_sound = pick(
+		'sound/machines/terminal_button01.ogg',
+		'sound/machines/terminal_button04.ogg',
+		'sound/machines/terminal_button05.ogg')
+
+	playsound(src, click_sound, volume, FALSE)
 
 /obj/item/hardpoint/support/sensor_array/ui_data(mob/user)
 	var/list/data = list()
@@ -94,6 +124,8 @@
 	var/datum/flattened_tacmap/map = get_unannounced_tacmap_data_png(FACTION_MARINE)
 	if(map)
 		data["radar_map"] = map.flat_tacmap
+	data["interface_active"] = interface_active
+	data["minimap_shown"] = minimap_shown
 
 	return data
 
