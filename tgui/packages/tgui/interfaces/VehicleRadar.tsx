@@ -2,6 +2,7 @@ import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
 import { Box, Flex, Icon, Table } from '../components';
 import { DmIcon } from '../components';
+import { Image } from '../components';
 import { Window } from '../layouts';
 
 type RadarData = {
@@ -11,6 +12,9 @@ type RadarData = {
   map_zoom: number;
   minimap_shown: boolean;
   locking_mode: string;
+  blackfoot_icon: any;
+  blackfoot_x: number;
+  blackfoot_y: number;
 };
 
 const HexScrew = () => {
@@ -36,7 +40,7 @@ const HexScrew = () => {
 
 const Sector = () => {
   return (
-    <Box className="RadarScreen" width="100%" height="100%" mb="-100%">
+    <Box className="RadarSector" width="100%" height="100%" mb="-100%">
       <svg width="100%" height="100%">
         <defs>
           <mask id="hole">
@@ -58,15 +62,15 @@ const Sector = () => {
   );
 };
 
-const SwitchButton = () => {
+const SwitchButtonHolder = () => {
   return (
-    <Box className="RadarButtonHolder">
+    <Box className="SwitchButtonHolder">
       <Flex height="100%">
-        <Flex.Item className="RadarButton" textAlign="left">
+        <Flex.Item className="SwitchButton" textAlign="left">
           <Icon name="angle-left" />
         </Flex.Item>
-        <Flex.Item className="RadarButtonDivider" />
-        <Flex.Item className="RadarButton" textAlign="right">
+        <Flex.Item className="SwitchButtonDivider" />
+        <Flex.Item className="SwitchButton" textAlign="right">
           <Icon name="angle-right" />
         </Flex.Item>
       </Flex>
@@ -82,8 +86,8 @@ export const VehicleRadar = (props) => {
 
   return (
     <Window width={475} height={500}>
-      <Window.Content className="Tester">
-        <Table width="450px" height="450px" className="TesterPanel">
+      <Window.Content className="Backdrop">
+        <Table width="450px" height="450px" className="RadarPanel">
           <Table.Row>
             <Table.Cell>
               <HexScrew />
@@ -234,7 +238,7 @@ const TopButtonsPanel = (props) => {
             {s === 2 ? (
               <Box width="55px">radial switch here!</Box>
             ) : (
-              <SwitchButton />
+              <SwitchButtonHolder />
             )}
           </Flex.Item>
         );
@@ -258,18 +262,18 @@ const BottomButtonsPanel = (props) => {
         </Box>
       </Flex.Item>
       <Flex.Item>
-        <Box className="RadarButtonHolder">
+        <Box className="SwitchButtonHolder">
           <Flex height="90%">
             <Flex.Item
-              className="RadarButton"
+              className="SwitchButton"
               textAlign="left"
               onClick={() => act('volume', { volume: 'up' })}
             >
               <Icon name="angle-left" />
             </Flex.Item>
-            <Flex.Item className="RadarButtonDivider" />
+            <Flex.Item className="SwitchButtonDivider" />
             <Flex.Item
-              className="RadarButton"
+              className="SwitchButton"
               textAlign="right"
               onClick={() => act('volume', { volume: 'down' })}
             >
@@ -292,7 +296,7 @@ const VehicleRadarDisplay = (props) => {
   const { act, data } = useBackend<RadarData>();
 
   return (
-    <Box width="100%" height="100%" className="SecondaryTesterGradient">
+    <Box width="100%" height="100%" className="RadarPanelOutline">
       <svg width={0} height={0} style={{ position: `absolute` }}>
         <defs>
           <filter id="colorMeGreen">
@@ -307,9 +311,8 @@ const VehicleRadarDisplay = (props) => {
           </filter>
         </defs>
       </svg>
-
       <Box
-        className="RadarTester"
+        className="RadarMap"
         align="center"
         fontFamily="monospace"
         bold
@@ -320,6 +323,8 @@ const VehicleRadarDisplay = (props) => {
           data.minimap_shown
             ? {
                 backgroundImage: `url(${resolveAsset(data.radar_map)})`,
+                backgroundPositionX: `${data.blackfoot_x}`,
+                backgroundPositionY: `${data.blackfoot_y}`,
                 filter: `saturate(7.5)` + `invert(1)` + `url(#colorMeGreen)`,
               }
             : ``
@@ -352,28 +357,38 @@ const VehicleRadarDisplay = (props) => {
           );
         })}
         <DmIcon
-          icon={'icons/ui_icons/map_blips_extra_large.dmi'}
+          icon={data.blackfoot_icon}
           icon_state={'vtol'}
-          height="64px"
-          style={{ position: `absolute` }}
+          height="32px"
+          style={{ position: `absolute`, transform: `rotate(180deg)` }}
+          top="45%"
+          left="46%"
         />
       </Box>
       <Box
-        className="SecondaryTester"
+        className="RadarPanelBlank"
         textAlign="center"
         textColor="rgb(5, 165, 0)"
         fontSize="12px"
       >
-        <Box
-          className="WeyYuLogo"
-          style={{
-            filter: `invert(1)` + `url(#colorMeGreen)`,
-          }}
-        />
+        <Box width="100%" height="45%">
+          <Image
+            mt="20%"
+            fixBlur
+            width="75px"
+            height="75px"
+            src={resolveAsset('logo_uscm.png')}
+            style={{
+              filter: `brightness(1)` + `url(#colorMeGreen)` + `saturate(0.95)`,
+            }}
+            opacity={0.5}
+          />
+        </Box>
+
         <Box
           bold
           fontSize="19px"
-          className="HomeScreenInfo"
+          className="ScreenDivider"
           inline
           width="80%"
           pt="5px"
@@ -386,11 +401,11 @@ const VehicleRadarDisplay = (props) => {
           fontFamily="monospace"
           inline
           width="80%"
-          className="HomeScreenInfo"
+          className="ScreenDivider"
           mt="7px"
           pt="5px"
         >
-          Developed by Weyland Yutani Corp.
+          Developed by UA Northridge
         </Box>
         <Box fontFamily="monospace">Property of USCMC Aerospace Command</Box>
       </Box>

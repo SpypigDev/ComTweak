@@ -118,7 +118,14 @@
 
 	playsound(src, click_sound, volume, FALSE)
 
+/obj/item/hardpoint/support/sensor_array/ui_static_data(mob/user)
+	. = ..()
+
+	.["blackfoot_icon"] = 'icons/ui_icons/map_blips_extra_large.dmi'
+
 /obj/item/hardpoint/support/sensor_array/ui_data(mob/user)
+	. = ..()
+
 	var/list/data = list()
 
 	var/datum/flattened_tacmap/map = get_unannounced_tacmap_data_png(FACTION_MARINE)
@@ -126,9 +133,10 @@
 		data["radar_map"] = map.flat_tacmap
 	data["interface_active"] = interface_active
 	data["minimap_shown"] = minimap_shown
+	data["blackfoot_x"] = owner.x
+	data["blackfoot_y"] = owner.y
 
 	return data
-
 
 /obj/item/hardpoint/support/sensor_array/proc/on_update_sight(mob/user)
 	SIGNAL_HANDLER
