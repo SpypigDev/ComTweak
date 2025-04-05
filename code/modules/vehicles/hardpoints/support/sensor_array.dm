@@ -1,6 +1,10 @@
 #define SENSOR_MODE "sensor"
 #define NIGHTVISION_MODE "nightvision"
 
+#define RADAR_MODE_OFF -1
+#define RADAR_MODE_PASSIVE 0
+#define RADAR_MODE_ACTIVE 1
+
 /obj/item/hardpoint/support/sensor_array
 	name = "\improper AQ-133 Acquisition System"
 	desc = "A short-range Air-to-Ground LIDAR target acquisition system designed to actively track and profile non-IFF signatures in a localized range of detection."
@@ -17,12 +21,18 @@
 	var/map_zoom = 200
 	var/minimap_shown = TRUE
 	var/locking_mode
+	var/radar_mode = RADAR_MODE_OFF
 	/// Range of the wallhacks
 	var/sensor_radius = 45
 	/// weakrefs of xenos temporarily added to the marine minimap
 	var/list/minimap_added = list()
 	/// current mode, can be either nvg (gives nightvision to the pilot) or sensor (shows xenos on tacmap)
 	var/mode = SENSOR_MODE
+
+	var/static/list/radar_modes = list(
+		RADAR_MODE_OFF,
+		RADAR_MODE_PASSIVE,
+		RADAR_MODE_ACTIVE)
 
 /obj/item/hardpoint/support/sensor_array/get_icon_image(x_offset, y_offset, new_dir)
 	var/obj/vehicle/multitile/blackfoot/blackfoot_owner = owner
@@ -71,7 +81,7 @@
 
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "VehicleRadar", "Vehicle Radar", 900, 600)
+		ui = new(user, src, "VehicleRadar", "AQ-133 'Reaper' Targeting System", 900, 600)
 		ui.open()
 
 /obj/item/hardpoint/support/sensor_array/ui_status(mob/user)
@@ -111,6 +121,9 @@
 				if("mute")
 					volume = 0
 			volume = clamp(volume, 0, 25)
+		if("switch_radar_mode")
+			radar_mode = next_in_list(radar_mode, radar_modes)
+
 	var/click_sound = pick(
 		'sound/machines/terminal_button01.ogg',
 		'sound/machines/terminal_button04.ogg',
@@ -133,8 +146,10 @@
 		data["radar_map"] = map.flat_tacmap
 	data["interface_active"] = interface_active
 	data["minimap_shown"] = minimap_shown
+
 	data["blackfoot_x"] = owner.x
 	data["blackfoot_y"] = owner.y
+	data["radar_mode"] = radar_mode
 
 	return data
 
@@ -227,6 +242,10 @@
 			SSminimaps.remove_marker(current_xeno)
 			current_xeno.add_minimap_marker()
 			minimap_added -= xeno_weakref
+
+#undef RADAR_MODE_OFF
+#undef RADAR_MODE_PASSIVE
+#undef RADAR_MODE_ACTIVE
 
 #undef SENSOR_MODE
 #undef NIGHTVISION_MODE

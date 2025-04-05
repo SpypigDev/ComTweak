@@ -15,6 +15,7 @@ type RadarData = {
   blackfoot_icon: any;
   blackfoot_x: number;
   blackfoot_y: number;
+  radar_mode: number;
 };
 
 const HexScrew = () => {
@@ -231,18 +232,44 @@ const TopButtonsPanel = (props) => {
   const { act, data } = useBackend<RadarData>();
 
   return (
-    <Flex>
-      {Array.from({ length: 4 }).map((_, s) => {
-        return (
-          <Flex.Item mr="19px" key={s}>
-            {s === 2 ? (
-              <Box width="55px">radial switch here!</Box>
-            ) : (
-              <SwitchButtonHolder />
-            )}
+    <Flex fill={1} justify="space-between" width="98%">
+      <Flex.Item>
+        <SwitchButtonHolder />
+      </Flex.Item>
+      <Flex.Item>
+        <SwitchButtonHolder />
+      </Flex.Item>
+      <Flex.Item>
+        <Flex width="75px">
+          <Flex.Item
+            grow
+            fontSize="8px"
+            textAlign="right"
+            pr="5px"
+            textColor="rgba(136, 136, 136, 0.64)"
+            bold
+          >
+            <Box>ACTIVE</Box>
+            <Box>PASSIVE</Box>
+            <Box>OFF</Box>
           </Flex.Item>
-        );
-      })}
+          <Flex.Item width="30px" onClick={() => act('switch_radar_mode')}>
+            <Box className="RadialSwitch">
+              <Box
+                className="RadialSwitchNotch"
+                style={{
+                  transform:
+                    `rotate(${data.radar_mode * 30}deg)` +
+                    `translate(${data.radar_mode ? -1 : 0}px, ${data.radar_mode * -4.5}px)`,
+                }}
+              />
+            </Box>
+          </Flex.Item>
+        </Flex>
+      </Flex.Item>
+      <Flex.Item>
+        <SwitchButtonHolder />
+      </Flex.Item>
     </Flex>
   );
 };
@@ -323,8 +350,8 @@ const VehicleRadarDisplay = (props) => {
           data.minimap_shown
             ? {
                 backgroundImage: `url(${resolveAsset(data.radar_map)})`,
-                backgroundPositionX: `${data.blackfoot_x}`,
-                backgroundPositionY: `${data.blackfoot_y}`,
+                backgroundPositionX: `${50 + data.blackfoot_x * -2.5}px`,
+                backgroundPositionY: `${(450 - data.blackfoot_y * 2.5) * -1}px`,
                 filter: `saturate(7.5)` + `invert(1)` + `url(#colorMeGreen)`,
               }
             : ``
@@ -360,9 +387,9 @@ const VehicleRadarDisplay = (props) => {
           icon={data.blackfoot_icon}
           icon_state={'vtol'}
           height="32px"
-          style={{ position: `absolute`, transform: `rotate(180deg)` }}
+          style={{ position: `absolute`, transform: `rotate(0deg)` }}
           top="45%"
-          left="46%"
+          left="45.8%"
         />
       </Box>
       <Box

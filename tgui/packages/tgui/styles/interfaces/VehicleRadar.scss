@@ -144,15 +144,28 @@
       padding-top: 3px;
       color: #363636;
     }
-    .SwitchButtonDivider {
-      width: 1px;
-      margin-left: 2.5%;
-      margin-right: 2.5%;
-      height: 100%;
-      font-family: monospace;
-      border: 1.5px inset #363636;
-      text-align: left;
-    }
+  }
+  .SwitchButtonDivider {
+    width: 1px;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    height: 100%;
+    font-family: monospace;
+    border: 1.5px inset #363636;
+    text-align: left;
+  }
+}
+
+.RadialSwitch {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  border: 2px outset #757575bd;
+  .RadialSwitchNotch {
+    width: 45%;
+    height: 1px;
+    margin-top: 11.5px;
+    border: 1px solid #636363bd;
   }
 }
 
@@ -201,7 +214,6 @@
   padding: 10px;
   overflow: hidden;
   background-size: 250%;
-  background-position: center;
   animation: switch_in 1.2s steps(1, end) forwards;
 }
 
