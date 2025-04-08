@@ -265,5 +265,3 @@
 			name = crewmember_name,
 			)
 		objects += list(crewinfo)
-
-/datum/radar/vehicle

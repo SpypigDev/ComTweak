@@ -40,8 +40,17 @@ const HexScrew = () => {
 };
 
 const Sector = () => {
+  const { act, data } = useBackend<RadarData>();
   return (
-    <Box className="RadarSector" width="100%" height="100%" mb="-100%">
+    <Box
+      className="RadarSector"
+      width="100%"
+      height="100%"
+      mb="-100%"
+      style={{
+        border: `2px ${data.radar_mode === 1 ? 'solid' : 'dashed'} ${data.minimap_shown ? 'rgb(0, 0, 0)' : 'rgb(7, 201, 0)'}`,
+      }}
+    >
       <svg width="100%" height="100%">
         <defs>
           <mask id="hole">
@@ -162,12 +171,12 @@ const LeftButtonsPanel = (props) => {
           </Box>
           <Box className="ButtonHolderL">
             <Box className="ButtonL" onClick={() => act('zone_lock')}>
-              ZLCK
+              {data.radar_mode >= 0 && 'ZLCK'}
             </Box>
           </Box>
           <Box className="ButtonHolderL">
             <Box className="ButtonL" onClick={() => act('target_lock')}>
-              TLCK
+              {data.radar_mode >= 1 && 'TLCK'}
             </Box>
           </Box>
         </>
@@ -192,7 +201,7 @@ const RightButtonsPanel = (props) => {
 
   return (
     <Box className="RightButtons">
-      {data.interface_active ? (
+      {data.interface_active && data.radar_mode >= 0 ? (
         <>
           <Box className="ButtonHolderR">
             <Box className="ButtonR" onClick={() => act('blink')}>
@@ -350,21 +359,26 @@ const VehicleRadarDisplay = (props) => {
           data.minimap_shown
             ? {
                 backgroundImage: `url(${resolveAsset(data.radar_map)})`,
-                backgroundPositionX: `${50 + data.blackfoot_x * -2.5}px`,
-                backgroundPositionY: `${(450 - data.blackfoot_y * 2.5) * -1}px`,
+                backgroundPositionX: `${(45 - data.blackfoot_x) * 4}px`,
+                backgroundPositionY: `${(162 - data.blackfoot_y) * -4}px`,
                 filter: `saturate(7.5)` + `invert(1)` + `url(#colorMeGreen)`,
               }
-            : ``
+            : {
+                backgroundImage: `radial-gradient(ellipse at center, #042208, transparent)`,
+                backgroundColor: `rgb(0, 14, 3)`,
+                backgroundPositionX: `center`,
+                border: `1px ridge rgb(5, 160, 0)`,
+              }
         }
       >
-        {data.minimap_shown &&
-          Array.from({ length: 5 }).map((_, s) => {
+        {data.radar_mode >= 0 &&
+          Array.from({ length: 4 }).map((_, s) => {
             return Array.from({ length: 12 }).map((_, i) => (
               <Box
                 style={{
                   transform:
                     `rotate(${0 + 30 * i}deg)` +
-                    `scale(${0.3 * s}, ${0.3 * s})`,
+                    `scale(${0.33 * s}, ${0.33 * s})`,
                 }}
                 key={i}
               >
@@ -372,22 +386,14 @@ const VehicleRadarDisplay = (props) => {
               </Box>
             ));
           })}
-        {Array.from({ length: 6 }).map((_, i) => {
-          return (
-            <Box
-              style={{
-                transform: `rotate(${0 + 30 * i}deg)`,
-              }}
-              key={i}
-              className="RadarGrids"
-            />
-          );
-        })}
         <DmIcon
           icon={data.blackfoot_icon}
           icon_state={'vtol'}
           height="32px"
-          style={{ position: `absolute`, transform: `rotate(0deg)` }}
+          style={{
+            position: `absolute`,
+            transform: `rotate(0deg)`,
+          }}
           top="45%"
           left="45.8%"
         />
