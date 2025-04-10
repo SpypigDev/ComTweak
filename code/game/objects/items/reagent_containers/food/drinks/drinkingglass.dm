@@ -22,6 +22,8 @@
 		for(var/datum/reagent/R in reagents.reagent_list)
 			switch(R.id)*/
 	if (length(reagents.reagent_list) > 0)
+		update_icon()
+		return
 		//mrid = R.get_master_reagent_id()
 		var/datum/reagent/R = reagents.get_master_reagent()
 		switch(R.id)
@@ -640,6 +642,27 @@
 		desc = "Your standard drinking glass."
 		center_of_mass = "x=16;y=10"
 		return
+
+/obj/item/reagent_container/food/drinks/drinkingglass/pickup(mob/user)
+	..()
+	update_icon()
+
+/obj/item/reagent_container/food/drinks/drinkingglass/dropped(mob/user)
+	..()
+	update_icon()
+
+/obj/item/reagent_container/food/drinks/drinkingglass/attack_hand()
+	..()
+	update_icon()
+
+/obj/item/reagent_container/food/drinks/drinkingglass/update_icon()
+	overlays.Cut()
+
+	if(reagents && reagents.total_volume)
+		var/image/filling = image('icons/obj/items/food/drinks.dmi', src, "glass_empty_infill")
+
+		filling.color = mix_color_from_reagents(reagents.reagent_list)
+		overlays += filling
 
 /obj/item/reagent_container/food/drinks/drinkingglass/attack(mob/living/target as mob, mob/living/user as mob)
 	if(!target)
