@@ -309,6 +309,46 @@
 	new /obj/item/storage/pill_bottle/peridaxon(src)
 	new /obj/item/stack/medical/splint(src)
 
+/obj/item/storage/belt/medical/lifesaver/modular
+	name = "\improper M276 modular lifesaver belt"
+	desc = "The M276 is the standard load-bearing equipment of the USCM. This configuration mounts a duffel bag filled with a range of injectors and light medical supplies, and is common among medics. \nRight click its sprite and click \"toggle belt mode\" to take pills out of bottles by simply clicking them."
+	icon_state = "belt"
+	item_state = "medicbag"
+	icon = 'icons/obj/items/clothing/modular_equipment/belt.dmi'
+	item_icons = list(
+		WEAR_WAIST = 'icons/mob/humans/onmob/clothing/belts/belts_by_map/snow.dmi'
+	)
+	storage_slots = 21 //can hold 3 "rows" of very limited medical equipment, but it *should* give a decent boost to squad medics.
+	max_storage_space = 42
+	max_w_class = SIZE_SMALL
+	var/list/attachments = list()
+	var/list/allowed_attachments = list(
+		/obj/item/storage/storage_module/medical/belt/general,
+		/obj/item/storage/storage_module/medical/belt/trauma
+	)
+	can_hold = list(
+		/obj/item/device/healthanalyzer,
+		/obj/item/bodybag,
+		/obj/item/reagent_container/glass/bottle,
+		/obj/item/reagent_container/pill,
+		/obj/item/reagent_container/syringe,
+		/obj/item/storage/pill_bottle,
+		/obj/item/clothing/gloves/latex,
+		/obj/item/reagent_container/hypospray/autoinjector,
+		/obj/item/stack/medical,
+		/obj/item/device/defibrillator/compact,
+		/obj/item/device/reagent_scanner,
+		/obj/item/device/analyzer/plant_analyzer,
+	)
+	flags_atom = FPRINT|NO_GAMEMODE_SKIN
+
+/obj/item/storage/belt/medical/lifesaver/modular/update_icon()
+	..()
+	SHOULD_CALL_PARENT(TRUE)
+
+	for(var/obj/item/storage/storage_module/medical/belt/module as anything in attachments)
+		overlays += module.icon_state
+
 /obj/item/storage/belt/medical/lifesaver/full/dutch/fill_preset_inventory()
 	new /obj/item/stack/medical/advanced/bruise_pack/upgraded(src)
 	new /obj/item/stack/medical/advanced/bruise_pack/upgraded(src)

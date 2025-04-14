@@ -503,6 +503,38 @@
 	new /obj/item/device/helmet_visor/medical(src)
 	new /obj/item/roller(src)
 
+/obj/item/storage/box/kit/modular_medic_gear
+	name = "\improper Modular Corpsman Support Kit"
+	icon_state = "medicbox"
+	var/list/icons_available = list()
+	var/radial_icon_file = 'icons/obj/items/clothing/modular_equipment/belt.dmi'
+	var/obj/item/storage/belt/medical/lifesaver/modular/target_equipment
+
+/obj/item/storage/box/kit/modular_medic_gear/fill_preset_inventory()
+	new /obj/item/storage/belt/medical/lifesaver/modular(src)
+
+/obj/item/storage/box/kit/modular_medic_gear/attack_self(mob/user)
+	if(!length(contents))
+		to_chat(user, SPAN_NOTICE("\The [src] is empty."))
+		return
+	target_equipment = listgetindex(contents, 1)
+	update_available_icons()
+	if(icons_available)
+		var/selection = show_radial_menu(user, src, icons_available, radius = 38, require_near = TRUE, tooltips = TRUE)
+		if(!selection)
+			return
+		for(var/obj/item/storage/storage_module/medical/belt/module as anything in target_equipment.allowed_attachments)
+			if(selection == module.name)
+				target_equipment.allowed_attachments -= module
+				target_equipment.attachments += module
+				target_equipment.update_icon()
+				return
+
+/obj/item/storage/box/kit/modular_medic_gear/proc/update_available_icons()
+	icons_available = list()
+
+	for(var/obj/item/storage/storage_module/medical/belt/module as anything in target_equipment.allowed_attachments)
+		icons_available += list(module.name = image(radial_icon_file, module.icon_state))
 
 /obj/item/storage/box/kit/mini_jtac
 	name = "\improper JTAC Radio Kit"
