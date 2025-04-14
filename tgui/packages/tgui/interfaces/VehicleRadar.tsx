@@ -16,6 +16,8 @@ type RadarData = {
   blackfoot_x: number;
   blackfoot_y: number;
   radar_mode: number;
+  map_size_x: number;
+  map_size_y: number;
 };
 
 const HexScrew = () => {
@@ -359,8 +361,8 @@ const VehicleRadarDisplay = (props) => {
           data.minimap_shown
             ? {
                 backgroundImage: `url(${resolveAsset(data.radar_map)})`,
-                backgroundPositionX: `${(45 - data.blackfoot_x) * 4}px`,
-                backgroundPositionY: `${(162 - data.blackfoot_y) * -4}px`,
+                backgroundPositionX: `${((data.blackfoot_x) * -3.5) + (data.map_size_x * 1.75 - 265)}px`,
+                backgroundPositionY: `${((data.blackfoot_y - data.map_size_y) * 3.5) + (data.map_size_y * 1.6 - 244)}px`,
                 filter: `saturate(7.5)` + `invert(1)` + `url(#colorMeGreen)`,
               }
             : {

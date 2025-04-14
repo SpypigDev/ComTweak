@@ -132,13 +132,17 @@
 	playsound(src, click_sound, volume, FALSE)
 
 /obj/item/hardpoint/support/sensor_array/ui_static_data(mob/user)
-	. = ..()
+	var/list/data = list()
 
-	.["blackfoot_icon"] = 'icons/ui_icons/map_blips_extra_large.dmi'
+	data["blackfoot_icon"] = 'icons/ui_icons/map_blips_extra_large.dmi'
+	for(var/datum/space_level/map as anything in SSmapping.z_list)
+		if(map.z_value == 2)
+			data["map_size_x"] = map.bounds[MAP_MAXX]
+			data["map_size_y"] = map.bounds[MAP_MAXY]
+
+	return data
 
 /obj/item/hardpoint/support/sensor_array/ui_data(mob/user)
-	. = ..()
-
 	var/list/data = list()
 
 	var/datum/flattened_tacmap/map = get_unannounced_tacmap_data_png(FACTION_MARINE)
