@@ -322,9 +322,16 @@
 	max_storage_space = 42
 	max_w_class = SIZE_SMALL
 	var/list/attachments = list()
+	var/list/attachment_capacity = list("large" = 0, "general" = 1, "auxiliary" = 1)
 	var/list/allowed_attachments = list(
-		/obj/item/storage/storage_module/medical/belt/general,
-		/obj/item/storage/storage_module/medical/belt/trauma
+		/obj/item/storage/storage_module/medical/belt/general/full,
+		/obj/item/storage/storage_module/medical/belt/general/trauma_response_pouch,
+		/obj/item/storage/storage_module/medical/belt/general/storage_harness,
+		/obj/item/storage/storage_module/medical/belt/general/tank_pouch,
+		/obj/item/storage/storage_module/medical/belt/auxiliary/autoinjector_pouch,
+		/obj/item/storage/storage_module/medical/belt/auxiliary/general_pouch,
+		/obj/item/storage/storage_module/medical/belt/auxiliary/hypospray_pouch,
+		/obj/item/storage/storage_module/medical/belt/auxiliary/tools_pouch
 	)
 	can_hold = list(
 		/obj/item/device/healthanalyzer,

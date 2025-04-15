@@ -509,6 +509,7 @@
 	var/list/icons_available = list()
 	var/radial_icon_file = 'icons/obj/items/clothing/modular_equipment/belt.dmi'
 	var/obj/item/storage/belt/medical/lifesaver/modular/target_equipment
+	var/module_selection_size = "large"
 
 /obj/item/storage/box/kit/modular_medic_gear/fill_preset_inventory()
 	new /obj/item/storage/belt/medical/lifesaver/modular(src)
@@ -518,6 +519,8 @@
 		to_chat(user, SPAN_NOTICE("\The [src] is empty."))
 		return
 	target_equipment = listgetindex(contents, 1)
+	if(!listgetindex(target_equipment.attachment_capacity, module_selection_size))
+		module_selection_size = next_in_list(module_selection_size, target_equipment.attachment_capacity)
 	update_available_icons()
 	if(icons_available)
 		var/selection = show_radial_menu(user, src, icons_available, radius = 38, require_near = TRUE, tooltips = TRUE)
@@ -525,6 +528,10 @@
 			return
 		for(var/obj/item/storage/storage_module/medical/belt/module as anything in target_equipment.allowed_attachments)
 			if(selection == module.name)
+				var/module_size_capacity = target_equipment.attachment_capacity[module_selection_size]
+				module_size_capacity--
+				if(!module_size_capacity)
+					module_selection_size = next_in_list(module_selection_size, target_equipment.attachment_capacity)
 				target_equipment.allowed_attachments -= module
 				target_equipment.attachments += module
 				target_equipment.update_icon()
@@ -534,7 +541,8 @@
 	icons_available = list()
 
 	for(var/obj/item/storage/storage_module/medical/belt/module as anything in target_equipment.allowed_attachments)
-		icons_available += list(module.name = image(radial_icon_file, module.icon_state))
+		if(module.module_size == module_selection_size)
+			icons_available += list(module.name = image(radial_icon_file, module.icon_state))
 
 /obj/item/storage/box/kit/mini_jtac
 	name = "\improper JTAC Radio Kit"
