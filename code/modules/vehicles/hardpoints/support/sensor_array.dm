@@ -5,6 +5,12 @@
 #define RADAR_MODE_PASSIVE 0
 #define RADAR_MODE_ACTIVE 1
 
+#define RADAR_CONTACT_BLANK "contact"
+#define RADAR_CONTACT_NEUTRAL "neutral"
+#define RADAR_CONTACT_UNKNOWN "unknown"
+#define RADAR_CONTACT_FRIENDLY "friendly"
+#define RADAR_CONTACT_HOSTILE "hostile"
+
 /obj/item/hardpoint/support/sensor_array
 	name = "\improper AQ-133 Acquisition System"
 	desc = "A short-range Air-to-Ground LIDAR target acquisition system designed to actively track and profile non-IFF signatures in a localized range of detection."
@@ -28,6 +34,7 @@
 	var/list/minimap_added = list()
 	/// current mode, can be either nvg (gives nightvision to the pilot) or sensor (shows xenos on tacmap)
 	var/mode = SENSOR_MODE
+	var/datum/flattened_tacmap/map
 
 	var/static/list/radar_modes = list(
 		RADAR_MODE_OFF,
@@ -135,6 +142,7 @@
 	var/list/data = list()
 
 	data["blackfoot_icon"] = 'icons/ui_icons/map_blips_extra_large.dmi'
+	data["radar_blip_icons"] = 'icons/ui_icons/map_blips_vehicle_radar.dmi'
 	for(var/datum/space_level/map as anything in SSmapping.z_list)
 		if(map.z_value == 2)
 			data["map_size_x"] = map.bounds[MAP_MAXX]
@@ -145,15 +153,17 @@
 /obj/item/hardpoint/support/sensor_array/ui_data(mob/user)
 	var/list/data = list()
 
-	var/datum/flattened_tacmap/map = get_unannounced_tacmap_data_png(FACTION_MARINE)
+	map = get_unannounced_tacmap_data_png(FACTION_MARINE)
 	if(map)
 		data["radar_map"] = map.flat_tacmap
 	data["interface_active"] = interface_active
 	data["minimap_shown"] = minimap_shown
-
+	data["blackfoot_dir"] = owner.dir
 	data["blackfoot_x"] = owner.x
 	data["blackfoot_y"] = owner.y
 	data["radar_mode"] = radar_mode
+
+	data = gather_radar_contact_data(data)
 
 	return data
 
@@ -176,6 +186,33 @@
 	user.update_sight()
 	STOP_PROCESSING(SSobj, src)
 	active = FALSE
+
+/obj/item/hardpoint/support/sensor_array/proc/gather_radar_contact_data(list/data)
+
+	for(var/mob/living/carbon/xenomorph/current_xeno as anything in GLOB.living_xeno_list)
+		var/turf/xeno_turf = get_turf(current_xeno)
+		var/area/xeno_area = get_area(current_xeno)
+
+		if(!is_ground_level(xeno_turf.z))
+			continue
+
+		//var/datum/weakref/xeno_weakref = WEAKREF(current_xeno)
+
+		if(get_dist(src, current_xeno) >= sensor_radius)
+			continue
+
+		if(xeno_area.ceiling > CEILING_GLASS)
+			continue
+
+		data["contact_data"] += list(list(
+			"name" = current_xeno.name,
+			"icon" = RADAR_CONTACT_HOSTILE,
+			"position_x" = current_xeno.x,
+			"position_y" = current_xeno.y,
+			"contact_ref" = REF(current_xeno)
+		))
+
+	return data
 
 /obj/item/hardpoint/support/sensor_array/proc/activate_mode(mode)
 	var/obj/vehicle/multitile/blackfoot/blackfoot_owner = owner

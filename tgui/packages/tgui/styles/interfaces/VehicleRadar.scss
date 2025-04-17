@@ -7,7 +7,6 @@
   }
   to {
     visibility: visible;
-    position: relative;
   }
 }
 
@@ -229,6 +228,12 @@
     #000 1deg var(--p),
     #0000 calc(var(--p) + 1deg)
   );
+}
+
+.ContactBlip {
+  position: absolute;
+  z-index: 5;
+  animation: switch_in 1.2s steps(1, end) forwards;
 }
 
 .ScreenOff {

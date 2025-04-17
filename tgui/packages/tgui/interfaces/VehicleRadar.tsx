@@ -18,6 +18,17 @@ type RadarData = {
   radar_mode: number;
   map_size_x: number;
   map_size_y: number;
+  contact_data: ContactData[];
+  radar_blip_icons: string;
+  blackfoot_dir: number;
+};
+
+type ContactData = {
+  name: string;
+  icon: string;
+  position_x: number;
+  position_y: number;
+  contact_ref: string;
 };
 
 const HexScrew = () => {
@@ -333,6 +344,8 @@ const ScreenOff = (props) => {
 const VehicleRadarDisplay = (props) => {
   const { act, data } = useBackend<RadarData>();
 
+  let { contact_data } = data;
+
   return (
     <Box width="100%" height="100%" className="RadarPanelOutline">
       <svg width={0} height={0} style={{ position: `absolute` }}>
@@ -349,6 +362,22 @@ const VehicleRadarDisplay = (props) => {
           </filter>
         </defs>
       </svg>
+      {data.radar_mode >= 0 &&
+        contact_data &&
+        contact_data.map((contact, index) => {
+          return (
+            <Box
+              key={index}
+              className="ContactBlip"
+              style={{
+                left: `${(contact.position_x - data.blackfoot_x + 52) * 3.56 + 52}px`,
+                top: `${(data.blackfoot_y - contact.position_y + 52) * 3.56 + 52}px`,
+              }}
+            >
+              <DmIcon icon={data.radar_blip_icons} icon_state={contact.icon} />
+            </Box>
+          );
+        })}
       <Box
         className="RadarMap"
         align="center"
@@ -361,8 +390,8 @@ const VehicleRadarDisplay = (props) => {
           data.minimap_shown
             ? {
                 backgroundImage: `url(${resolveAsset(data.radar_map)})`,
-                backgroundPositionX: `${((data.blackfoot_x) * -3.5) + (data.map_size_x * 1.75 - 265)}px`,
-                backgroundPositionY: `${((data.blackfoot_y - data.map_size_y) * 3.5) + (data.map_size_y * 1.6 - 244)}px`,
+                backgroundPositionX: `${data.blackfoot_x * -3.5 + (data.map_size_x * 1.75 - 265)}px`,
+                backgroundPositionY: `${(data.blackfoot_y - data.map_size_y) * 3.5 + (data.map_size_y * 1.6 - 244)}px`,
                 filter: `saturate(7.5)` + `invert(1)` + `url(#colorMeGreen)`,
               }
             : {
@@ -391,6 +420,7 @@ const VehicleRadarDisplay = (props) => {
         <DmIcon
           icon={data.blackfoot_icon}
           icon_state={'vtol'}
+          direction={data.blackfoot_dir}
           height="32px"
           style={{
             position: `absolute`,
