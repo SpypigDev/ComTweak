@@ -3,6 +3,7 @@ import { useBackend } from '../backend';
 import { Box, Flex, Icon, Table } from '../components';
 import { DmIcon } from '../components';
 import { Image } from '../components';
+import { Stack } from '../components';
 import { Window } from '../layouts';
 
 type RadarData = {
@@ -409,7 +410,7 @@ const VehicleRadarDisplay = (props) => {
                 style={{
                   transform:
                     `rotate(${0 + 30 * i}deg)` +
-                    `scale(${0.33 * s}, ${0.33 * s})`,
+                    `scale(${0.3 * s}, ${0.3 * s})`,
                 }}
                 key={i}
               >
@@ -429,6 +430,7 @@ const VehicleRadarDisplay = (props) => {
           top="45%"
           left="45.8%"
         />
+        <ButtonOverlay />
       </Box>
       <Box
         className="RadarPanelBlank"
@@ -475,5 +477,16 @@ const VehicleRadarDisplay = (props) => {
         <Box fontFamily="monospace">Property of USCMC Aerospace Command</Box>
       </Box>
     </Box>
+  );
+};
+
+const ButtonOverlay = (props) => {
+  const { act, data } = useBackend<RadarData>();
+
+  return (
+    <Stack opacity={0.5} vertical mt="35px" align="start" textColor="black">
+      <Stack.Item>hi!</Stack.Item>
+      <Stack.Item>hi!</Stack.Item>
+    </Stack>
   );
 };

@@ -35,6 +35,8 @@
 	/// current mode, can be either nvg (gives nightvision to the pilot) or sensor (shows xenos on tacmap)
 	var/mode = SENSOR_MODE
 	var/datum/flattened_tacmap/map
+	/// List of actively tracked radar contacts. Used to check if a contact blip is being seen for the first time
+	var/list/stored_contacts = list()
 
 	var/static/list/radar_modes = list(
 		RADAR_MODE_OFF,
@@ -199,6 +201,8 @@
 		//var/datum/weakref/xeno_weakref = WEAKREF(current_xeno)
 
 		if(get_dist(src, current_xeno) >= sensor_radius)
+			if(current_xeno in stored_contacts)
+				stored_contacts -= current_xeno
 			continue
 
 		if(xeno_area.ceiling > CEILING_GLASS)
@@ -212,7 +216,21 @@
 			"contact_ref" = REF(current_xeno)
 		))
 
+		if(!(current_xeno in stored_contacts))
+			stored_contacts += current_xeno
+			notify_radar_contact(current_xeno)
+
 	return data
+
+/obj/item/hardpoint/support/sensor_array/proc/notify_radar_contact(mob/contact)
+	var/obj/vehicle/multitile/blackfoot/blackfoot_owner = owner
+
+	if(!blackfoot_owner)
+		return
+
+	var/mob/user = blackfoot_owner.seats[VEHICLE_DRIVER]
+
+	playsound_client(user.client, 'sound/vehicles/vtol/radar_new_contact.ogg', src, volume, FALSE)
 
 /obj/item/hardpoint/support/sensor_array/proc/activate_mode(mode)
 	var/obj/vehicle/multitile/blackfoot/blackfoot_owner = owner
