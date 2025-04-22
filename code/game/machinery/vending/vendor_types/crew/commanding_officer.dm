@@ -2,30 +2,30 @@
 
 GLOBAL_LIST_INIT(cm_vending_gear_commanding_officer, list(
 		list("COMMANDER'S PRIMARY (CHOOSE 1)", 0, null, null, null),
-		list("M46C Pulse Rifle", 0, /obj/effect/essentials_set/co/riflepreset, MARINE_CAN_BUY_SECONDARY, VENDOR_ITEM_MANDATORY),
+		list("M46C Pulse Rifle Kit", 0, /obj/item/storage/box/guncase/m46c, MARINE_CAN_BUY_SECONDARY, VENDOR_ITEM_MANDATORY),
 		list("M56C Smartgun", 0, /obj/item/storage/box/m56c_system, MARINE_CAN_BUY_SECONDARY, VENDOR_ITEM_MANDATORY),
 
 		list("PRIMARY AMMUNITION", 0, null, null, null),
-		list("M41A MK1 Magazine", 30, /obj/item/ammo_magazine/rifle/m41aMK1, null, VENDOR_ITEM_RECOMMENDED),
-		list("M41A MK1 AP Magazine", 40, /obj/item/ammo_magazine/rifle/m41aMK1/ap, null, VENDOR_ITEM_RECOMMENDED),
+		list("M41A MK1 Magazine", 15, /obj/item/ammo_magazine/rifle/m41aMK1, null, VENDOR_ITEM_REGULAR),
+		list("M41A MK1 AP Magazine", 30, /obj/item/ammo_magazine/rifle/m41aMK1/ap, null, VENDOR_ITEM_RECOMMENDED),
 		list("M41A Extended Magazine", 20, /obj/item/ammo_magazine/rifle/extended, null, VENDOR_ITEM_REGULAR),
 		list("M41A AP Magazine", 20, /obj/item/ammo_magazine/rifle/ap, null, VENDOR_ITEM_REGULAR),
-		list("M56B Smartgun Drum", 20, /obj/item/ammo_magazine/smartgun, null, VENDOR_ITEM_REGULAR),
+		list("M56B Smartgun Drum", 20, /obj/item/ammo_magazine/smartgun, null, VENDOR_ITEM_RECOMMENDED),
 
 		list("SIDEARM AMMUNITION", 0, null, null, null),
-		list("High Impact Mateba Speedloader (.454)", 15, /obj/item/ammo_magazine/revolver/mateba/highimpact, null, VENDOR_ITEM_RECOMMENDED),
-		list("High Impact AP Mateba Speedloader (.454)", 20, /obj/item/ammo_magazine/revolver/mateba/highimpact/ap, null, VENDOR_ITEM_REGULAR),
-		list("High Impact Desert Eagle Magazine (.50)", 15, /obj/item/ammo_magazine/pistol/heavy/super/highimpact, null, VENDOR_ITEM_RECOMMENDED),
-		list("High Impact AP Desert Eagle Magazine (.50)", 20, /obj/item/ammo_magazine/pistol/heavy/super/highimpact/ap, null, VENDOR_ITEM_REGULAR),
+		list("High Impact Mateba Speedloader (.454)", 10, /obj/item/ammo_magazine/revolver/mateba/highimpact, null, VENDOR_ITEM_RECOMMENDED),
+		list("High Impact AP Mateba Speedloader (.454)", 15, /obj/item/ammo_magazine/revolver/mateba/highimpact/ap, null, VENDOR_ITEM_REGULAR),
+		list("High Impact Desert Eagle Magazine (.50)", 10, /obj/item/ammo_magazine/pistol/heavy/super/highimpact, null, VENDOR_ITEM_RECOMMENDED),
+		list("High Impact AP Desert Eagle Magazine (.50)", 15, /obj/item/ammo_magazine/pistol/heavy/super/highimpact/ap, null, VENDOR_ITEM_REGULAR),
 
 		list("SHOTGUN AMMUNITION", 0, null, null, null),
-		list("Buckshot Shells", 20, /obj/item/ammo_magazine/shotgun/buckshot, null, VENDOR_ITEM_REGULAR),
-		list("Shotgun Slugs", 20, /obj/item/ammo_magazine/shotgun/slugs, null, VENDOR_ITEM_REGULAR),
-		list("Flechette Shells", 20, /obj/item/ammo_magazine/shotgun/flechette, null, VENDOR_ITEM_REGULAR),
+		list("Buckshot Shells", 10, /obj/item/ammo_magazine/shotgun/buckshot, null, VENDOR_ITEM_REGULAR),
+		list("Shotgun Slugs", 10, /obj/item/ammo_magazine/shotgun/slugs, null, VENDOR_ITEM_REGULAR),
+		list("Flechette Shells", 10, /obj/item/ammo_magazine/shotgun/flechette, null, VENDOR_ITEM_REGULAR),
 
 		list("SPECIAL AMMUNITION", 0, null, null, null),
-		list("M41A Rubber Shot Magazine", 10, /obj/item/ammo_magazine/rifle/rubber, null, VENDOR_ITEM_REGULAR),
-		list("Beanbag Slugs", 10, /obj/item/ammo_magazine/shotgun/beanbag, null, VENDOR_ITEM_REGULAR),
+		list("M41A Rubber Shot Magazine", 5, /obj/item/ammo_magazine/rifle/rubber, null, VENDOR_ITEM_REGULAR),
+		list("Beanbag Slugs", 5, /obj/item/ammo_magazine/shotgun/beanbag, null, VENDOR_ITEM_REGULAR),
 
 		list("EXPLOSIVES", 0, null, null, null),
 		list("HEDP Grenade Pack", 15, /obj/item/storage/box/packet/high_explosive, null, VENDOR_ITEM_REGULAR),
@@ -160,8 +160,3 @@ GLOBAL_LIST_INIT(cm_vending_clothing_commanding_officer, list(
 		/obj/item/device/megaphone,
 	)
 
-// This gets around the COs' weapon not spawning without incendiary mag.
-/obj/effect/essentials_set/co/riflepreset
-	spawned_gear_list = list(
-		/obj/item/weapon/gun/rifle/m46c,
-	)
