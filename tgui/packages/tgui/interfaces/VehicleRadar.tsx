@@ -3,7 +3,6 @@ import { useBackend } from '../backend';
 import { Box, Flex, Icon, Table } from '../components';
 import { DmIcon } from '../components';
 import { Image } from '../components';
-import { Stack } from '../components';
 import { Window } from '../layouts';
 
 type RadarData = {
@@ -484,9 +483,56 @@ const ButtonOverlay = (props) => {
   const { act, data } = useBackend<RadarData>();
 
   return (
-    <Stack opacity={0.5} vertical mt="35px" align="start" textColor="black">
-      <Stack.Item>hi!</Stack.Item>
-      <Stack.Item>hi!</Stack.Item>
-    </Stack>
+    <Table height="100%">
+      <Table.Row>
+        <Table.Cell colSpan={4}>hi!</Table.Cell>
+      </Table.Row>
+      <Table.Row height="50%">
+        <Table.Cell width="25%" />
+        <Table.Cell colSpan={2} width="50%" />
+        <Table.Cell width="25%" />
+      </Table.Row>
+      <Table.Row>
+        <Table.Cell className="UIHighlight" verticalAlign="middle">
+          <Table>
+            <Table.Row>
+              <Table.Cell colSpan={2}>hi!</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell className="UIElement">X</Table.Cell>
+              <Table.Cell className="UIElement" width="10%" pr="4px">
+                {data.blackfoot_x}
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell className="UIElement">4:00:02</Table.Cell>
+              <Table.Cell className="UIElement" width="10%" pr="4px">
+                <Icon name="clock" />
+              </Table.Cell>
+            </Table.Row>
+          </Table>
+        </Table.Cell>
+        <Table.Cell colSpan={2} />
+        <Table.Cell className="UIHighlight" verticalAlign="middle">
+          <Table>
+            <Table.Row>
+              <Table.Cell colSpan={2}>hi!</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell className="UIElement">PASSIVE RADAR</Table.Cell>
+              <Table.Cell className="UIElement" width="10%" pr="4px">
+                <Icon name="clock" />
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell className="UIElement">4:00:02</Table.Cell>
+              <Table.Cell className="UIElement" width="10%" pr="4px">
+                <Icon name="clock" />
+              </Table.Cell>
+            </Table.Row>
+          </Table>
+        </Table.Cell>
+      </Table.Row>
+    </Table>
   );
 };

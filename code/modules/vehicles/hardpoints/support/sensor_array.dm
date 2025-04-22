@@ -43,6 +43,14 @@
 		RADAR_MODE_PASSIVE,
 		RADAR_MODE_ACTIVE)
 
+	var/contact_alert = TRUE
+	var/proximity_alert = TRUE
+
+//	to do list
+//
+// d
+
+
 /obj/item/hardpoint/support/sensor_array/get_icon_image(x_offset, y_offset, new_dir)
 	var/obj/vehicle/multitile/blackfoot/blackfoot_owner = owner
 
@@ -132,6 +140,25 @@
 			volume = clamp(volume, 0, 25)
 		if("switch_radar_mode")
 			radar_mode = next_in_list(radar_mode, radar_modes)
+		if("proximity_alert")
+			proximity_alert = !proximity_alert
+		if("contact_alert")
+			contact_alert = !contact_alert
+		if("manual_pulse")
+			tgui_interact(ui.user)
+		if("automatic_pulse")
+			return
+		if("pulse_control")
+			var/pulse_speed = params["pulse_change"]
+			switch(pulse_speed)
+				if("up")
+					pulse_speed = pulse_speed + 5
+				if("down")
+					pulse_speed = pulse_speed - 5
+				if("mute")
+					pulse_speed = 0
+			pulse_speed = clamp(pulse_speed, 0, 25)
+
 
 	var/click_sound = pick(
 		'sound/machines/terminal_button01.ogg',
@@ -165,7 +192,8 @@
 	data["blackfoot_y"] = owner.y
 	data["radar_mode"] = radar_mode
 
-	data = gather_radar_contact_data(data)
+	if(radar_mode != RADAR_MODE_OFF)
+		data = gather_radar_contact_data(data)
 
 	return data
 
@@ -216,7 +244,7 @@
 			"contact_ref" = REF(current_xeno)
 		))
 
-		if(!(current_xeno in stored_contacts))
+		if(!(current_xeno in stored_contacts) && contact_alert)
 			stored_contacts += current_xeno
 			notify_radar_contact(current_xeno)
 
