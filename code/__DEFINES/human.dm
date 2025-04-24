@@ -38,6 +38,12 @@
 /// A prosthetic that's been attached to the body but not connected to the brain.
 #define LIMB_UNCALIBRATED_PROSTHETIC (1<<9)
 
+/// degrees of burn wounds present on a limb
+#define LIMB_BURN_FIRST_DEGREE (1<<10)
+#define LIMB_BURN_SECOND_DEGREE (1<<11)
+#define LIMB_BURN_THIRD_DEGREE (1<<12)
+#define LIMB_BURN_FOURTH_DEGREE (1<<13)
+
 ///////////////////WOUND DEFINES///////////////////
 
 //wound flags. Different examine text + bandage overlays + whether various medical items can be used.
