@@ -206,7 +206,7 @@
 				return
 			if(limb.status & LIMB_DESTROYED)
 				return
-			limb.fracture(100)
+			limb.fracture()
 		if ("blood_loss")
 			var/amount = 0
 			amount = tgui_input_real_number(usr, "Amount?")

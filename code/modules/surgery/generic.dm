@@ -439,7 +439,7 @@
 			SPAN_WARNING("[user] shatters your [surgery.affected_limb.encased]!"),
 			SPAN_WARNING("[user] shatters [target]'s [surgery.affected_limb.encased]!"))
 
-		surgery.affected_limb.fracture(100)
+		surgery.affected_limb.fracture()
 
 	user.animation_attack_on(target)
 	if(tool.hitsound)
@@ -484,7 +484,7 @@
 	complete(target, surgery) //This finishes the surgery.
 
 	if(prob(10)) //RNG slip chance.
-		surgery.affected_limb.fracture(100)
+		surgery.affected_limb.fracture()
 	log_interact(user, target, "[key_name(user)] opened [key_name(target)]'s [surgery.affected_limb.encased], ending [surgery].")
 
 /datum/surgery_step/open_encased_step/failure(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, tool_type, datum/surgery/surgery)
@@ -499,7 +499,7 @@
 			SPAN_WARNING("[user]'s hand slips, cracking your [surgery.affected_limb.encased]!"),
 			SPAN_WARNING("[user]'s hand slips, cracking [target]'s [surgery.affected_limb.encased]!"))
 
-	surgery.affected_limb.fracture(100)
+	surgery.affected_limb.fracture()
 	target.apply_damage(15, BRUTE, target_zone)
 	log_interact(user, target, "[key_name(user)] failed to open [key_name(target)]'s [surgery.affected_limb.encased].")
 
@@ -559,7 +559,7 @@
 			SPAN_WARNING("[user]'s hand slips, cracking your [surgery.affected_limb.encased]!"),
 			SPAN_WARNING("[user]'s hand slips, cracking [target]'s [surgery.affected_limb.encased]!"))
 
-	surgery.affected_limb.fracture(100)
+	surgery.affected_limb.fracture()
 	target.apply_damage(15, BRUTE, target_zone)
 	log_interact(user, target, "[key_name(user)] failed to close [key_name(target)]'s [surgery.affected_limb.encased], aborting [surgery].")
 
@@ -640,7 +640,7 @@
 			SPAN_WARNING("[user]'s hand slips, cracking your [surgery.affected_limb.encased]!"),
 			SPAN_WARNING("[user]'s hand slips, cracking [target]'s [surgery.affected_limb.encased]!"))
 
-		surgery.affected_limb.fracture(100)
+		surgery.affected_limb.fracture()
 
 	target.apply_damage(10, BRUTE, target_zone)
 	log_interact(user, target, "[key_name(user)] failed to mend [key_name(target)]'s [surgery.affected_limb.encased].")

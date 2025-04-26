@@ -1112,7 +1112,7 @@ can cause issues with ammo types getting mixed up during the burst.
 		else
 			shoulder = user.get_limb("r_arm")
 			user.apply_damage(15, BRUTE, "r_arm")
-		shoulder.fracture(100)
+		shoulder.fracture()
 		if(!(shoulder.status & LIMB_SPLINTED_INDESTRUCTIBLE) && (shoulder.status & LIMB_SPLINTED)) //If they have it splinted, the splint won't hold.
 			shoulder.status &= ~LIMB_SPLINTED
 			playsound(get_turf(loc), 'sound/items/splintbreaks.ogg', 20)

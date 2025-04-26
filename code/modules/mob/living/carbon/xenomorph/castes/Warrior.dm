@@ -239,7 +239,7 @@
 		visible_message(SPAN_XENOWARNING("We hear the bones in [mob]'s [limb.display_name] snap with a sickening crunch!"),
 		SPAN_XENOWARNING("[mob]'s [limb.display_name] bones snap with a satisfying crunch!"))
 		limb.take_damage(rand(15,25), 0, 0)
-		limb.fracture(100)
+		limb.fracture()
 	mob.last_damage_data = create_cause_data(initial(caste_type), src)
 	src.attack_log += text("\[[time_stamp()]\] <font color='red'>ripped the [limb.display_name] off of [mob.name] ([mob.ckey]) 1/2 progress</font>")
 	mob.attack_log += text("\[[time_stamp()]\] <font color='orange'>had their [limb.display_name] ripped off by [src.name] ([src.ckey]) 1/2 progress</font>")

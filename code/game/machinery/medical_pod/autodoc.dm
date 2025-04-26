@@ -564,7 +564,7 @@
 		sleep(INCISION_MANAGER_MAX_DURATION*surgery_mod)
 		if(!surgery)
 			return
-		limb.createwound(CUT, 1)
+		limb.create_wound(CUT, 1)
 		target.incision_depths[limb.name] = SURGERY_DEPTH_SHALLOW //Can immediately proceed to other surgery steps
 		target.updatehealth()
 

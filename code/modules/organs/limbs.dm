@@ -202,18 +202,51 @@
 		return TRUE
 	return FALSE
 
-/obj/limb/proc/take_damage_bone_break(brute)
+/obj/limb/proc/handle_limb_bone_break(brute)
 	if(!owner)
 		return
 
+	var/bonebreak_probability = null
 	var/armor = owner.getarmor_organ(src, ARMOR_INTERNALDAMAGE)
 	if(owner.mind && owner.skills)
 		armor += owner.skills.get_skill_level(SKILL_ENDURANCE)*5
 
 	var/damage = armor_damage_reduction(GLOB.marine_bone_break, brute*3, armor, 0, 0, 0, max_damage ? (100*(max_damage-brute_dam) / max_damage) : 100)
 
-	if(brute_dam > min_broken_damage * CONFIG_GET(number/organ_health_multiplier) && prob(damage*2))
+	if(status & LIMB_BROKEN)
+		if (knitting_time != -1)
+			knitting_time = -1
+			to_chat(owner, SPAN_WARNING("You feel your [display_name] stop knitting together as it absorbs damage!"))
+		return
+
+	if(status & (LIMB_DESTROYED|LIMB_UNCALIBRATED_PROSTHETIC))
+		return
+
+	if(owner.status_flags & NO_PERMANENT_DAMAGE)
+		owner.visible_message(
+			SPAN_WARNING("[owner] withstands the blow!"),
+			SPAN_WARNING("Your [display_name] withstands the blow!"))
+		return
+
+	//stops division by zero
+	if(owner.chem_effect_flags & CHEM_EFFECT_RESIST_FRACTURE)
+		return
+
+	//If you have this special flag you are exempt from the endurance bone break check
+	if(owner.species.flags & SPECIAL_BONEBREAK)
 		fracture()
+		return
+	else if(owner.skills)
+		bonebreak_probability = 100 / clamp(owner.skills.get_skill_level(SKILL_ENDURANCE), 1, 100) //can't be zero
+
+	var/list/bonebreak_data = list("bonebreak_probability" = bonebreak_probability)
+	// sends a call out for any other systems to modify bonebreak probability, if they need to
+	SEND_SIGNAL(owner, COMSIG_HUMAN_BONEBREAK_PROBABILITY, bonebreak_data)
+	bonebreak_probability = bonebreak_data["bonebreak_probability"]
+
+	if(brute_dam > min_broken_damage * CONFIG_GET(number/organ_health_multiplier) && prob(damage*2))
+		fracture(bonebreak_probability)
+
 /**
  * Describes how limbs (body parts) of human mobs get damage applied.
  *
@@ -301,7 +334,7 @@
 		brute /= 2
 
 	if(CONFIG_GET(flag/bones_can_break) && !(status & (LIMB_SYNTHSKIN)))
-		take_damage_bone_break(brute)
+		handle_limb_bone_break(brute)
 
 	if(status & LIMB_BROKEN && prob(40) && brute > 10)
 		if(owner.pain.feels_pain)
@@ -314,11 +347,11 @@
 	if((brute_dam + burn_dam + brute + burn) < max_damage || !CONFIG_GET(flag/limbs_can_break))
 		if(brute)
 			if(can_cut)
-				createwound(CUT, brute, is_ff = is_ff)
+				create_wound(CUT, brute, is_ff = is_ff)
 			else
-				createwound(BRUISE, brute, is_ff = is_ff)
+				create_wound(BRUISE, brute, is_ff = is_ff)
 		if(burn)
-			createwound(BURN, burn, is_ff = is_ff)
+			create_wound(BURN, burn, is_ff = is_ff)
 	else
 		//If we can't inflict the full amount of damage, spread the damage in other ways
 		//How much damage can we actually cause?
@@ -329,9 +362,9 @@
 			if(brute > 0)
 				//Inflict all brute damage we can
 				if(can_cut)
-					createwound(CUT, min(brute, can_inflict), is_ff = is_ff)
+					create_wound(CUT, min(brute, can_inflict), is_ff = is_ff)
 				else
-					createwound(BRUISE, min(brute, can_inflict), is_ff = is_ff)
+					create_wound(BRUISE, min(brute, can_inflict), is_ff = is_ff)
 				var/temp = can_inflict
 				//How much more damage can we inflict
 				can_inflict = max(0, can_inflict - brute)
@@ -340,7 +373,7 @@
 
 			if(burn > 0 && can_inflict)
 				//Inflict all burn damage we can
-				createwound(BURN, min(burn,can_inflict), is_ff = is_ff)
+				create_wound(BURN, min(burn,can_inflict), is_ff = is_ff)
 				//How much burn damage is left to inflict
 				remain_burn = max(0, burn - can_inflict)
 
@@ -468,7 +501,7 @@ This function completely restores a damaged organ to perfect condition.
 		wounds += I
 		owner.custom_pain("You feel something rip in your [display_name]!", 1)
 
-/obj/limb/proc/createwound(type = CUT, damage, is_ff = FALSE)
+/obj/limb/proc/create_wound(type = CUT, damage, is_ff = FALSE)
 	if(!damage)
 		return
 
@@ -1096,37 +1129,10 @@ treat_grafted var tells it to apply to grafted but unsalved wounds, for burn kit
 		else
 			return FALSE
 
-/obj/limb/proc/fracture(bonebreak_probability)
-	if(status & (LIMB_BROKEN|LIMB_DESTROYED|LIMB_UNCALIBRATED_PROSTHETIC|LIMB_SYNTHSKIN))
-		if (knitting_time != -1)
-			knitting_time = -1
-			to_chat(owner, SPAN_WARNING("You feel your [display_name] stop knitting together as it absorbs damage!"))
+/obj/limb/proc/fracture(bonebreak_probability = 100)
+	// double checks that the limb can be / isnt already fractured, in the case that fracture() is called directly
+	if(status & (LIMB_BROKEN|LIMB_DESTROYED))
 		return
-
-	if(owner.status_flags & NO_PERMANENT_DAMAGE)
-		owner.visible_message(
-			SPAN_WARNING("[owner] withstands the blow!"),
-			SPAN_WARNING("Your [display_name] withstands the blow!"))
-		return
-
-	//stops division by zero
-	if(owner.chem_effect_flags & CHEM_EFFECT_RESIST_FRACTURE)
-		bonebreak_probability = 0
-
-	//If you have this special flag you are exempt from the endurance bone break check
-	if(owner.species.flags & SPECIAL_BONEBREAK)
-		bonebreak_probability = 100
-
-	if(!owner.skills)
-		bonebreak_probability = null
-
-	//if the chance was not set by what called fracture(), the endurance check is done instead
-	if(bonebreak_probability == null) //bone break chance is based on endurance, 25% for survivors, erts, 100% for most everyone else.
-		bonebreak_probability = 100 / clamp(owner.skills?.get_skill_level(SKILL_ENDURANCE)-1,1,100) //can't be zero
-
-	var/list/bonebreak_data = list("bonebreak_probability" = bonebreak_probability)
-	SEND_SIGNAL(owner, COMSIG_HUMAN_BONEBREAK_PROBABILITY, bonebreak_data)
-	bonebreak_probability = bonebreak_data["bonebreak_probability"]
 
 	if(prob(bonebreak_probability))
 		owner.recalculate_move_delay = TRUE
