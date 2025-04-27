@@ -26,6 +26,8 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 	var/enabled = TRUE
 	/// Whether or not the phone is receiving calls or not. Varies between on/off or forcibly on/off.
 	var/do_not_disturb = PHONE_DND_OFF
+	var/list/blocked_callers = list()
+	var/list/blocked_by_callers = list()
 	/// The Phone_ID of the last person to call this telephone.
 	var/last_caller
 
@@ -97,6 +99,8 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 				current_dnd = TRUE
 		if(TRANSMITTER_UNAVAILABLE(target_phone) || current_dnd) // Phone not available
 			continue
+		if(target_phone in blocked_by_callers)	// they dont want to talk to you
+			continue
 		var/net_link = FALSE
 		for(var/network in networks_transmit)
 			if(network in target_phone.networks_receive)
@@ -141,6 +145,8 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 			SStgui.close_uis(src)
 		if("toggle_dnd")
 			toggle_dnd(user)
+		if("toggle_caller_block")
+			toggle_caller_block(params["target_ref"])
 
 	update_icon()
 
@@ -154,16 +160,19 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 
 /obj/structure/transmitter/ui_static_data(mob/user)
 	. = list()
-
 	.["available_transmitters"] = get_transmitters() - list(phone_id)
 	var/list/transmitters = list()
-	for(var/i in GLOB.transmitters)
-		var/obj/structure/transmitter/T = i
+	for(var/obj/structure/transmitter/transmitter as anything in GLOB.transmitters)
+		var/transmitter_blocked = FALSE
+		if(transmitter in blocked_callers)
+			transmitter_blocked = TRUE
 		transmitters += list(list(
-			"phone_category" = T.phone_category,
-			"phone_color" = T.phone_color,
-			"phone_id" = T.phone_id,
-			"phone_icon" = T.phone_icon
+			"phone_category" = transmitter.phone_category,
+			"phone_color" = transmitter.phone_color,
+			"phone_id" = transmitter.phone_id,
+			"phone_icon" = transmitter.phone_icon,
+			"phone_ref" = REF(transmitter),
+			"blocked" = transmitter_blocked
 		))
 
 	.["transmitters"] = transmitters
@@ -210,6 +219,17 @@ GLOBAL_LIST_EMPTY_TYPED(transmitters, /obj/structure/transmitter)
 		else
 			return FALSE
 	return TRUE
+
+/obj/structure/transmitter/proc/toggle_caller_block(target_ref)
+	var/obj/structure/transmitter/target = locate(target_ref) in GLOB.transmitters
+	if(!target)
+		return
+	if((target in blocked_callers) && (src in target.blocked_by_callers))
+		blocked_callers -= target
+		target.blocked_by_callers -= src
+	else
+		blocked_callers |= target
+		target.blocked_by_callers |= src
 
 /obj/structure/transmitter/attack_hand(mob/user)
 	. = ..()

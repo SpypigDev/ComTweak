@@ -12,8 +12,14 @@ type Data = {
     phone_color: string;
     phone_id: string;
     phone_icon: string;
+    phone_ref: string;
+    blocked: boolean;
   }[];
 };
+
+type Props = Partial<{
+  block_menu: boolean;
+}>;
 
 export const PhoneMenu = (props) => {
   const { act, data } = useBackend();
@@ -45,6 +51,7 @@ const GeneralPanel = (props) => {
   const [currentSearch, setSearch] = useState('');
   const [selectedPhone, setSelectedPhone] = useState('');
   const [currentCategory, setCategory] = useState(categories[0]);
+  const [block_menu, toggleBlockMenu] = useState(props.block_menu);
 
   let dnd_tooltip = 'Do Not Disturb is DISABLED';
   let dnd_locked = 'No';
@@ -99,10 +106,12 @@ const GeneralPanel = (props) => {
                   <Tabs.Tab
                     selected={selectedPhone === val.phone_id}
                     onClick={() => {
-                      if (selectedPhone === val.phone_id) {
-                        act('call_phone', { phone_id: selectedPhone });
-                      } else {
-                        setSelectedPhone(val.phone_id);
+                      if (!block_menu) {
+                        if (selectedPhone === val.phone_id) {
+                          act('call_phone', { phone_id: selectedPhone });
+                        } else {
+                          setSelectedPhone(val.phone_id);
+                        }
                       }
                     }}
                     key={val.phone_id}
@@ -114,7 +123,27 @@ const GeneralPanel = (props) => {
                     }
                     icon={val.phone_icon}
                   >
-                    {val.phone_id}
+                    <Stack>
+                      <Stack.Item grow>{val.phone_id}</Stack.Item>
+                      {block_menu ? (
+                        <Stack.Item mr="15px">
+                          <Button
+                            compact
+                            pr="4px"
+                            pl="4px"
+                            color={val.blocked ? 'red' : 'grey'}
+                            opacity={0.5}
+                            onClick={() => {
+                              act('toggle_caller_block', {
+                                target_ref: val.phone_ref,
+                              });
+                            }}
+                          >
+                            {val.blocked ? 'Unblock' : 'Block'} Caller
+                          </Button>
+                        </Stack.Item>
+                      ) : null}
+                    </Stack>
                   </Tabs.Tab>
                 );
               })}
@@ -134,6 +163,17 @@ const GeneralPanel = (props) => {
           </Stack.Item>
         )}
         {!!last_caller && <Stack.Item>Last Caller: {last_caller}</Stack.Item>}
+        <Stack.Item>
+          <Button
+            color="red"
+            icon="user"
+            fluid
+            textAlign="center"
+            onClick={() => toggleBlockMenu(!block_menu)}
+          >
+            {block_menu ? 'Close Block Menu' : 'Manage Blocked Callers'}
+          </Button>
+        </Stack.Item>
         <Stack.Item>
           <Button
             color="red"
