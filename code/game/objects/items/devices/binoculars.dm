@@ -25,9 +25,19 @@
 	var/hvh_tile_offset = 6 //same as miniscopes
 	var/hvh_zoom_viewsize = 7
 
+	var/obj/item/binocular_module/allowed_attachment_modules = list()
+	var/obj/item/binocular_module/installed_attachment_module
+
 /obj/item/device/binoculars/Initialize()
 	. = ..()
 	select_gamemode_skin(type)
+
+/obj/item/device/binoculars/attackby(obj/item/item, mob/user)
+	if(HAS_TRAIT(item, TRAIT_TOOL_SCREWDRIVER) && installed_attachment_module)
+		installed_attachment_module.remove_module()
+	if(item.type in allowed_attachment_modules && !installed_attachment_module)
+		item.attach_module(src, user)
+
 
 /obj/item/device/binoculars/attack_self(mob/user)
 	..()
@@ -81,6 +91,291 @@
 	desc = "A pair of binoculars."
 	icon_state = "binoculars_civ"
 	flags_atom = FPRINT|CONDUCT|NO_GAMEMODE_SKIN // same sprite for all gamemodes
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Attachable modules to be used with binoculars
+/obj/item/binocular_module
+	name = "binocular attachment module"
+	desc = "A pair of binoculars with a rangefinding function. Ctrl + Click turf to acquire it's coordinates. Ctrl + Click rangefinder to stop lasing."
+	icon = 'icons/obj/items/circuitboards.dmi'
+	icon_state = "card_mod"
+	item_state = "card_mod"
+	gender = PLURAL
+	garbage = FALSE
+	w_class = SIZE_MEDIUM
+
+	/// How much charge the cell should have at most. -1 is infinite
+	var/cell_max_charge = 2500
+
+	var/activated = FALSE
+	var/datum/action/item_action/activate_module
+
+	var/mob/living/attached_mob
+	var/obj/item/device/binoculars/attached_item
+
+	var/requires_battery_power = FALSE
+
+/obj/item/binocular_module/proc/attach_module(obj/item/device/binoculars/parent_item, mob/user)
+
+	if(!user)
+		return
+
+	if(!istype(parent_item, /obj/item/device/binoculars))
+		return
+
+	attached_item = parent_item
+
+	RegisterSignal(attached_item, COMSIG_PARENT_QDELETING, PROC_REF(remove_module))
+
+	set_attached_mob(user)
+
+/obj/item/binocular_module/proc/remove_module()
+	SIGNAL_HANDLER
+
+	if(!attached_item)
+		return
+
+	UnregisterSignal(attached_item, COMSIG_PARENT_QDELETING)
+
+	activated = FALSE
+
+	remove_attached_mob()
+	attached_item = null
+
+/obj/item/binocular_module/proc/set_attached_mob(mob/user)
+
+	attached_mob = user
+	activate_module = new /datum/action/item_action/toggle(src, attached_item)
+	activate_module.give_to(attached_mob)
+	add_verb(attached_mob, /obj/item/binocular_module/proc/toggle)
+	RegisterSignal(attached_item, COMSIG_ITEM_DROPPED, PROC_REF(remove_attached_mob))
+
+/obj/item/binocular_module/proc/remove_attached_mob()
+	
+	UnregisterSignal(attached_item, COMSIG_ITEM_DROPPED)
+	qdel(activate_module)
+	
+	if(!attached_mob)
+		return
+
+	UnregisterSignal(attached_mob, COMSIG_MOB_CHANGE_VIEW)
+	remove_verb(attached_mob, /obj/item/binocular_module/night_vision/proc/toggle)
+
+	attached_mob = null
+
+/obj/item/binocular_module/proc/toggle()
+	set category = "Object"
+	set name = "Toggle M2 night vision goggles"
+
+	var/obj/item/clothing/head/helmet/marine/H = usr.get_item_by_slot(WEAR_HEAD)
+	if(istype(H))
+		for(var/obj/item/binocular_module/night_vision/G in H.pockets.contents)
+			G.toggle_nods(usr)
+			break
+
+/obj/item/binocular_module/night_vision
+	name = "binocular night vision attachment module"
+	desc = "A pair of binoculars with a rangefinding function. Ctrl + Click turf to acquire it's coordinates. Ctrl + Click rangefinder to stop lasing."
+
+	var/nightvision = FALSE
+
+	var/lighting_alpha = 100
+	var/matrix_color = NV_COLOR_GREEN
+
+/obj/item/binocular_module/night_vision/Initialize(mapload, ...)
+	. = ..()
+
+	AddComponent(/datum/component/cell, cell_max_charge, TRUE, charge_drain = 8)
+	RegisterSignal(src, COMSIG_CELL_TRY_RECHARGING, PROC_REF(cell_try_recharge))
+	RegisterSignal(src, COMSIG_CELL_OUT_OF_CHARGE, PROC_REF(on_power_out))
+
+
+
+/obj/item/binocular_module/night_vision/proc/cell_try_recharge(datum/source, mob/living/user)
+	SIGNAL_HANDLER
+
+	if(user.action_busy)
+		return COMPONENT_CELL_NO_RECHARGE
+
+	if(src != user.get_inactive_hand())
+		to_chat(user, SPAN_WARNING("You need to hold [src] in hand in order to recharge them."))
+		return COMPONENT_CELL_NO_RECHARGE
+
+/obj/item/binocular_module/night_vision/on_exit_storage(obj/item/storage/S)
+	remove_module()
+	return ..()
+
+
+
+
+/obj/item/binocular_module/night_vision/proc/toggle_check(obj/item/I, mob/living/carbon/human/user, slot)
+	SIGNAL_HANDLER
+
+	if(attached_mob != user && slot == WEAR_HEAD)
+		set_attached_mob(user)
+
+	if(slot == WEAR_HEAD && !nightvision && activated && !SEND_SIGNAL(src, COMSIG_CELL_CHECK_CHARGE) && shape > NVG_SHAPE_BROKEN)
+		enable_nvg(user)
+	else
+		remove_nvg()
+
+
+/obj/item/binocular_module/night_vision/proc/enable_nvg(mob/living/carbon/human/user)
+	if(nightvision)
+		remove_nvg()
+
+	RegisterSignal(user, COMSIG_HUMAN_POST_UPDATE_SIGHT, PROC_REF(update_sight))
+
+	if(user.client?.prefs?.night_vision_preference)
+		matrix_color = user.client.prefs.nv_color_list[user.client.prefs.night_vision_preference]
+	user.add_client_color_matrix("nvg", 99, color_matrix_multiply(color_matrix_saturation(0), color_matrix_from_string(matrix_color)))
+	user.overlay_fullscreen("nvg", /atom/movable/screen/fullscreen/flash/noise/nvg)
+	user.overlay_fullscreen("nvg_blur", /atom/movable/screen/fullscreen/brute/nvg, 3)
+	playsound(user, 'sound/handling/toggle_nv1.ogg', 25)
+	nightvision = TRUE
+	user.update_sight()
+
+	icon_state = active_powered_icon_state
+	attached_item.update_icon()
+	activate_module.update_button_icon()
+
+	SEND_SIGNAL(src, COMSIG_CELL_START_TICK_DRAIN)
+
+
+/obj/item/binocular_module/night_vision/proc/update_sight(mob/M)
+	SIGNAL_HANDLER
+
+	if(lighting_alpha < 255)
+		M.see_in_dark = 12
+	M.lighting_alpha = lighting_alpha
+	M.sync_lighting_plane_alpha()
+
+
+/obj/item/binocular_module/night_vision/proc/remove_nvg()
+	SIGNAL_HANDLER
+
+	if(!attached_mob)
+		return
+
+	if(nightvision)
+		attached_mob.remove_client_color_matrix("nvg", 1 SECONDS)
+		attached_mob.clear_fullscreen("nvg", 0.5 SECONDS)
+		attached_mob.clear_fullscreen("nvg_blur", 0.5 SECONDS)
+		playsound(attached_mob, 'sound/handling/toggle_nv2.ogg', 25)
+		nightvision = FALSE
+
+		UnregisterSignal(attached_mob, COMSIG_HUMAN_POST_UPDATE_SIGHT)
+
+		if(activated)
+			icon_state = active_icon_state
+			attached_item.update_icon()
+			activate_module.update_button_icon()
+
+		attached_mob.update_sight()
+
+		SEND_SIGNAL(src, COMSIG_CELL_STOP_TICK_DRAIN)
+
+
+/obj/item/binocular_module/night_vision/process(delta_time)
+	if(!attached_mob)
+		return PROCESS_KILL
+
+	if(!activated || !attached_item || attached_mob.is_dead())
+		on_power_out()
+		return
+
+	if(!attached_item.has_garb_overlay())
+		to_chat(attached_mob, SPAN_WARNING("You cannot use \the [src] when they are hidden."))
+		remove_nvg()
+		return
+
+
+/obj/item/binocular_module/night_vision/proc/on_power_out(datum/source)
+	SIGNAL_HANDLER
+
+	if(activated && !attached_mob.is_dead())
+		to_chat(attached_mob, SPAN_WARNING("[src] emit a low power warning and immediately shut down!"))
+	remove_nvg()
+
+/obj/item/binocular_module/night_vision/ui_action_click(mob/owner, obj/item/holder)
+	toggle_nods(owner)
+
+
+/obj/item/binocular_module/night_vision/proc/toggle_nods(mob/living/carbon/human/user)
+	if(user.is_mob_incapacitated())
+		return
+
+	if(!attached_item)
+		return
+
+	if(!attached_item.has_garb_overlay())
+		to_chat(user, SPAN_WARNING("You cannot use \the [src] when they are hidden."))
+		return
+
+	if(user.client.view > 7 && shape != NVG_SHAPE_COSMETIC)
+		to_chat(user, SPAN_WARNING("You cannot use \the [src] while using optics."))
+		return
+
+	activated = !activated
+
+	if(activated)
+		to_chat(user, SPAN_NOTICE("You flip the goggles down."))
+		icon_state = active_icon_state
+		if(!SEND_SIGNAL(src, COMSIG_CELL_CHECK_CHARGE) && user.head == attached_item && shape > NVG_SHAPE_BROKEN)
+			enable_nvg(user)
+		else
+			icon_state = active_icon_state
+			attached_item.update_icon()
+			activate_module.update_button_icon()
+
+		if(shape != NVG_SHAPE_COSMETIC)
+			RegisterSignal(user, COMSIG_MOB_CHANGE_VIEW, PROC_REF(change_view)) // will flip non-cosmetic nvgs back up when zoomed
+
+	else
+		to_chat(user, SPAN_NOTICE("You push \the [src] back up onto your helmet."))
+
+		icon_state = inactive_icon_state
+		attached_item.update_icon()
+		activate_module.update_button_icon()
+
+		remove_nvg()
+		UnregisterSignal(user, COMSIG_MOB_CHANGE_VIEW)
+
+/obj/item/binocular_module/night_vision/proc/change_view(mob/M, new_size)
+	SIGNAL_HANDLER
+
+	if(new_size > 7) // cannot use binos with NVG
+		toggle_nods(M)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //RANGEFINDER with ability to acquire coordinates
 /obj/item/device/binoculars/range
