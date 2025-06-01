@@ -35,9 +35,9 @@
 /obj/item/device/binoculars/attackby(obj/item/item, mob/user)
 	if(HAS_TRAIT(item, TRAIT_TOOL_SCREWDRIVER) && installed_attachment_module)
 		installed_attachment_module.remove_module()
-	if(item.type in allowed_attachment_modules && !installed_attachment_module)
-		item.attach_module(src, user)
-
+	if((item.type in allowed_attachment_modules) && !installed_attachment_module)
+		var/obj/item/binocular_module/target_module = item
+		target_module.attach_module(src, user)
 
 /obj/item/device/binoculars/attack_self(mob/user)
 	..()
@@ -136,6 +136,9 @@
 
 	attached_item = parent_item
 
+	user.drop_held_item(src)
+	forceMove(parent_item)
+
 	RegisterSignal(attached_item, COMSIG_PARENT_QDELETING, PROC_REF(remove_module))
 
 	set_attached_mob(user)
@@ -162,27 +165,21 @@
 	RegisterSignal(attached_item, COMSIG_ITEM_DROPPED, PROC_REF(remove_attached_mob))
 
 /obj/item/binocular_module/proc/remove_attached_mob()
-	
+
 	UnregisterSignal(attached_item, COMSIG_ITEM_DROPPED)
 	qdel(activate_module)
-	
+
 	if(!attached_mob)
 		return
 
 	UnregisterSignal(attached_mob, COMSIG_MOB_CHANGE_VIEW)
-	remove_verb(attached_mob, /obj/item/binocular_module/night_vision/proc/toggle)
+	remove_verb(attached_mob, /obj/item/binocular_module/proc/toggle)
 
 	attached_mob = null
 
 /obj/item/binocular_module/proc/toggle()
 	set category = "Object"
 	set name = "Toggle M2 night vision goggles"
-
-	var/obj/item/clothing/head/helmet/marine/H = usr.get_item_by_slot(WEAR_HEAD)
-	if(istype(H))
-		for(var/obj/item/binocular_module/night_vision/G in H.pockets.contents)
-			G.toggle_nods(usr)
-			break
 
 /obj/item/binocular_module/night_vision
 	name = "binocular night vision attachment module"
@@ -200,7 +197,10 @@
 	RegisterSignal(src, COMSIG_CELL_TRY_RECHARGING, PROC_REF(cell_try_recharge))
 	RegisterSignal(src, COMSIG_CELL_OUT_OF_CHARGE, PROC_REF(on_power_out))
 
-
+/obj/item/binocular_module/night_vision/toggle()
+	if(usr.is_holding(attached_item))
+		toggle_nods(usr)
+	..()
 
 /obj/item/binocular_module/night_vision/proc/cell_try_recharge(datum/source, mob/living/user)
 	SIGNAL_HANDLER
@@ -215,21 +215,6 @@
 /obj/item/binocular_module/night_vision/on_exit_storage(obj/item/storage/S)
 	remove_module()
 	return ..()
-
-
-
-
-/obj/item/binocular_module/night_vision/proc/toggle_check(obj/item/I, mob/living/carbon/human/user, slot)
-	SIGNAL_HANDLER
-
-	if(attached_mob != user && slot == WEAR_HEAD)
-		set_attached_mob(user)
-
-	if(slot == WEAR_HEAD && !nightvision && activated && !SEND_SIGNAL(src, COMSIG_CELL_CHECK_CHARGE) && shape > NVG_SHAPE_BROKEN)
-		enable_nvg(user)
-	else
-		remove_nvg()
-
 
 /obj/item/binocular_module/night_vision/proc/enable_nvg(mob/living/carbon/human/user)
 	if(nightvision)
@@ -246,12 +231,10 @@
 	nightvision = TRUE
 	user.update_sight()
 
-	icon_state = active_powered_icon_state
 	attached_item.update_icon()
 	activate_module.update_button_icon()
 
 	SEND_SIGNAL(src, COMSIG_CELL_START_TICK_DRAIN)
-
 
 /obj/item/binocular_module/night_vision/proc/update_sight(mob/M)
 	SIGNAL_HANDLER
@@ -260,7 +243,6 @@
 		M.see_in_dark = 12
 	M.lighting_alpha = lighting_alpha
 	M.sync_lighting_plane_alpha()
-
 
 /obj/item/binocular_module/night_vision/proc/remove_nvg()
 	SIGNAL_HANDLER
@@ -278,14 +260,13 @@
 		UnregisterSignal(attached_mob, COMSIG_HUMAN_POST_UPDATE_SIGHT)
 
 		if(activated)
-			icon_state = active_icon_state
+
 			attached_item.update_icon()
 			activate_module.update_button_icon()
 
 		attached_mob.update_sight()
 
 		SEND_SIGNAL(src, COMSIG_CELL_STOP_TICK_DRAIN)
-
 
 /obj/item/binocular_module/night_vision/process(delta_time)
 	if(!attached_mob)
@@ -295,12 +276,6 @@
 		on_power_out()
 		return
 
-	if(!attached_item.has_garb_overlay())
-		to_chat(attached_mob, SPAN_WARNING("You cannot use \the [src] when they are hidden."))
-		remove_nvg()
-		return
-
-
 /obj/item/binocular_module/night_vision/proc/on_power_out(datum/source)
 	SIGNAL_HANDLER
 
@@ -309,8 +284,8 @@
 	remove_nvg()
 
 /obj/item/binocular_module/night_vision/ui_action_click(mob/owner, obj/item/holder)
-	toggle_nods(owner)
-
+	if(owner.is_holding(attached_item))
+		toggle_nods(owner)
 
 /obj/item/binocular_module/night_vision/proc/toggle_nods(mob/living/carbon/human/user)
 	if(user.is_mob_incapacitated())
@@ -319,33 +294,21 @@
 	if(!attached_item)
 		return
 
-	if(!attached_item.has_garb_overlay())
-		to_chat(user, SPAN_WARNING("You cannot use \the [src] when they are hidden."))
-		return
-
-	if(user.client.view > 7 && shape != NVG_SHAPE_COSMETIC)
-		to_chat(user, SPAN_WARNING("You cannot use \the [src] while using optics."))
-		return
-
 	activated = !activated
 
 	if(activated)
 		to_chat(user, SPAN_NOTICE("You flip the goggles down."))
-		icon_state = active_icon_state
-		if(!SEND_SIGNAL(src, COMSIG_CELL_CHECK_CHARGE) && user.head == attached_item && shape > NVG_SHAPE_BROKEN)
+
+		if(!SEND_SIGNAL(src, COMSIG_CELL_CHECK_CHARGE) && user.head == attached_item)
 			enable_nvg(user)
 		else
-			icon_state = active_icon_state
+
 			attached_item.update_icon()
 			activate_module.update_button_icon()
-
-		if(shape != NVG_SHAPE_COSMETIC)
-			RegisterSignal(user, COMSIG_MOB_CHANGE_VIEW, PROC_REF(change_view)) // will flip non-cosmetic nvgs back up when zoomed
 
 	else
 		to_chat(user, SPAN_NOTICE("You push \the [src] back up onto your helmet."))
 
-		icon_state = inactive_icon_state
 		attached_item.update_icon()
 		activate_module.update_button_icon()
 
@@ -395,6 +358,10 @@
 
 	/// Normally used for the small green dot signifying coordinations-obtaining mode.
 	var/range_laser_overlay = "laser_range"
+
+	allowed_attachment_modules = list(
+		/obj/item/binocular_module/night_vision
+	)
 
 /obj/item/device/binoculars/range/Initialize()
 	. = ..()
