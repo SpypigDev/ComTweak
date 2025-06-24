@@ -42,7 +42,7 @@
 
 	hardpoints_allowed = list(
 		/obj/item/hardpoint/locomotion/blackfoot_thrusters,
-		/obj/item/hardpoint/primary/chimera_launchers,
+		/obj/item/hardpoint/primary/blackfoot_launchers,
 		/obj/item/hardpoint/support/sensor_array,
 		/obj/item/hardpoint/secondary/doorgun,
 	)
@@ -291,7 +291,7 @@
 			break
 
 		below_turf = SSmapping.get_turf_below(below_turf)
-	
+
 	forceMove(below_turf)
 	cell_explosion(below_turf, 400, 50, EXPLOSION_FALLOFF_SHAPE_LINEAR, null, create_cause_data("blackfoot crash"))
 	qdel(shadow_holder)
@@ -300,7 +300,7 @@
 /obj/vehicle/multitile/blackfoot/before_move(direction)
 	if(back_door.open)
 		update_rear_view()
-	
+
 	if(state != STATE_FLIGHT && state != STATE_VTOL)
 		return
 
@@ -314,7 +314,7 @@
 	while(SSmapping.get_turf_below(shadow_turf))
 		if(!fits_in_turf(SSmapping.get_turf_below(shadow_turf)))
 			break
-		
+
 		shadow_turf = SSmapping.get_turf_below(shadow_turf)
 
 	shadow_holder.dir = dir
@@ -329,7 +329,7 @@
 			/obj/vehicle/multitile/proc/switch_hardpoint,
 		))
 		return
-	
+
 	add_verb(M.client, list(
 		/obj/vehicle/multitile/proc/get_status_info,
 		/obj/vehicle/multitile/proc/toggle_door_lock,
@@ -411,7 +411,7 @@
 			/obj/vehicle/multitile/proc/switch_hardpoint,
 		))
 		return
-	
+
 	remove_verb(M.client, list(
 		/obj/vehicle/multitile/proc/get_status_info,
 		/obj/vehicle/multitile/proc/toggle_door_lock,
@@ -435,7 +435,7 @@
 	remove_action(M, /datum/action/human_action/blackfoot/toggle_targeting)
 
 	M.client?.mouse_pointer_icon = initial(M.client?.mouse_pointer_icon)
-	var/obj/item/hardpoint/primary/chimera_launchers/launchers = locate() in hardpoints
+	var/obj/item/hardpoint/primary/blackfoot_launchers/launchers = locate() in hardpoints
 
 	if(launchers)
 		launchers.safety = TRUE
@@ -448,7 +448,7 @@
 /obj/vehicle/multitile/blackfoot/give_seated_mob_actions(mob/seated_mob)
 	if(seats[VEHICLE_DRIVER] != seated_mob)
 		return
-	
+
 	give_action(seated_mob, /datum/action/human_action/vehicle_unbuckle/blackfoot)
 
 /obj/vehicle/multitile/blackfoot/Collided(atom/movable/collided_atom)
@@ -608,7 +608,7 @@
 	var/turf/top_turf = SSmapping.get_turf_above(get_turf(src))
 	while(SSmapping.get_turf_above(top_turf))
 		top_turf = SSmapping.get_turf_above(top_turf)
-	
+
 	forceMove(top_turf)
 
 	var/turf/shadow_turf = SSmapping.get_turf_below(get_turf(src))
@@ -616,7 +616,7 @@
 	while(SSmapping.get_turf_below(shadow_turf))
 		if(!fits_in_turf(SSmapping.get_turf_below(shadow_turf)))
 			break
-		
+
 		shadow_turf = SSmapping.get_turf_below(shadow_turf)
 	shadow_holder = new(shadow_turf)
 	shadow_holder.icon_state = "[get_sprite_state()]_shadow"
@@ -667,7 +667,7 @@
 			break
 
 		below_turf = SSmapping.get_turf_below(below_turf)
-	
+
 	forceMove(below_turf)
 	qdel(shadow_holder)
 	flags_atom &= ~NO_ZFALL
@@ -752,7 +752,7 @@
 		state = STATE_DEPLOYED
 
 /obj/vehicle/multitile/blackfoot/proc/toggle_targeting()
-	var/obj/item/hardpoint/primary/chimera_launchers/launchers = locate() in hardpoints
+	var/obj/item/hardpoint/primary/blackfoot_launchers/launchers = locate() in hardpoints
 
 	if(!launchers)
 		to_chat(seats[VEHICLE_DRIVER], SPAN_WARNING("CRITICAL ERROR: NO LAUNCHERS DETECTED."))
@@ -1302,24 +1302,24 @@
 		/obj/item/fuel_pump = 1,
 		/obj/item/flight_cpu = 1,
 		/obj/item/landing_pad_light = 4,
-		/obj/item/ammo_magazine/hardpoint/chimera_launchers_ammo = 4,
+		/obj/item/ammo_magazine/hardpoint/blackfoot_launchers_ammo = 4,
 	)
 	icon_state = "secure_crate_strapped"
 
 
-/obj/structure/chimera_loader
-	name = "\improper chimera internal access point"
+/obj/structure/blackfoot_loader
+	name = "\improper blackfoot internal access point"
 	icon = 'icons/obj/vehicles/blackfoot_peripherals.dmi'
 
 	var/obj/vehicle/multitile/blackfoot/linked_blackfoot
 
-/obj/structure/chimera_loader/attackby(obj/item/attack_item, mob/user)
+/obj/structure/blackfoot_loader/attackby(obj/item/attack_item, mob/user)
 	if(!linked_blackfoot)
 		return
 
-	if(istype(attack_item, /obj/item/ammo_magazine/hardpoint/chimera_launchers_ammo))
-		var/obj/item/ammo_magazine/hardpoint/chimera_launchers_ammo/ammo = attack_item
-		var/obj/item/hardpoint/primary/chimera_launchers/launchers = locate() in linked_blackfoot.hardpoints
+	if(istype(attack_item, /obj/item/ammo_magazine/hardpoint/blackfoot_launchers_ammo))
+		var/obj/item/ammo_magazine/hardpoint/blackfoot_launchers_ammo/ammo = attack_item
+		var/obj/item/hardpoint/primary/blackfoot_launchers/launchers = locate() in linked_blackfoot.hardpoints
 
 		if(!launchers)
 			return
