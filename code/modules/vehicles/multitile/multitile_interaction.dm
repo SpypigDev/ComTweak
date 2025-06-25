@@ -366,6 +366,10 @@
 /obj/vehicle/multitile/proc/crew_mousedown(datum/source, atom/object, turf/location, control, params)
 	SIGNAL_HANDLER
 
+	// Makes sure the click was not made on a HUD element
+	if(istype(object, /atom/movable/screen))
+		return
+
 	var/list/modifiers = params2list(params)
 	if(modifiers[SHIFT_CLICK] || modifiers[MIDDLE_CLICK] || modifiers[RIGHT_CLICK]) //don't step on examine, point, etc
 		return
