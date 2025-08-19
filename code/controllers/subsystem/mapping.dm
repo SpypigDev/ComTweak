@@ -157,12 +157,12 @@ SUBSYSTEM_DEF(mapping)
 			continue
 		parsed_maps[pm] = total_z  // save the start Z of this file
 		total_z += bounds[MAP_MAXZ] - bounds[MAP_MINZ] + 1
-
+	// multiz compatibility required
 	if (!length(traits))  // null or empty - default
 		for (var/i in 1 to total_z)
 			traits += list(default_traits)
 	else if (total_z != length(traits))  // mismatch
-		INIT_ANNOUNCE("WARNING: [length(traits)] trait sets specified for [total_z] z-levels in [path]!")
+		log_debug("[length(traits)] trait sets specified for [total_z] z-levels in [path]!")
 		if (total_z < length(traits))  // ignore extra traits
 			traits.Cut(total_z + 1)
 		while (total_z > length(traits))  // fall back to defaults on extra levels
@@ -195,7 +195,7 @@ SUBSYSTEM_DEF(mapping)
 		// CM Snowflake for Mass Screenshot dimensions auto detection
 		for(var/z in bounds[MAP_MINZ] to bounds[MAP_MAXZ])
 			var/datum/space_level/zlevel = z_list[start_z + z - 1]
-			zlevel.bounds = list(bounds[MAP_MINX], bounds[MAP_MINY], z, bounds[MAP_MAXX], bounds[MAP_MAXY], z)
+			zlevel.bounds = list(bounds[MAP_MINX] + x_offset - 1, bounds[MAP_MINY] + y_offset - 1, z, bounds[MAP_MAXX] + x_offset - 1, bounds[MAP_MAXY] + y_offset - 1, z)
 
 	// =============== END CM Change =================
 

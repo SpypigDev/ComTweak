@@ -5,14 +5,14 @@
 	desc = "An automated weapon rack hooked up to a small storage of standard-issue weapons. Can be accessed only by the dropship crew."
 	icon_state = "guns"
 	req_access = list(ACCESS_MARINE_PILOT)
-	vendor_role = list(JOB_CAS_PILOT, JOB_DROPSHIP_PILOT, JOB_DROPSHIP_CREW_CHIEF)
+	vendor_role = list(JOB_CAS_PILOT, JOB_DROPSHIP_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_OPERATIONS_PILOT, JOB_OPERATIONS_CREW_CHIEF)
 	vend_flags = VEND_CLUTTER_PROTECTION | VEND_LIMITED_INVENTORY | VEND_TO_HAND
 
 	listed_products = list(
 		list("PRIMARY FIREARMS", -1, null, null),
 		list("M4RA Battle Rifle", 4, /obj/item/weapon/gun/rifle/m4ra, VENDOR_ITEM_REGULAR),
 		list("M39 Submachine Gun", 4, /obj/item/weapon/gun/smg/m39, VENDOR_ITEM_REGULAR),
-		list("M37A1 Pump Shotgun", 4, /obj/item/weapon/gun/shotgun/pump/m37a, VENDOR_ITEM_REGULAR),
+		list("M37A2 Pump Shotgun", 4, /obj/item/weapon/gun/shotgun/pump/m37a, VENDOR_ITEM_REGULAR),
 		list("M41A Pulse Rifle MK2", 4, /obj/item/weapon/gun/rifle/m41a, VENDOR_ITEM_REGULAR),
 
 		list("PRIMARY AMMUNITION", -1, null, null),
@@ -115,9 +115,18 @@ GLOBAL_LIST_INIT(cm_vending_clothing_pilot_officer, list(
 		list("Black Webbing", 0, /obj/item/clothing/accessory/storage/webbing/black, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
 
 		list("GLASSES (CHOOSE 1)", 0, null, null, null),
-		list("Aviator Shades", 0, /obj/item/clothing/glasses/sunglasses/aviator, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_REGULAR),
+		list("Aviator Shades, Gold", 0, /obj/item/clothing/glasses/sunglasses/aviator, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_REGULAR),
+		list("Aviator Shades, Silver", 0, /obj/item/clothing/glasses/sunglasses/aviator/silver, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_REGULAR),
 		list("Medical HUD Glasses", 0, /obj/item/clothing/glasses/hud/health, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_RECOMMENDED),
 		list("Sunglasses", 0, /obj/item/clothing/glasses/sunglasses, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_REGULAR),
+
+		list("FLIGHT VISOR (CHOOSE 1)", 0, null, null, null),
+		list("MK30 Flight Visor, Black", 0, /obj/item/device/helmet_visor/po_visor, MARINE_CAN_BUY_PILOT_VISOR, VENDOR_ITEM_REGULAR),
+		list("MK30 Flight Visor, Purple", 0, /obj/item/device/helmet_visor/po_visor/purple, MARINE_CAN_BUY_PILOT_VISOR, VENDOR_ITEM_REGULAR),
+		list("MK30 Flight Visor, Light-Blue", 0, /obj/item/device/helmet_visor/po_visor/lightblue, MARINE_CAN_BUY_PILOT_VISOR, VENDOR_ITEM_REGULAR),
+		list("MK30 Flight Visor, Red", 0, /obj/item/device/helmet_visor/po_visor/red, MARINE_CAN_BUY_PILOT_VISOR, VENDOR_ITEM_REGULAR),
+		list("MK30 Flight Visor, Dark-Blue", 0, /obj/item/device/helmet_visor/po_visor/darkblue, MARINE_CAN_BUY_PILOT_VISOR, VENDOR_ITEM_REGULAR),
+		list("MK30 Flight Visor, Yellow", 0, /obj/item/device/helmet_visor/po_visor/yellow, MARINE_CAN_BUY_PILOT_VISOR, VENDOR_ITEM_REGULAR),
 
 		list("MASK (CHOOSE 1)", 0, null, null, null),
 		list("Gas Mask", 0, /obj/item/clothing/mask/gas, MARINE_CAN_BUY_MASK, VENDOR_ITEM_REGULAR),
@@ -129,7 +138,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_pilot_officer, list(
 		list("Gyroscopic Stabilizer", 10, /obj/item/attachable/gyro, null, VENDOR_ITEM_REGULAR),
 		list("Laser Sight", 10, /obj/item/attachable/lasersight, null, VENDOR_ITEM_REGULAR),
 		list("Masterkey Shotgun", 10, /obj/item/attachable/attached_gun/shotgun, null, VENDOR_ITEM_REGULAR),
-		list("M37 Wooden Stock", 10, /obj/item/attachable/stock/shotgun, null, VENDOR_ITEM_REGULAR),
+		list("M37A2 Collapsible Stock", 10, /obj/item/attachable/stock/synth/collapsible, null, VENDOR_ITEM_REGULAR),
 		list("M39 Stock", 10, /obj/item/attachable/stock/smg, null, VENDOR_ITEM_REGULAR),
 		list("M41A Solid Stock", 10, /obj/item/attachable/stock/rifle, null, VENDOR_ITEM_REGULAR),
 		list("Recoil Compensator", 10, /obj/item/attachable/compensator, null, VENDOR_ITEM_REGULAR),
@@ -209,9 +218,19 @@ GLOBAL_LIST_INIT(cm_vending_clothing_dropship_crew_chief, list(
 		list("Black Drop Pouch", 0, /obj/item/clothing/accessory/storage/droppouch/black, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
 
 		list("GLASSES (CHOOSE 1)", 0, null, null, null),
-		list("Aviator Shades", 0, /obj/item/clothing/glasses/sunglasses/aviator, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_REGULAR),
+		list("Aviator Shades, Gold", 0, /obj/item/clothing/glasses/sunglasses/aviator, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_REGULAR),
+		list("Aviator Shades, Silver", 0, /obj/item/clothing/glasses/sunglasses/aviator/silver, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_REGULAR),
 		list("Medical HUD Glasses", 0, /obj/item/clothing/glasses/hud/health, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_RECOMMENDED),
+		list("Medical Visor", 0, /obj/item/device/helmet_visor/medical/advanced, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_RECOMMENDED),
 		list("Sunglasses", 0, /obj/item/clothing/glasses/sunglasses, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_REGULAR),
+
+		list("FLIGHT VISOR (CHOOSE 1)", 0, null, null, null),
+		list("MK30 Flight Visor, Black", 0, /obj/item/device/helmet_visor/po_visor, MARINE_CAN_BUY_PILOT_VISOR, VENDOR_ITEM_REGULAR),
+		list("MK30 Flight Visor, Purple", 0, /obj/item/device/helmet_visor/po_visor/purple, MARINE_CAN_BUY_PILOT_VISOR, VENDOR_ITEM_REGULAR),
+		list("MK30 Flight Visor, Light-Blue", 0, /obj/item/device/helmet_visor/po_visor/lightblue, MARINE_CAN_BUY_PILOT_VISOR, VENDOR_ITEM_REGULAR),
+		list("MK30 Flight Visor, Red", 0, /obj/item/device/helmet_visor/po_visor/red, MARINE_CAN_BUY_PILOT_VISOR, VENDOR_ITEM_REGULAR),
+		list("MK30 Flight Visor, Dark-Blue", 0, /obj/item/device/helmet_visor/po_visor/darkblue, MARINE_CAN_BUY_PILOT_VISOR, VENDOR_ITEM_REGULAR),
+		list("MK30 Flight Visor, Yellow", 0, /obj/item/device/helmet_visor/po_visor/yellow, MARINE_CAN_BUY_PILOT_VISOR, VENDOR_ITEM_REGULAR),
 
 		list("MASK (CHOOSE 1)", 0, null, null, null),
 		list("Gas Mask", 0, /obj/item/clothing/mask/gas, MARINE_CAN_BUY_MASK, VENDOR_ITEM_REGULAR),
@@ -223,7 +242,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_dropship_crew_chief, list(
 		list("Gyroscopic Stabilizer", 10, /obj/item/attachable/gyro, null, VENDOR_ITEM_REGULAR),
 		list("Laser Sight", 10, /obj/item/attachable/lasersight, null, VENDOR_ITEM_REGULAR),
 		list("Masterkey Shotgun", 10, /obj/item/attachable/attached_gun/shotgun, null, VENDOR_ITEM_REGULAR),
-		list("M37 Wooden Stock", 10, /obj/item/attachable/stock/shotgun, null, VENDOR_ITEM_REGULAR),
+		list("M37A2 Collapsible Stock", 10, /obj/item/attachable/stock/synth/collapsible, null, VENDOR_ITEM_REGULAR),
 		list("M39 Stock", 10, /obj/item/attachable/stock/smg, null, VENDOR_ITEM_REGULAR),
 		list("M41A Solid Stock", 10, /obj/item/attachable/stock/rifle, null, VENDOR_ITEM_REGULAR),
 		list("Recoil Compensator", 10, /obj/item/attachable/compensator, null, VENDOR_ITEM_REGULAR),
@@ -255,7 +274,7 @@ GLOBAL_LIST_INIT(cm_vending_clothing_dropship_crew_chief, list(
 	name = "\improper ColMarTech Dropship Crew Equipment Rack"
 	desc = "An automated rack hooked up to a colossal storage of Dropship Crew standard-issue equipment."
 	req_access = list(ACCESS_MARINE_PILOT)
-	vendor_role = list(JOB_CAS_PILOT, JOB_DROPSHIP_PILOT, JOB_DROPSHIP_CREW_CHIEF)
+	vendor_role = list(JOB_CAS_PILOT, JOB_DROPSHIP_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_OPERATIONS_CREW_CHIEF, JOB_OPERATIONS_PILOT)
 
 /obj/structure/machinery/cm_vending/clothing/pilot_officer/get_listed_products(mob/user)
 	if(!user)
@@ -265,8 +284,12 @@ GLOBAL_LIST_INIT(cm_vending_clothing_dropship_crew_chief, list(
 		return combined
 	if(user.job == JOB_DROPSHIP_CREW_CHIEF)
 		return GLOB.cm_vending_clothing_dropship_crew_chief
+	if(user.job == JOB_OPERATIONS_CREW_CHIEF)
+		return GLOB.cm_vending_clothing_dropship_crew_chief
 	if(user.job == JOB_CAS_PILOT)
 		return GLOB.cm_vending_clothing_pilot_officer
 	if(user.job == JOB_DROPSHIP_PILOT)
+		return GLOB.cm_vending_clothing_pilot_officer
+	if(user.job == JOB_OPERATIONS_PILOT)
 		return GLOB.cm_vending_clothing_pilot_officer
 	return ..()

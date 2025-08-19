@@ -43,6 +43,10 @@
 				marine_rk = "io"
 			if(JOB_DROPSHIP_CREW_CHIEF)
 				marine_rk = "dcc"
+			if(JOB_OPERATIONS_PILOT)
+				marine_rk = "op"
+			if(JOB_OPERATIONS_CREW_CHIEF)
+				marine_rk = "occ"
 			if(JOB_MARINE_RAIDER)
 				marine_rk = "soc"
 			if(JOB_MARINE_RAIDER_SL)
@@ -127,6 +131,10 @@
 				marine_rk = "dp"
 			if(JOB_DROPSHIP_CREW_CHIEF)
 				marine_rk = "dcc"
+			if(JOB_OPERATIONS_PILOT)
+				marine_rk = "op"
+			if(JOB_OPERATIONS_CREW_CHIEF)
+				marine_rk = "occ"
 			if(JOB_CHIEF_POLICE)
 				marine_rk = "cmp"
 				border_rk = "command"
@@ -197,6 +205,12 @@
 			//CIA
 			if(JOB_CIA_LIAISON)
 				marine_rk = "cialo"
+			if(JOB_CIA_UACQS_ADMN)
+				marine_rk = "uacqs"
+			if(JOB_CIA_UACQS_COMR)
+				marine_rk = "uacqs_com"
+			if(JOB_CIA_UACQS_SEC)
+				marine_rk = "uacqs_sec"
 			// Riot MPs
 			if(JOB_RIOT)
 				marine_rk = "rmp"

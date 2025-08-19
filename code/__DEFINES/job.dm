@@ -90,11 +90,13 @@ GLOBAL_LIST_INIT(job_command_roles, JOB_COMMAND_ROLES_LIST)
 #define JOB_DROPSHIP_PILOT "Dropship Pilot"
 #define JOB_TANK_CREW "Tank Crew"
 #define JOB_DROPSHIP_CREW_CHIEF "Dropship Crew Chief"
+#define JOB_OPERATIONS_PILOT "Operations Pilot"
+#define JOB_OPERATIONS_CREW_CHIEF "Operations Crew Chief"
 #define JOB_INTEL "Intelligence Officer"
 #define JOB_DROPSHIP_ROLES   /datum/timelock/dropship
 #define JOB_DROPSHIP_ROLES_LIST   list(JOB_DROPSHIP_CREW_CHIEF, JOB_CAS_PILOT, JOB_DROPSHIP_PILOT)
 #define JOB_AUXILIARY_ROLES    /datum/timelock/auxiliary
-#define JOB_AUXILIARY_ROLES_LIST   list(JOB_CAS_PILOT, JOB_DROPSHIP_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_INTEL, JOB_TANK_CREW)
+#define JOB_AUXILIARY_ROLES_LIST   list(JOB_CAS_PILOT, JOB_DROPSHIP_PILOT, JOB_DROPSHIP_CREW_CHIEF, JOB_INTEL, JOB_TANK_CREW, JOB_OPERATIONS_PILOT, JOB_OPERATIONS_CREW_CHIEF)
 
 #define JOB_POLICE "Military Police"
 #define JOB_WARDEN "Military Warden"
@@ -406,8 +408,9 @@ GLOBAL_LIST_INIT(job_command_roles, JOB_COMMAND_ROLES_LIST)
 #define JOB_CLF_LEADER "CLF Cell Leader"
 #define JOB_CLF_COMMANDER "CLF Cell Commander"
 #define JOB_CLF_SYNTH "CLF Multipurpose Synthetic"
+#define JOB_CLF_COORDINATOR "CLF Coordinator"
 
-#define CLF_JOB_LIST list(JOB_CLF, JOB_CLF_ENGI, JOB_CLF_MEDIC, JOB_CLF_SPECIALIST, JOB_CLF_LEADER, JOB_CLF_COMMANDER, JOB_CLF_SYNTH)
+#define CLF_JOB_LIST list(JOB_CLF, JOB_CLF_ENGI, JOB_CLF_MEDIC, JOB_CLF_SPECIALIST, JOB_CLF_LEADER, JOB_CLF_COMMANDER, JOB_CLF_SYNTH, JOB_CLF_COORDINATOR)
 
 //-------- TWE --------//
 #define JOB_TWE_REPRESENTATIVE "TWE Representative"
@@ -478,6 +481,11 @@ GLOBAL_LIST_INIT(job_command_roles, JOB_COMMAND_ROLES_LIST)
 //-------- CIA --------//
 #define JOB_CIA "Intelligence Analyst"
 #define JOB_CIA_LIAISON "Intelligence Liaison Officer"
+#define JOB_CIA_UACQS_SEC "UACQS Security"
+#define JOB_CIA_UACQS_ADMN "UACQS Administrator"
+#define JOB_CIA_UACQS_COMR "UACQS Commissioner"
+
+#define JOB_CIA_ROLES_LIST list(JOB_CIA, JOB_CIA_LIAISON, JOB_CIA_UACQS_SEC, JOB_CIA_UACQS_ADMN, JOB_CIA_UACQS_COMR)
 //-------- DUTCH'S DOZEN --------//
 #define JOB_DUTCH_ARNOLD "Dutch's Dozen - Dutch"
 #define JOB_DUTCH_RIFLEMAN "Dutch's Dozen - Rifleman"
