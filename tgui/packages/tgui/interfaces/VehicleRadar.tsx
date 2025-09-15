@@ -129,7 +129,11 @@ export const VehicleRadar = (props) => {
               <LeftButtonsPanel />
             </Table.Cell>
             <Table.Cell width="82%" verticalAlign="bottom">
-              {data.interface_active ? <VehicleRadarDisplay /> : <ScreenOff />}
+              {data.interface_active ? (
+                <VehicleRadarWeaponsDisplay />
+              ) : (
+                <ScreenOff />
+              )}
             </Table.Cell>
             <Table.Cell>
               <RightButtonsPanel />
@@ -430,6 +434,86 @@ const VehicleRadarDisplay = (props) => {
           left="45.8%"
         />
         <ButtonOverlay />
+      </Box>
+      <Box
+        className="RadarPanelBlank"
+        textAlign="center"
+        textColor="rgb(5, 165, 0)"
+        fontSize="12px"
+      >
+        <Box width="100%" height="45%">
+          <Image
+            mt="20%"
+            fixBlur
+            width="75px"
+            height="75px"
+            src={resolveAsset('logo_uscm.png')}
+            style={{
+              filter: `brightness(1)` + `url(#colorMeGreen)` + `saturate(0.95)`,
+            }}
+            opacity={0.5}
+          />
+        </Box>
+
+        <Box
+          bold
+          fontSize="19px"
+          className="ScreenDivider"
+          inline
+          width="80%"
+          pt="5px"
+        >
+          REAPER AQ-133
+        </Box>
+        <Box fontFamily="monospace">Strategic target acquisition system</Box>
+
+        <Box
+          fontFamily="monospace"
+          inline
+          width="80%"
+          className="ScreenDivider"
+          mt="7px"
+          pt="5px"
+        >
+          Developed by UA Northridge
+        </Box>
+        <Box fontFamily="monospace">Property of USCMC Aerospace Command</Box>
+      </Box>
+    </Box>
+  );
+};
+
+const VehicleRadarWeaponsDisplay = (props) => {
+  const { act, data } = useBackend<RadarData>();
+
+  let { contact_data } = data;
+
+  return (
+    <Box width="100%" height="100%" className="RadarPanelOutline">
+      <svg width={0} height={0} style={{ position: `absolute` }}>
+        <defs>
+          <filter id="colorMeGreen">
+            <feColorMatrix
+              in="SourceGraphic"
+              type="matrix"
+              values="-3 0 0 0 0
+                0 1 0 0 0
+                0 0 -1 0 0
+                0 0 0 1 0 "
+            />
+          </filter>
+        </defs>
+      </svg>
+      <Box
+        className="RadarWeaponsPanel"
+        align="center"
+        fontFamily="monospace"
+        bold
+        textColor="green"
+        width="100%"
+        height="100%"
+      >
+        <Box align="left">Weapons targeting mode</Box>
       </Box>
       <Box
         className="RadarPanelBlank"
