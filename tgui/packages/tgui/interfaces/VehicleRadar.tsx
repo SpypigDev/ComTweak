@@ -129,7 +129,11 @@ export const VehicleRadar = (props) => {
               <LeftButtonsPanel />
             </Table.Cell>
             <Table.Cell width="82%" verticalAlign="bottom">
-              {data.interface_active ? <VehicleRadarDisplay /> : <ScreenOff />}
+              {data.interface_active ? (
+                <VehicleWeaponsDisplay />
+              ) : (
+                <ScreenOff />
+              )}
             </Table.Cell>
             <Table.Cell>
               <RightButtonsPanel />
@@ -474,6 +478,122 @@ const VehicleRadarDisplay = (props) => {
           Developed by UA Northridge
         </Box>
         <Box fontFamily="monospace">Property of USCMC Aerospace Command</Box>
+      </Box>
+    </Box>
+  );
+};
+
+const VehicleWeaponsDisplay = (props) => {
+  const { act, data } = useBackend<RadarData>();
+
+  let { contact_data } = data;
+
+  return (
+    <Box width="100%" height="100%" className="RadarPanelOutline">
+      <Box
+        className="WeaponsPanel"
+        align="center"
+        textColor="green"
+        width="100%"
+        height="100%"
+        style={{
+          backgroundImage: `radial-gradient(ellipse at center, #042208, transparent)`,
+          backgroundColor: `rgb(0, 14, 3)`,
+          backgroundPositionX: `center`,
+          border: `1px ridge rgb(5, 160, 0)`,
+        }}
+      >
+        <Table height="100%">
+          <Table.Row>
+            <Table.Cell
+              className="WeaponsPanel_Header"
+              p="4px"
+              pl="9px"
+              bold
+              fontSize="10px"
+            >
+              AD-71E CLOSE AIR SUPPORT CONTROL
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>hi!</Table.Cell>
+          </Table.Row>
+          <Table.Row height="35%">
+            <Table.Cell>
+              <Table>
+                <Table.Row>
+                  <Table.Cell
+                    className="WeaponsPanel_Header"
+                    p="2px"
+                    pl="9px"
+                    bold
+                    fontSize="11px"
+                    colSpan={4}
+                  >
+                    ACTIVE TARGETING SIGNALS
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row fontSize="10px" header>
+                  <Table.Cell
+                    className="WeaponsPanel_Index"
+                    width="15%"
+                    textAlign="right"
+                    style={{ borderLeftWidth: `0px` }}
+                  >
+                    TYPE
+                  </Table.Cell>
+                  <Table.Cell className="WeaponsPanel_Index" width="25%">
+                    NAME
+                  </Table.Cell>
+                  <Table.Cell className="WeaponsPanel_Index" width="20%">
+                    DIST
+                  </Table.Cell>
+                  <Table.Cell
+                    className="WeaponsPanel_Index"
+                    style={{ borderRightWidth: `0px` }}
+                  >
+                    ACTIONS
+                  </Table.Cell>
+                </Table.Row>
+                {Array.from({ length: 4 }).map((_, i) => {
+                  return (
+                    <Table.Row key={i} fontSize="10px">
+                      <Table.Cell
+                        className="WeaponsPanel_Target"
+                        textAlign="right"
+                        style={{ borderLeftWidth: `0px` }}
+                      >
+                        FLARE
+                      </Table.Cell>
+                      <Table.Cell className="WeaponsPanel_Target">
+                        ALPHA - 1
+                      </Table.Cell>
+                      <Table.Cell className="WeaponsPanel_Target">
+                        NW 200m
+                      </Table.Cell>
+                      <Table.Cell
+                        className="WeaponsPanel_Target"
+                        style={{ borderRightWidth: `0px` }}
+                      >
+                        <Flex fill={1} justify="space-around">
+                          <Box className="WeaponsPanel_Button" bold>
+                            VIEW
+                          </Box>
+                          <Box className="WeaponsPanel_Button" bold>
+                            LOCK
+                          </Box>
+                          <Box className="WeaponsPanel_Button" bold>
+                            HIDE
+                          </Box>
+                        </Flex>
+                      </Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+              </Table>
+            </Table.Cell>
+          </Table.Row>
+        </Table>
       </Box>
     </Box>
   );

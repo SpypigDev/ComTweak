@@ -1,10 +1,10 @@
 /obj/item/hardpoint/support/recon_system
-	name = "\improper AQ-133 Acquisition System"
-	desc = "you STRONGLY feel like you should put this down NOW"
+	name = "\improper RA-302 'Viper' Reconnaissance Augment"
+	desc = "An extremely complex circuitboard designed to modify the operations of an AD-71E 'Blackfoot' VTOL aircraft. Sleek, metallic, and remarkably easy to lose."
 	icon = 'icons/obj/vehicles/hardpoints/blackfoot.dmi'
-	icon_state = "radar"
+	icon_state = "recon"
 	disp_icon = "blackfoot"
-	disp_icon_state = "radar"
+	disp_icon_state = "recon"
 
 	health = 250
 
