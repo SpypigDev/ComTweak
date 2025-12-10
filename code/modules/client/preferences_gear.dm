@@ -49,7 +49,7 @@ GLOBAL_LIST_EMPTY(roles_with_gear)
 	/// Roles that can spawn with this item.
 	var/list/allowed_roles
 
-	/// Origins that can sapwn with this item.
+	/// Origins that can spawn with this item.
 	var/list/allowed_origins
 
 /// Returns a list with the various variables used to display this gear in a UI
@@ -1456,3 +1456,45 @@ GLOBAL_LIST_EMPTY(roles_with_gear)
 /datum/gear/civilian/plush/therapy/yellow
 	display_name = "Therapy plush (Yellow)"
 	path = /obj/item/toy/plush/therapy/yellow
+
+// Adoptable Pets
+
+/datum/gear/pets
+	category = "Adoptable Critters"
+	fluff_cost = 2
+
+/datum/gear/pets/rat/gray
+	display_name = "Rat (Gray)"
+	path = /mob/living/simple_animal/mouse/rat/gray
+
+/datum/gear/pets/rat/brown
+	display_name = "Rat (Brown)"
+	path = /mob/living/simple_animal/mouse/rat/brown
+
+/datum/gear/pets/rat/black
+	display_name = "Rat (Black)"
+	path = /mob/living/simple_animal/mouse/rat/black
+
+/datum/gear/pets/rat/white
+	display_name = "Rat (White)"
+	path = /mob/living/simple_animal/mouse/rat/white
+
+/datum/gear/pets/mouse/white
+	display_name = "Mouse (White)"
+	path = /mob/living/simple_animal/mouse/white
+
+/datum/gear/pets/mouse/gray
+	display_name = "Mouse (Gray)"
+	path = /mob/living/simple_animal/mouse/gray
+
+/datum/gear/pets/mouse/brown
+	display_name = "Mouse (Brown)"
+	path = /mob/living/simple_animal/mouse/brown
+
+/datum/gear/pets/kitten
+	display_name = "Kitten"
+	path = /mob/living/simple_animal/cat/kitten
+
+/datum/gear/pets/bunny
+	display_name = "Bunny Rabbit"
+	path = /mob/living/simple_animal/bunny

@@ -9,6 +9,7 @@
 	health = 10
 	holder_type = /obj/item/holder/rat
 	icon_base = "rat"
+	adoptable = TRUE
 
 /*
  * Rat types
@@ -31,6 +32,7 @@
 	response_disarm = "gently pushes aside"
 	response_harm = "splats"
 	holder_type = /obj/item/holder/rat/brown/Old_Timmy
+	adoptable = FALSE
 
 /mob/living/simple_animal/mouse/rat/black
 	body_color = "black"
@@ -51,6 +53,7 @@
 	response_disarm = "gently pushes aside"
 	response_harm = "stamps on"
 	holder_type = /obj/item/holder/rat/white/Milky
+	adoptable = FALSE
 
 
 //Specific Pets for Frozen's Rat Collecting Competition
@@ -66,6 +69,7 @@
 	body_color = "black"
 	icon_state = "rat_black"
 	holder_type = /obj/item/holder/rat/pet/marvin
+	adoptable = FALSE
 
 /mob/living/simple_animal/mouse/rat/pet/ikit
 	name = "Ikit"
@@ -73,6 +77,7 @@
 	body_color = "white"
 	icon_state = "rat_white"
 	holder_type = /obj/item/holder/rat/pet/ikit
+	adoptable = FALSE
 
 
 //Spawning those rats from cheese.

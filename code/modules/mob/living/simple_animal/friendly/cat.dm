@@ -184,3 +184,4 @@
 	icon_dead = "kitten_dead"
 	holder_type = /obj/item/holder/cat/kitten
 	gender = NEUTER
+	adoptable = TRUE

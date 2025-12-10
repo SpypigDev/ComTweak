@@ -31,6 +31,7 @@
 	var/body_color
 	///the icon_state prefix to use for the icon_state, icon_living, and icon_dead
 	var/icon_base = "mouse"
+	adoptable = TRUE
 
 /mob/living/simple_animal/mouse/Life(delta_time)
 	..()
@@ -153,6 +154,7 @@
 	response_disarm = "gently pushes aside"
 	response_harm   = "stamps on"
 	holder_type = /obj/item/holder/mouse/white/Doc
+	adoptable = FALSE
 
 //TOM IS ALIVE! SQUEEEEEEEE~K :)
 /mob/living/simple_animal/mouse/brown/Tom
@@ -162,3 +164,4 @@
 	response_disarm = "gently pushes aside"
 	response_harm   = "splats"
 	holder_type = /obj/item/holder/mouse/brown/Tom
+	adoptable = FALSE

@@ -16,6 +16,7 @@
 	friendly = "nibbles"
 	black_market_value = 50
 	dead_black_market_value = 0
+	adoptable = TRUE
 
 /mob/living/simple_animal/bunny/dave
 	name = "Dave"
@@ -23,3 +24,5 @@
 	icon_state = "dave"
 	icon_living = "dave"
 	icon_dead = "dave_dead"
+	// dave cannot be tamed
+	adoptable = FALSE

@@ -45,6 +45,12 @@
 	///When set to 1 this stops the animal from moving when someone is pulling it.
 	var/stop_automated_movement_when_pulled = 1
 
+	// Adoption! Give your local fluffy friend a forever home today!!
+	/// Can this animal be adopted as a pet
+	var/adoptable = FALSE
+	/// The mob who has chosen to adopt this cute critter
+	var/mob/adopted_parent
+
 	//Interaction
 	var/response_help   = "tries to help"
 	var/response_disarm = "tries to disarm"
@@ -290,7 +296,6 @@
 		else
 			..()
 
-
 /mob/living/simple_animal/death()
 	. = ..()
 	if(!.)
@@ -481,5 +486,41 @@
 	if(user && error_msg)
 		to_chat(user, SPAN_WARNING("You aren't sure how to inject this animal!"))
 	return FALSE
+
+/mob/living/simple_animal/verb/adopt_verb()
+	set name = "Adopt"
+	set category = "Object"
+	set src in usr
+	var/mob/kind_soul = usr
+	adopt(kind_soul)
+
+/mob/living/simple_animal/proc/adopt(kind_soul)
+	if(!adoptable)
+		to_chat(kind_soul, SPAN_WARNING("This little critter is too wild to be adopted!"))
+		return
+
+	if(adopted_parent)
+		to_chat(kind_soul, SPAN_WARNING("Awhh, thats so sweet! But \"[name]\" has already found their forever home!!"))
+		return
+
+	var/new_nickname = stripped_input(kind_soul, "Think of a name to give to your new little companion! [MAX_NAME_LEN] characters maximum.", "Name your new friend", null, MAX_NAME_LEN)
+	if(!new_nickname)
+		return
+	if(length(new_nickname) > MAX_NAME_LEN)
+		alert(kind_soul, "Name [new_nickname] is over [MAX_NAME_LEN] characters limit. Try again.", "Naming critter failed", "Ok")
+		return
+	if(alert(kind_soul, "Your fluffy friends name will be [new_nickname]. Confirm?", "Confirmation?", "Yes", "No") != "Yes")
+		return
+	name = new_nickname
+	adopted_parent = kind_soul
+	desc = "An adorable little critter that deserves all the love in the world. Wears a tag stating its forever-parent's name is [adopted_parent.name]!"
+	adopted_parent.balloon_alert(adopted_parent, "Success! [name] has found their forever home!!", LIGHT_COLOR_GREEN)
+	if(adopted_parent.client)
+		playsound_client(adopted_parent.client, 'sound/effects/mousesqueek.ogg', adopted_parent.loc, 10)
+	remove_verb(src, /mob/living/simple_animal/verb/adopt_verb)
+
+//mob/living/simple_animal/attackby(weapon, /mob/living/carbon/human/evil_human)
+//	to_chat(evil_human, SPAN_WARNING("You should be ashamed of yourself"))
+//	evil_human.gib()
 
 #undef OVERLAY_FIRE_LAYER
