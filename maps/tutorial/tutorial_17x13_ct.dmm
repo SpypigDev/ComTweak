@@ -1,15 +1,19 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
 "ao" = (
-/obj/effect/landmark/static_comms,
+/obj/structure/machinery/telecomms/relay/preset/tower/mapcomms{
+	broadcasting = 0;
+	receiving = 0;
+	tcomms_machine = 0
+	},
 /turf/open/floor/plating/asteroidwarning/southwest,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "be" = (
 /obj/structure/window/framed/strata,
 /obj/structure/machinery/door/poddoor/hybrisa/open_shutters{
 	dir = 4
 	},
 /turf/open/floor/strata/multi_tiles/southeast,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "bW" = (
 /obj/structure/machinery/power/smes/buildable{
 	capacity = 1e+006;
@@ -18,29 +22,27 @@
 	pixel_y = 1
 	},
 /turf/open/floor/strata/orange_icorner/west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "ca" = (
 /obj/structure/machinery/door/airlock/almayer/maint{
 	dir = 2
 	},
 /turf/open/floor/strata/multi_tiles/southwest,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "cy" = (
-/obj/structure/machinery/power/apc/upgraded/no_power/north{
-	pixel_y = 16
-	},
+/obj/structure/machinery/power/apc/upgraded/power/north,
 /turf/open/floor/strata/multi_tiles/southeast,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "cH" = (
 /obj/structure/flora/grass/tallgrass/jungle_alt/corner,
 /turf/open/gm/coast/dirt/south,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "cP" = (
 /obj/structure/machinery/door/airlock/almayer/maint{
 	dir = 2
 	},
 /turf/closed/wall/strata_outpost/reinforced/hull,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "do" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/warning_stripes{
@@ -52,41 +54,43 @@
 	pixel_x = -1
 	},
 /turf/open/floor/strata/multi_tiles/west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "eh" = (
 /obj/structure/flora/bush/ausbushes/reedbush{
 	pixel_x = -7;
 	pixel_y = 10
 	},
 /obj/structure/platform_decoration/metal/strata,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/coast/dirt/west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "eD" = (
 /obj/effect/landmark/tutorial_bottom_left,
 /turf/open/floor/plating,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "fh" = (
 /turf/closed/wall/strata_outpost/reinforced,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "fx" = (
 /obj/structure/platform/metal/strata/west,
 /turf/open/gm/dirt/brown,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "fR" = (
 /turf/open/floor/plating/asteroidwarning/northeast,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "gu" = (
 /obj/structure/platform/metal/strata/west,
 /obj/structure/platform/metal/strata/east,
 /obj/effect/decal/hybrisa/lattice,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro{
-	covered = 1
+	no_overlay = 1
 	},
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "hp" = (
 /obj/structure/platform/metal/strata/west,
 /turf/open/gm/coast/dirt/beachcorner/north_west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "hs" = (
 /obj/structure/flora/bush/ausbushes/reedbush{
 	pixel_x = -2;
@@ -94,46 +98,52 @@
 	},
 /obj/structure/flora/grass/tallgrass/jungle_alt/corner,
 /turf/open/gm/coast/dirt/south,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "hA" = (
 /obj/structure/machinery/cm_vending/gear/engi,
 /turf/open/floor/strata/orange_tile,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "iq" = (
-/obj/effect/decal/strata_decals/catwalk/prison,
-/turf/open/gm/river/soro{
-	covered = 1
+/obj/effect/decal/strata_decals/catwalk/prison{
+	keep_as_object = 1
 	},
-/area/misc/tutorial/no_baselight)
+/turf/open/gm/river/soro{
+	no_overlay = 1
+	},
+/area/misc/tutorial/no_baselight/unpowered)
 "iz" = (
 /obj/structure/flora/bush/ausbushes/reedbush{
 	pixel_x = -8;
 	pixel_y = 14
 	},
 /obj/structure/platform/metal/strata/east,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/coast/dirt/beachcorner2/north_west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "iT" = (
-/obj/structure/machinery/door/poddoor/hybrisa/open_shutters{
+/obj/structure/machinery/door/poddoor/hybrisa/ultra_reinforced_door{
 	dir = 4
 	},
 /turf/open/floor/almayer/pod_landing_floor,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "je" = (
 /obj/structure/platform/metal/strata/west,
+/obj/structure/machinery/light/double{
+	dir = 8
+	},
 /turf/open/gm/coast/dirt/beachcorner2/north_west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "jF" = (
 /obj/structure/platform/stone/soro/west,
 /turf/closed/wall/strata_ice/jungle,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "jI" = (
 /obj/structure/flora/bush/ausbushes/reedbush{
 	pixel_x = -1
 	},
 /obj/structure/platform/metal/strata/west,
 /turf/open/gm/dirt/brown,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "jU" = (
 /obj/structure/machinery/power/power_generator/reactor/colony{
 	desc = "A high-tech thermoelectric generator fueled by a superheated uranium rod.";
@@ -146,7 +156,7 @@
 	layer = 2.1
 	},
 /turf/open/floor/almayer/pod_landing_floor,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "kg" = (
 /obj/structure/flora/bush/ausbushes/reedbush{
 	pixel_x = -8
@@ -156,52 +166,54 @@
 	},
 /obj/structure/platform_decoration/stone/soro,
 /turf/open/gm/coast/dirt/south,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "kZ" = (
-/obj/structure/machinery/cryopod/right,
+/obj/structure/machinery/cryopod/no_store/right,
 /turf/open/floor/strata/orange_edge/east,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "lm" = (
 /obj/structure/flora/grass/tallgrass/jungle_alt/corner,
 /turf/open/auto_turf/strata_grass/layer1,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "lB" = (
 /turf/open/floor/strata/orange_edge/west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "lV" = (
 /obj/structure/flora/bush/ausbushes/reedbush{
 	pixel_x = -1;
 	pixel_y = 11
 	},
 /turf/open/gm/coast/dirt/north,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "my" = (
 /obj/structure/platform/metal/strata/north,
 /obj/structure/platform/metal/strata/west,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "mX" = (
 /obj/structure/platform/metal/strata/west,
 /obj/structure/platform/metal/strata/east,
 /obj/effect/decal/heavy_cable/cable_horizontal,
 /obj/effect/decal/hybrisa/lattice,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/floor/strata/multi_tiles/southeast,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "nC" = (
 /obj/structure/platform/stone/soro/east,
 /obj/structure/platform/stone/soro,
 /turf/open/gm/coast/dirt/beachcorner/south_east,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "oe" = (
 /obj/structure/platform_decoration/stone/soro/west,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "ot" = (
 /turf/closed/wall/strata_ice/jungle,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "pd" = (
 /turf/closed/wall/strata_outpost,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "pm" = (
 /obj/structure/flora/bush/ausbushes/reedbush{
 	pixel_x = -1;
@@ -209,11 +221,12 @@
 	},
 /obj/structure/platform/stone/soro/east,
 /turf/open/gm/coast/dirt/north,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "qj" = (
 /obj/structure/platform_decoration/metal/strata,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/coast/dirt/beachcorner2/north_west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "qL" = (
 /obj/structure/prop/colorable_rock/colorable{
 	color = "#9d7766";
@@ -223,25 +236,27 @@
 /obj/structure/flora/jungle/vines/heavy,
 /obj/structure/platform/stone/soro/east,
 /turf/open/gm/dirt/brown/variant_2,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "qX" = (
 /obj/structure/platform_decoration/metal/strata/east,
 /obj/structure/platform/stone/soro,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/coast/dirt/south,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "rM" = (
 /obj/structure/platform_decoration/metal/strata/north,
 /obj/structure/platform/stone/soro/north,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "rP" = (
 /obj/structure/machinery/colony_floodlight,
 /turf/open/floor/strata/multi_tiles/southwest,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "rU" = (
 /obj/structure/platform/stone/soro/north,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "sL" = (
 /obj/structure/surface/table/reinforced/prison{
 	color = "#98a3ab"
@@ -255,17 +270,18 @@
 	pixel_y = 11
 	},
 /turf/open/floor/strata/multi_tiles,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "tA" = (
 /obj/structure/flora/grass/tallgrass/jungle_alt/corner{
 	dir = 6
 	},
 /turf/open/auto_turf/strata_grass/layer1,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "tG" = (
 /obj/structure/platform/metal/strata,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "tW" = (
 /obj/structure/flora/jungle/thickbush/large_jungle_bush{
 	color = "#648c57";
@@ -279,7 +295,7 @@
 	},
 /obj/structure/flora/bush/ausbushes/var3/brflowers,
 /turf/open/auto_turf/strata_grass/layer1,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "uu" = (
 /obj/structure/platform/metal/strata/north,
 /obj/structure/platform_decoration/stone/soro,
@@ -288,22 +304,26 @@
 	pixel_y = -1
 	},
 /obj/structure/flora/bush/ausbushes/var3/stalkybush,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/coast/dirt/beachcorner2/south_east,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "vs" = (
 /obj/structure/platform_decoration/stone/soro/east,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "vD" = (
 /obj/structure/platform_decoration/metal/strata/west,
 /obj/structure/platform/stone/soro,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/coast/dirt/south,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "vQ" = (
 /turf/closed/wall/strata_outpost/reinforced/hull,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "wR" = (
-/obj/effect/decal/strata_decals/catwalk/prison,
+/obj/effect/decal/strata_decals/catwalk/prison{
+	keep_as_object = 1
+	},
 /obj/structure/lattice,
 /obj/effect/decal/heavy_cable/cable_vertical,
 /obj/effect/hybrisa/misc/fake/wire{
@@ -314,23 +334,26 @@
 	pixel_y = 4
 	},
 /turf/open/gm/river/soro{
-	covered = 1
+	no_overlay = 1;
+	base_river_slowdown = 0
 	},
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "xp" = (
 /obj/structure/platform/metal/strata/north,
 /obj/structure/platform/metal/strata/east,
 /obj/structure/platform/stone/soro,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/coast/dirt/south,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "yi" = (
 /obj/structure/machinery/cm_vending/clothing/engi/charlie,
 /turf/open/floor/strata/orange_tile,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "yQ" = (
 /obj/structure/platform/metal/strata/north,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "zs" = (
 /obj/structure/flora/grass/tallgrass/jungle_alt/corner,
 /obj/structure/platform/stone/soro/west,
@@ -338,35 +361,37 @@
 	pixel_x = 10
 	},
 /turf/open/gm/coast/dirt/south,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "zu" = (
 /obj/structure/machinery/cm_vending/sorted/tech/comtech_tools,
 /turf/open/floor/strata/orange_tile,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "An" = (
 /obj/structure/platform/stone/soro/west,
 /obj/structure/platform/stone/soro,
 /obj/structure/platform_decoration/metal/strata/west,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Ba" = (
 /turf/closed/wall/strata_ice/rock,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Bq" = (
 /obj/structure/platform/metal/strata/east,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "BY" = (
-/obj/structure/machinery/cryopod{
+/obj/structure/machinery/cryopod/no_store{
 	layer = 3.1;
 	pixel_y = 13
 	},
 /turf/open/floor/strata/orange_edge/west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "CH" = (
 /obj/structure/machinery/fuelcell_recycler/full,
 /turf/open/floor/strata/orange_edge,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "CT" = (
 /obj/structure/machinery/vending/cigarette/koorlander{
 	density = 0;
@@ -389,54 +414,59 @@
 	pixel_y = 1
 	},
 /turf/open/floor/strata/orange_cover,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Dp" = (
 /turf/open/floor/strata/multi_tiles/southwest,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Fe" = (
 /turf/open/floor/plating/asteroidwarning/southeast,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "FL" = (
 /obj/structure/machinery/door/airlock/almayer/engineering/glass,
 /obj/structure/machinery/door/poddoor/hybrisa/open_shutters{
 	dir = 4
 	},
 /turf/open/floor/strata/multi_tiles/southwest,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Gl" = (
 /obj/item/fuel_cell,
 /obj/structure/surface/rack{
 	color = "#98a3ab"
 	},
 /turf/open/floor/strata/orange_icorner/north,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "HT" = (
 /obj/structure/surface/table/almayer,
+/obj/structure/machinery/light/double{
+	dir = 4
+	},
 /turf/open/floor/strata/orange_cover,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Ix" = (
-/obj/structure/machinery/cryopod,
+/obj/structure/machinery/cryopod/no_store,
 /turf/open/floor/strata/orange_edge/west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "IT" = (
 /obj/structure/platform/stone/soro/west,
 /obj/structure/platform/metal/strata/east,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "JX" = (
 /turf/open/gm/coast/dirt/beachcorner,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Kf" = (
 /obj/structure/flora/bush/ausbushes/reedbush{
 	pixel_x = -14;
 	pixel_y = 12
 	},
 /obj/structure/platform/metal/strata/east,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/coast/dirt/west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Kq" = (
 /turf/open/floor/strata/multi_tiles/southeast,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "KQ" = (
 /obj/structure/barricade/handrail/strata{
 	dir = 8
@@ -452,12 +482,13 @@
 	name = "\improper G-17 Thermoelectric Generator"
 	},
 /turf/open/floor/almayer/pod_landing_floor,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Lq" = (
 /obj/structure/platform/metal/strata,
 /obj/structure/platform/metal/strata/east,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Md" = (
 /obj/structure/platform/stone/soro,
 /obj/effect/mist/steam{
@@ -470,8 +501,9 @@
 	pixel_x = 15;
 	pixel_y = 6
 	},
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/coast/dirt/south,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Ms" = (
 /obj/structure/prop/colorable_rock/colorable{
 	color = "#9d7766";
@@ -482,7 +514,7 @@
 /obj/structure/platform/stone/soro/east,
 /obj/structure/platform/stone/soro/north,
 /turf/open/gm/coast/dirt/north,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Nr" = (
 /obj/structure/flora/bush/ausbushes/reedbush{
 	pixel_x = -1;
@@ -491,7 +523,7 @@
 /obj/structure/platform/stone/soro/north,
 /obj/structure/platform/stone/soro/west,
 /turf/open/gm/coast/dirt/north,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "NH" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/decal/warning_stripes{
@@ -506,14 +538,14 @@
 	pixel_y = 9
 	},
 /turf/open/floor/strata/multi_tiles/west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Pp" = (
 /obj/structure/flora/bush/ausbushes/reedbush{
 	pixel_x = 8;
 	pixel_y = -2
 	},
 /turf/open/gm/coast/dirt/beachcorner,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Qu" = (
 /obj/structure/machinery/power/smes/buildable{
 	capacity = 1e+006;
@@ -521,15 +553,16 @@
 	pixel_x = 1
 	},
 /turf/open/floor/strata/orange_edge,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Sx" = (
 /obj/structure/platform/metal/strata/north,
 /obj/structure/platform/metal/strata/east,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "UF" = (
 /turf/open/floor/plating/asteroidwarning/northwest,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "UQ" = (
 /obj/effect/decal/warning_stripes{
 	icon_state = "E";
@@ -540,55 +573,67 @@
 	pixel_x = -1
 	},
 /turf/open/floor/strata/multi_tiles/west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "VF" = (
 /obj/structure/platform/metal/strata,
 /obj/structure/platform_decoration/stone/soro/west,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Xp" = (
 /obj/structure/platform/metal/strata,
 /obj/structure/platform/metal/strata/west,
+/obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Xu" = (
 /turf/open/floor/strata/multi_tiles/west,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Yj" = (
 /obj/structure/surface/table/almayer,
+/obj/structure/machinery/light/double{
+	dir = 4
+	},
 /turf/open/floor/strata/orange_tile,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Yk" = (
 /obj/structure/foamed_metal,
 /turf/open/floor/plating,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "YV" = (
 /obj/structure/platform/metal/strata/west,
 /obj/structure/flora/bush/ausbushes/var3/fernybush,
+/obj/structure/machinery/light/double{
+	dir = 8
+	},
 /turf/open/gm/dirt/brown/variant_5/south,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "YY" = (
-/obj/effect/decal/strata_decals/catwalk/prison,
+/obj/effect/decal/strata_decals/catwalk/prison{
+	keep_as_object = 1
+	},
 /obj/effect/decal/heavy_cable/cable_horizontal,
 /turf/open/gm/river/soro{
-	covered = 1
+	no_overlay = 1;
+	base_river_slowdown = 0
 	},
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Zm" = (
 /obj/structure/platform/metal/strata/east,
 /obj/structure/flora/bush/ausbushes/var3/brflowers,
 /turf/open/auto_turf/strata_grass/layer1,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 "Zz" = (
-/obj/structure/machinery/cryopod/right{
-	layer = 3.1;
-	pixel_y = 13
+/obj/structure/machinery/cryopod/tutorial{
+	dir = 1;
+	pixel_y = 13;
+	layer = 3.1
 	},
-/obj/structure/machinery/light{
-	dir = 4
+/obj/effect/landmark/tutorial_tracking_marker{
+	tracking_target_type = /obj/structure/machinery/cryopod/tutorial
 	},
 /turf/open/floor/strata/orange_edge/east,
-/area/misc/tutorial/no_baselight)
+/area/misc/tutorial/no_baselight/unpowered)
 
 (1,1,1) = {"
 vQ

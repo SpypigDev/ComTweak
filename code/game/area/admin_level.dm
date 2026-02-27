@@ -180,6 +180,8 @@
 	ceiling = CEILING_METAL
 	block_game_interaction = TRUE
 	unique = TRUE
+	/// list of /obj/effect/landmark/tutorial_tracking_marker objects in the tutorial area
+	var/list/atom_tracking_landmarks = list()
 
 	base_lighting_alpha = 255
 
@@ -192,3 +194,7 @@
 
 /area/misc/tutorial/no_baselight/open
 	ceiling = CEILING_NONE
+
+/area/misc/tutorial/no_baselight/unpowered
+	requires_power = TRUE
+	unlimited_power = FALSE
