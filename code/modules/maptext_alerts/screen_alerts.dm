@@ -70,6 +70,26 @@
 	fade_out_delay = 2.5 SECONDS
 	fade_out_time = 0.5 SECONDS
 
+/atom/movable/screen/text/screen_text/command_order/tutorial/dynamic/play_to_client()
+	if(length_char(text_to_play) >= 200)
+		return FALSE
+
+	var/aproximate_word_count = 0
+
+	for(var/character in 1 to length_char(text_to_play))
+		// ASCII 32 = spacebar thing
+		if(text2ascii(text_to_play, character) == 32)
+			aproximate_word_count++
+		character++
+
+	if(!aproximate_word_count)
+		return FALSE
+
+	// roughly 150 words per minute
+	fade_out_delay = (round(aproximate_word_count / 3, 0.1)) SECONDS
+
+	..()
+
 /atom/movable/screen/text/screen_text/command_order/tutorial/end_play()
 	if(!player)
 		qdel(src)

@@ -5,6 +5,9 @@
 	receiving = 0;
 	tcomms_machine = 0
 	},
+/obj/effect/landmark/tutorial_tracking_marker{
+	tracking_target_type = /obj/structure/machinery/telecomms/relay/preset/tower/mapcomms
+	},
 /turf/open/floor/plating/asteroidwarning/southwest,
 /area/misc/tutorial/no_baselight/unpowered)
 "be" = (

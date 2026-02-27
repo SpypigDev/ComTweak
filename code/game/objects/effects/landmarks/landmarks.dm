@@ -813,6 +813,4 @@
 	if(!istype(landmark_area, /area/misc/tutorial))
 		return
 	var/area/misc/tutorial/tutorial_area = landmark_area
-	if(src in tutorial_area.atom_tracking_landmarks)
-		return
 	tutorial_area.atom_tracking_landmarks += src
