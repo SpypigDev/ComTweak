@@ -1,0 +1,847 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"ao" = (
+/obj/effect/landmark/static_comms,
+/turf/open/floor/plating/asteroidwarning/southwest,
+/area/misc/tutorial/no_baselight)
+"be" = (
+/obj/structure/window/framed/strata,
+/obj/structure/machinery/door/poddoor/hybrisa/open_shutters{
+	dir = 4
+	},
+/turf/open/floor/strata/multi_tiles/southeast,
+/area/misc/tutorial/no_baselight)
+"bW" = (
+/obj/structure/machinery/power/smes/buildable{
+	capacity = 1e+006;
+	dir = 1;
+	pixel_x = 1;
+	pixel_y = 1
+	},
+/turf/open/floor/strata/orange_icorner/west,
+/area/misc/tutorial/no_baselight)
+"ca" = (
+/obj/structure/machinery/door/airlock/almayer/maint{
+	dir = 2
+	},
+/turf/open/floor/strata/multi_tiles/southwest,
+/area/misc/tutorial/no_baselight)
+"cy" = (
+/obj/structure/machinery/power/apc/upgraded/no_power/north{
+	pixel_y = 16
+	},
+/turf/open/floor/strata/multi_tiles/southeast,
+/area/misc/tutorial/no_baselight)
+"cH" = (
+/obj/structure/flora/grass/tallgrass/jungle_alt/corner,
+/turf/open/gm/coast/dirt/south,
+/area/misc/tutorial/no_baselight)
+"cP" = (
+/obj/structure/machinery/door/airlock/almayer/maint{
+	dir = 2
+	},
+/turf/closed/wall/strata_outpost/reinforced/hull,
+/area/misc/tutorial/no_baselight)
+"do" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	pixel_x = -1
+	},
+/turf/open/floor/strata/multi_tiles/west,
+/area/misc/tutorial/no_baselight)
+"eh" = (
+/obj/structure/flora/bush/ausbushes/reedbush{
+	pixel_x = -7;
+	pixel_y = 10
+	},
+/obj/structure/platform_decoration/metal/strata,
+/turf/open/gm/coast/dirt/west,
+/area/misc/tutorial/no_baselight)
+"eD" = (
+/obj/effect/landmark/tutorial_bottom_left,
+/turf/open/floor/plating,
+/area/misc/tutorial/no_baselight)
+"fh" = (
+/turf/closed/wall/strata_outpost/reinforced,
+/area/misc/tutorial/no_baselight)
+"fx" = (
+/obj/structure/platform/metal/strata/west,
+/turf/open/gm/dirt/brown,
+/area/misc/tutorial/no_baselight)
+"fR" = (
+/turf/open/floor/plating/asteroidwarning/northeast,
+/area/misc/tutorial/no_baselight)
+"gu" = (
+/obj/structure/platform/metal/strata/west,
+/obj/structure/platform/metal/strata/east,
+/obj/effect/decal/hybrisa/lattice,
+/turf/open/gm/river/soro{
+	covered = 1
+	},
+/area/misc/tutorial/no_baselight)
+"hp" = (
+/obj/structure/platform/metal/strata/west,
+/turf/open/gm/coast/dirt/beachcorner/north_west,
+/area/misc/tutorial/no_baselight)
+"hs" = (
+/obj/structure/flora/bush/ausbushes/reedbush{
+	pixel_x = -2;
+	pixel_y = 4
+	},
+/obj/structure/flora/grass/tallgrass/jungle_alt/corner,
+/turf/open/gm/coast/dirt/south,
+/area/misc/tutorial/no_baselight)
+"hA" = (
+/obj/structure/machinery/cm_vending/gear/engi,
+/turf/open/floor/strata/orange_tile,
+/area/misc/tutorial/no_baselight)
+"iq" = (
+/obj/effect/decal/strata_decals/catwalk/prison,
+/turf/open/gm/river/soro{
+	covered = 1
+	},
+/area/misc/tutorial/no_baselight)
+"iz" = (
+/obj/structure/flora/bush/ausbushes/reedbush{
+	pixel_x = -8;
+	pixel_y = 14
+	},
+/obj/structure/platform/metal/strata/east,
+/turf/open/gm/coast/dirt/beachcorner2/north_west,
+/area/misc/tutorial/no_baselight)
+"iT" = (
+/obj/structure/machinery/door/poddoor/hybrisa/open_shutters{
+	dir = 4
+	},
+/turf/open/floor/almayer/pod_landing_floor,
+/area/misc/tutorial/no_baselight)
+"je" = (
+/obj/structure/platform/metal/strata/west,
+/turf/open/gm/coast/dirt/beachcorner2/north_west,
+/area/misc/tutorial/no_baselight)
+"jF" = (
+/obj/structure/platform/stone/soro/west,
+/turf/closed/wall/strata_ice/jungle,
+/area/misc/tutorial/no_baselight)
+"jI" = (
+/obj/structure/flora/bush/ausbushes/reedbush{
+	pixel_x = -1
+	},
+/obj/structure/platform/metal/strata/west,
+/turf/open/gm/dirt/brown,
+/area/misc/tutorial/no_baselight)
+"jU" = (
+/obj/structure/machinery/power/power_generator/reactor/colony{
+	desc = "A high-tech thermoelectric generator fueled by a superheated uranium rod.";
+	name = "\improper G-17 Thermoelectric Generator"
+	},
+/obj/structure/cable/yellow{
+	d1 = 2;
+	d2 = 4;
+	icon_state = "0-8";
+	layer = 2.1
+	},
+/turf/open/floor/almayer/pod_landing_floor,
+/area/misc/tutorial/no_baselight)
+"kg" = (
+/obj/structure/flora/bush/ausbushes/reedbush{
+	pixel_x = -8
+	},
+/obj/structure/flora/grass/tallgrass/jungle_alt/corner{
+	dir = 10
+	},
+/obj/structure/platform_decoration/stone/soro,
+/turf/open/gm/coast/dirt/south,
+/area/misc/tutorial/no_baselight)
+"kZ" = (
+/obj/structure/machinery/cryopod/right,
+/turf/open/floor/strata/orange_edge/east,
+/area/misc/tutorial/no_baselight)
+"lm" = (
+/obj/structure/flora/grass/tallgrass/jungle_alt/corner,
+/turf/open/auto_turf/strata_grass/layer1,
+/area/misc/tutorial/no_baselight)
+"lB" = (
+/turf/open/floor/strata/orange_edge/west,
+/area/misc/tutorial/no_baselight)
+"lV" = (
+/obj/structure/flora/bush/ausbushes/reedbush{
+	pixel_x = -1;
+	pixel_y = 11
+	},
+/turf/open/gm/coast/dirt/north,
+/area/misc/tutorial/no_baselight)
+"my" = (
+/obj/structure/platform/metal/strata/north,
+/obj/structure/platform/metal/strata/west,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"mX" = (
+/obj/structure/platform/metal/strata/west,
+/obj/structure/platform/metal/strata/east,
+/obj/effect/decal/heavy_cable/cable_horizontal,
+/obj/effect/decal/hybrisa/lattice,
+/turf/open/floor/strata/multi_tiles/southeast,
+/area/misc/tutorial/no_baselight)
+"nC" = (
+/obj/structure/platform/stone/soro/east,
+/obj/structure/platform/stone/soro,
+/turf/open/gm/coast/dirt/beachcorner/south_east,
+/area/misc/tutorial/no_baselight)
+"oe" = (
+/obj/structure/platform_decoration/stone/soro/west,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"ot" = (
+/turf/closed/wall/strata_ice/jungle,
+/area/misc/tutorial/no_baselight)
+"pd" = (
+/turf/closed/wall/strata_outpost,
+/area/misc/tutorial/no_baselight)
+"pm" = (
+/obj/structure/flora/bush/ausbushes/reedbush{
+	pixel_x = -1;
+	pixel_y = -16
+	},
+/obj/structure/platform/stone/soro/east,
+/turf/open/gm/coast/dirt/north,
+/area/misc/tutorial/no_baselight)
+"qj" = (
+/obj/structure/platform_decoration/metal/strata,
+/turf/open/gm/coast/dirt/beachcorner2/north_west,
+/area/misc/tutorial/no_baselight)
+"qL" = (
+/obj/structure/prop/colorable_rock/colorable{
+	color = "#9d7766";
+	pixel_x = 1;
+	dir = 4
+	},
+/obj/structure/flora/jungle/vines/heavy,
+/obj/structure/platform/stone/soro/east,
+/turf/open/gm/dirt/brown/variant_2,
+/area/misc/tutorial/no_baselight)
+"qX" = (
+/obj/structure/platform_decoration/metal/strata/east,
+/obj/structure/platform/stone/soro,
+/turf/open/gm/coast/dirt/south,
+/area/misc/tutorial/no_baselight)
+"rM" = (
+/obj/structure/platform_decoration/metal/strata/north,
+/obj/structure/platform/stone/soro/north,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"rP" = (
+/obj/structure/machinery/colony_floodlight,
+/turf/open/floor/strata/multi_tiles/southwest,
+/area/misc/tutorial/no_baselight)
+"rU" = (
+/obj/structure/platform/stone/soro/north,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"sL" = (
+/obj/structure/surface/table/reinforced/prison{
+	color = "#98a3ab"
+	},
+/obj/effect/spawner/random/toolbox{
+	pixel_x = -3;
+	pixel_y = -1
+	},
+/obj/effect/spawner/random/toolbox{
+	pixel_x = -3;
+	pixel_y = 11
+	},
+/turf/open/floor/strata/multi_tiles,
+/area/misc/tutorial/no_baselight)
+"tA" = (
+/obj/structure/flora/grass/tallgrass/jungle_alt/corner{
+	dir = 6
+	},
+/turf/open/auto_turf/strata_grass/layer1,
+/area/misc/tutorial/no_baselight)
+"tG" = (
+/obj/structure/platform/metal/strata,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"tW" = (
+/obj/structure/flora/jungle/thickbush/large_jungle_bush{
+	color = "#648c57";
+	icon_state = "bush3";
+	pixel_x = -17;
+	pixel_y = -4
+	},
+/obj/structure/flora/bush/ausbushes/var3/fullgrass,
+/obj/structure/flora/grass/tallgrass/jungle_alt/corner{
+	dir = 10
+	},
+/obj/structure/flora/bush/ausbushes/var3/brflowers,
+/turf/open/auto_turf/strata_grass/layer1,
+/area/misc/tutorial/no_baselight)
+"uu" = (
+/obj/structure/platform/metal/strata/north,
+/obj/structure/platform_decoration/stone/soro,
+/obj/effect/mist/steam{
+	pixel_x = -11;
+	pixel_y = -1
+	},
+/obj/structure/flora/bush/ausbushes/var3/stalkybush,
+/turf/open/gm/coast/dirt/beachcorner2/south_east,
+/area/misc/tutorial/no_baselight)
+"vs" = (
+/obj/structure/platform_decoration/stone/soro/east,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"vD" = (
+/obj/structure/platform_decoration/metal/strata/west,
+/obj/structure/platform/stone/soro,
+/turf/open/gm/coast/dirt/south,
+/area/misc/tutorial/no_baselight)
+"vQ" = (
+/turf/closed/wall/strata_outpost/reinforced/hull,
+/area/misc/tutorial/no_baselight)
+"wR" = (
+/obj/effect/decal/strata_decals/catwalk/prison,
+/obj/structure/lattice,
+/obj/effect/decal/heavy_cable/cable_vertical,
+/obj/effect/hybrisa/misc/fake/wire{
+	dir = 8
+	},
+/obj/effect/hybrisa/misc/fake/wire/yellow{
+	dir = 8;
+	pixel_y = 4
+	},
+/turf/open/gm/river/soro{
+	covered = 1
+	},
+/area/misc/tutorial/no_baselight)
+"xp" = (
+/obj/structure/platform/metal/strata/north,
+/obj/structure/platform/metal/strata/east,
+/obj/structure/platform/stone/soro,
+/turf/open/gm/coast/dirt/south,
+/area/misc/tutorial/no_baselight)
+"yi" = (
+/obj/structure/machinery/cm_vending/clothing/engi/charlie,
+/turf/open/floor/strata/orange_tile,
+/area/misc/tutorial/no_baselight)
+"yQ" = (
+/obj/structure/platform/metal/strata/north,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"zs" = (
+/obj/structure/flora/grass/tallgrass/jungle_alt/corner,
+/obj/structure/platform/stone/soro/west,
+/obj/structure/flora/bush/ausbushes/reedbush{
+	pixel_x = 10
+	},
+/turf/open/gm/coast/dirt/south,
+/area/misc/tutorial/no_baselight)
+"zu" = (
+/obj/structure/machinery/cm_vending/sorted/tech/comtech_tools,
+/turf/open/floor/strata/orange_tile,
+/area/misc/tutorial/no_baselight)
+"An" = (
+/obj/structure/platform/stone/soro/west,
+/obj/structure/platform/stone/soro,
+/obj/structure/platform_decoration/metal/strata/west,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"Ba" = (
+/turf/closed/wall/strata_ice/rock,
+/area/misc/tutorial/no_baselight)
+"Bq" = (
+/obj/structure/platform/metal/strata/east,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"BY" = (
+/obj/structure/machinery/cryopod{
+	layer = 3.1;
+	pixel_y = 13
+	},
+/turf/open/floor/strata/orange_edge/west,
+/area/misc/tutorial/no_baselight)
+"CH" = (
+/obj/structure/machinery/fuelcell_recycler/full,
+/turf/open/floor/strata/orange_edge,
+/area/misc/tutorial/no_baselight)
+"CT" = (
+/obj/structure/machinery/vending/cigarette/koorlander{
+	density = 0;
+	pixel_x = -5;
+	pixel_y = 16
+	},
+/obj/structure/reagent_dispensers/water_cooler/stacks{
+	density = 0;
+	pixel_x = -11;
+	pixel_y = 3
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "NE-out";
+	pixel_x = 1;
+	pixel_y = 1
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "NW-out";
+	pixel_x = -1;
+	pixel_y = 1
+	},
+/turf/open/floor/strata/orange_cover,
+/area/misc/tutorial/no_baselight)
+"Dp" = (
+/turf/open/floor/strata/multi_tiles/southwest,
+/area/misc/tutorial/no_baselight)
+"Fe" = (
+/turf/open/floor/plating/asteroidwarning/southeast,
+/area/misc/tutorial/no_baselight)
+"FL" = (
+/obj/structure/machinery/door/airlock/almayer/engineering/glass,
+/obj/structure/machinery/door/poddoor/hybrisa/open_shutters{
+	dir = 4
+	},
+/turf/open/floor/strata/multi_tiles/southwest,
+/area/misc/tutorial/no_baselight)
+"Gl" = (
+/obj/item/fuel_cell,
+/obj/structure/surface/rack{
+	color = "#98a3ab"
+	},
+/turf/open/floor/strata/orange_icorner/north,
+/area/misc/tutorial/no_baselight)
+"HT" = (
+/obj/structure/surface/table/almayer,
+/turf/open/floor/strata/orange_cover,
+/area/misc/tutorial/no_baselight)
+"Ix" = (
+/obj/structure/machinery/cryopod,
+/turf/open/floor/strata/orange_edge/west,
+/area/misc/tutorial/no_baselight)
+"IT" = (
+/obj/structure/platform/stone/soro/west,
+/obj/structure/platform/metal/strata/east,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"JX" = (
+/turf/open/gm/coast/dirt/beachcorner,
+/area/misc/tutorial/no_baselight)
+"Kf" = (
+/obj/structure/flora/bush/ausbushes/reedbush{
+	pixel_x = -14;
+	pixel_y = 12
+	},
+/obj/structure/platform/metal/strata/east,
+/turf/open/gm/coast/dirt/west,
+/area/misc/tutorial/no_baselight)
+"Kq" = (
+/turf/open/floor/strata/multi_tiles/southeast,
+/area/misc/tutorial/no_baselight)
+"KQ" = (
+/obj/structure/barricade/handrail/strata{
+	dir = 8
+	},
+/obj/structure/cable/yellow{
+	d1 = 2;
+	d2 = 4;
+	icon_state = "0-8";
+	layer = 2.1
+	},
+/obj/structure/machinery/power/power_generator/reactor/colony{
+	desc = "A high-tech thermoelectric generator fueled by a superheated uranium rod.";
+	name = "\improper G-17 Thermoelectric Generator"
+	},
+/turf/open/floor/almayer/pod_landing_floor,
+/area/misc/tutorial/no_baselight)
+"Lq" = (
+/obj/structure/platform/metal/strata,
+/obj/structure/platform/metal/strata/east,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"Md" = (
+/obj/structure/platform/stone/soro,
+/obj/effect/mist/steam{
+	pixel_x = 5;
+	pixel_y = 12
+	},
+/obj/structure/prop/colorable_rock/colorable{
+	color = "#9d7766";
+	dir = 4;
+	pixel_x = 15;
+	pixel_y = 6
+	},
+/turf/open/gm/coast/dirt/south,
+/area/misc/tutorial/no_baselight)
+"Ms" = (
+/obj/structure/prop/colorable_rock/colorable{
+	color = "#9d7766";
+	pixel_x = -1;
+	pixel_y = -12;
+	dir = 6
+	},
+/obj/structure/platform/stone/soro/east,
+/obj/structure/platform/stone/soro/north,
+/turf/open/gm/coast/dirt/north,
+/area/misc/tutorial/no_baselight)
+"Nr" = (
+/obj/structure/flora/bush/ausbushes/reedbush{
+	pixel_x = -1;
+	pixel_y = -4
+	},
+/obj/structure/platform/stone/soro/north,
+/obj/structure/platform/stone/soro/west,
+/turf/open/gm/coast/dirt/north,
+/area/misc/tutorial/no_baselight)
+"NH" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	pixel_x = -1
+	},
+/obj/structure/closet/toolcloset{
+	pixel_y = 9
+	},
+/turf/open/floor/strata/multi_tiles/west,
+/area/misc/tutorial/no_baselight)
+"Pp" = (
+/obj/structure/flora/bush/ausbushes/reedbush{
+	pixel_x = 8;
+	pixel_y = -2
+	},
+/turf/open/gm/coast/dirt/beachcorner,
+/area/misc/tutorial/no_baselight)
+"Qu" = (
+/obj/structure/machinery/power/smes/buildable{
+	capacity = 1e+006;
+	dir = 1;
+	pixel_x = 1
+	},
+/turf/open/floor/strata/orange_edge,
+/area/misc/tutorial/no_baselight)
+"Sx" = (
+/obj/structure/platform/metal/strata/north,
+/obj/structure/platform/metal/strata/east,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"UF" = (
+/turf/open/floor/plating/asteroidwarning/northwest,
+/area/misc/tutorial/no_baselight)
+"UQ" = (
+/obj/effect/decal/warning_stripes{
+	icon_state = "E";
+	pixel_x = 1
+	},
+/obj/effect/decal/warning_stripes{
+	icon_state = "W";
+	pixel_x = -1
+	},
+/turf/open/floor/strata/multi_tiles/west,
+/area/misc/tutorial/no_baselight)
+"VF" = (
+/obj/structure/platform/metal/strata,
+/obj/structure/platform_decoration/stone/soro/west,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"Xp" = (
+/obj/structure/platform/metal/strata,
+/obj/structure/platform/metal/strata/west,
+/turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight)
+"Xu" = (
+/turf/open/floor/strata/multi_tiles/west,
+/area/misc/tutorial/no_baselight)
+"Yj" = (
+/obj/structure/surface/table/almayer,
+/turf/open/floor/strata/orange_tile,
+/area/misc/tutorial/no_baselight)
+"Yk" = (
+/obj/structure/foamed_metal,
+/turf/open/floor/plating,
+/area/misc/tutorial/no_baselight)
+"YV" = (
+/obj/structure/platform/metal/strata/west,
+/obj/structure/flora/bush/ausbushes/var3/fernybush,
+/turf/open/gm/dirt/brown/variant_5/south,
+/area/misc/tutorial/no_baselight)
+"YY" = (
+/obj/effect/decal/strata_decals/catwalk/prison,
+/obj/effect/decal/heavy_cable/cable_horizontal,
+/turf/open/gm/river/soro{
+	covered = 1
+	},
+/area/misc/tutorial/no_baselight)
+"Zm" = (
+/obj/structure/platform/metal/strata/east,
+/obj/structure/flora/bush/ausbushes/var3/brflowers,
+/turf/open/auto_turf/strata_grass/layer1,
+/area/misc/tutorial/no_baselight)
+"Zz" = (
+/obj/structure/machinery/cryopod/right{
+	layer = 3.1;
+	pixel_y = 13
+	},
+/obj/structure/machinery/light{
+	dir = 4
+	},
+/turf/open/floor/strata/orange_edge/east,
+/area/misc/tutorial/no_baselight)
+
+(1,1,1) = {"
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+"}
+(2,1,1) = {"
+vQ
+Ba
+Ba
+fh
+iT
+iT
+iT
+fh
+Ba
+Ba
+Ba
+eD
+vQ
+"}
+(3,1,1) = {"
+vQ
+Ba
+Ba
+YV
+fx
+jI
+hp
+je
+Ba
+Ba
+Ba
+Ba
+vQ
+"}
+(4,1,1) = {"
+vQ
+Ba
+Ba
+JX
+eh
+Kf
+iz
+Bq
+IT
+An
+Ba
+Ba
+vQ
+"}
+(5,1,1) = {"
+vQ
+Ba
+Pp
+qj
+Lq
+pd
+cy
+YY
+KQ
+yQ
+zs
+jF
+vQ
+"}
+(6,1,1) = {"
+vQ
+Ba
+lV
+tG
+UF
+ao
+Kq
+YY
+KQ
+yQ
+cH
+ot
+vQ
+"}
+(7,1,1) = {"
+vQ
+qL
+pm
+VF
+fR
+Fe
+Kq
+YY
+jU
+yQ
+hs
+ot
+vQ
+"}
+(8,1,1) = {"
+vQ
+Ba
+Ba
+rM
+Xp
+rP
+Kq
+YY
+jU
+yQ
+kg
+ot
+vQ
+"}
+(9,1,1) = {"
+vQ
+Ba
+Nr
+vs
+tG
+gu
+wR
+gu
+pd
+uu
+nC
+Ba
+vQ
+"}
+(10,1,1) = {"
+vQ
+Ba
+Ms
+oe
+tG
+sL
+Kq
+Qu
+my
+qX
+tA
+ot
+vQ
+"}
+(11,1,1) = {"
+vQ
+Ba
+Ba
+rU
+tG
+iq
+Kq
+CH
+yQ
+Md
+lm
+ot
+vQ
+"}
+(12,1,1) = {"
+vQ
+Ba
+Ba
+mX
+mX
+Gl
+Dp
+bW
+Sx
+vD
+tW
+ot
+vQ
+"}
+(13,1,1) = {"
+vQ
+pd
+pd
+pd
+pd
+be
+FL
+be
+pd
+xp
+Zm
+ot
+vQ
+"}
+(14,1,1) = {"
+vQ
+Ix
+BY
+CT
+pd
+zu
+lB
+lB
+vQ
+vQ
+vQ
+vQ
+vQ
+"}
+(15,1,1) = {"
+vQ
+NH
+do
+UQ
+ca
+Xu
+Xu
+Xu
+cP
+Yk
+Yk
+Yk
+vQ
+"}
+(16,1,1) = {"
+vQ
+kZ
+Zz
+HT
+pd
+hA
+Yj
+yi
+vQ
+Yk
+Yk
+Yk
+vQ
+"}
+(17,1,1) = {"
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+vQ
+"}
