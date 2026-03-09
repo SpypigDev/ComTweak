@@ -32,27 +32,58 @@
 	playsound_client(tutorial_mob.client, 'sound/machines/telephone/scout_pick_up.ogg', tutorial_mob, 35, FALSE)
 
 	var/list/scene_script = list(
-		"This is the tutorial for marine rifleman. Leave the cryopod by pressing <b>[retrieve_bind("North")]</b> or <b>[retrieve_bind("East")]</b> to continue.",
-		"you are super cool",
-		"you are kinda a bit cool?"
+		"Good morning Marine! You arrived just in time for the action.",
+		"Those terrorizing colonist bastards have just sent another rocket barrage our way!!",
+		"We have anti-air batteries preparing to-"
 	)
 
 	var/scene_length = dynamic_potrait_timer(scene_script)
 
-	//addtimer(CALLBACK(src, PROC_REF(briefing_scene_2)), scene_length)
+	addtimer(CALLBACK(src, PROC_REF(rocket_strike_1)), (scene_length + 2 SECONDS))
+	addtimer(CALLBACK(src, PROC_REF(rocket_strike_2)), (scene_length + 7 SECONDS))
+	addtimer(CALLBACK(src, PROC_REF(briefing_scene_3)), (scene_length + 10 SECONDS))
+
+/datum/tutorial/marine/comtech/proc/rocket_strike_1()
+	playsound_client(tutorial_mob.client, 'sound/effects/missile_warning.ogg', tutorial_mob, 25, FALSE)
+	playsound_client(tutorial_mob.client, 'sound/effects/antiair_explosions.ogg', tutorial_mob, 25, FALSE)
+	shake_camera(tutorial_mob, 11, 2)
+
+/datum/tutorial/marine/comtech/proc/rocket_strike_2()
+	playsound_client(tutorial_mob.client, 'sound/machines/telephone/scout_remote_hangup.ogg', tutorial_mob, 45, FALSE)
+	playsound_client(tutorial_mob.client, 'sound/effects/explosionfar.ogg', tutorial_mob, 35, FALSE)
+	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/light/double, light)
+	addtimer(CALLBACK(light, TYPE_PROC_REF(/obj/structure/machinery/light/double, broken)), 1 SECONDS)
+	tutorial_mob.play_screen_text("<span class='langchat' style=font-size:24pt;text-align:left valign='top'><u>Anti-Air Command:</u></span><br>" + "<i>static...</i>  That's a hit!", new /atom/movable/screen/text/screen_text/potrait(null, null, "Lt. Ramirez", 'icons/ui_icons/screen_alert_images.dmi', "overwatch_3_green"), rgb(103, 214, 146))
 
 /datum/tutorial/marine/comtech/proc/briefing_scene_3()
+	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/door/airlock/almayer/maint, door)
+	door.open(TRUE)
+	door.lock(TRUE)
+	var/datum/effect_system/spark_spread/spark = new /datum/effect_system/spark_spread
+	spark.set_up(2, 1, door)
+	spark.start()
+
 	playsound_client(tutorial_mob.client, 'sound/machines/telephone/scout_pick_up.ogg', tutorial_mob, 35, FALSE)
 
 	var/list/scene_script = list(
-		"This is the tutorial for marine rifleman. Leave the cryopod by pressing <b>[retrieve_bind("North")]</b> or <b>[retrieve_bind("East")]</b> to continue.",
-		"you are super cool",
-		"you are kinda a bit cool?"
+		"Im calling all hands on deck!<br>The door to your prep room has been overridden.",
+		"Get geared up as quickly as possible, and prepare to defend the outpost!!"
 	)
 
-	var/scene_length = dynamic_script_timer(scene_script)
+	var/scene_length = dynamic_potrait_timer(scene_script)
+	addtimer(CALLBACK(src, PROC_REF(update_objective), "Enter the preperations room."), scene_length)
 
-	//addtimer(CALLBACK(src, PROC_REF(briefing_scene_2)), scene_length)
+	TUTORIAL_ATOM_FROM_TRACKING(/turf/open/floor/strata/multi_tiles/west, prep_room_entry_turf)
+	RegisterSignal(prep_room_entry_turf, COMSIG_TURF_ENTER, PROC_REF(prep_room_1))
+
+/datum/tutorial/marine/comtech/proc/prep_room_1()
+	SIGNAL_HANDLER
+
+	TUTORIAL_ATOM_FROM_TRACKING(/turf/open/floor/strata/multi_tiles/west, prep_room_entry_turf)
+	UnregisterSignal(prep_room_entry_turf, COMSIG_TURF_ENTER)
+	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/door/airlock/almayer/maint, door)
+	addtimer(CALLBACK(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock, close), TRUE), 1 SECONDS)
+	var/obj/structure/blocker/invisible_wall/invisible_wall = new(get_step(door, NORTH))
 
 /datum/tutorial/marine/comtech/message_to_player(message)
 	playsound_client(tutorial_mob.client, 'sound/effects/radiostatic.ogg', tutorial_mob.loc, 25, FALSE)
@@ -95,9 +126,14 @@
 		if(!tracker.tracking_target_type)
 			tracking_markers -= tracker
 			continue
-		var/atom/tracking_atom = locate(tracker.tracking_target_type) in tracker.loc
+		var/atom/tracking_atom
+		if(istype(get_turf(tracker), tracker.tracking_target_type))
+			tracking_atom = get_turf(tracker)
+		else
+			tracking_atom = locate(tracker.tracking_target_type) in tracker.loc
 		if(!tracking_atom)
-			return
+			qdel(tracker)
+			continue
 		add_to_tracking_atoms(tracking_atom)
 
 /datum/tutorial/marine/comtech/Destroy(force)

@@ -12,7 +12,7 @@
 /area/misc/tutorial/no_baselight/unpowered)
 "be" = (
 /obj/structure/window/framed/strata,
-/obj/structure/machinery/door/poddoor/hybrisa/open_shutters{
+/obj/structure/machinery/door/poddoor/hybrisa/ultra_reinforced_door{
 	dir = 4
 	},
 /turf/open/floor/strata/multi_tiles/southeast,
@@ -30,6 +30,9 @@
 /obj/structure/machinery/door/airlock/almayer/maint{
 	dir = 2
 	},
+/obj/effect/landmark/tutorial_tracking_marker{
+	tracking_target_type = /obj/structure/machinery/door/airlock/almayer/maint
+	},
 /turf/open/floor/strata/multi_tiles/southwest,
 /area/misc/tutorial/no_baselight/unpowered)
 "cy" = (
@@ -42,7 +45,14 @@
 /area/misc/tutorial/no_baselight/unpowered)
 "cP" = (
 /obj/structure/machinery/door/airlock/almayer/maint{
-	dir = 2
+	dir = 2;
+	locked = 1;
+	no_panel = 1;
+	damage_cap = 12000;
+	needs_power = 0;
+	breakable = 0;
+	unslashable = 1;
+	explo_proof = 1
 	},
 /turf/closed/wall/strata_outpost/reinforced/hull,
 /area/misc/tutorial/no_baselight/unpowered)
@@ -425,10 +435,7 @@
 /turf/open/floor/plating/asteroidwarning/southeast,
 /area/misc/tutorial/no_baselight/unpowered)
 "FL" = (
-/obj/structure/machinery/door/airlock/almayer/engineering/glass,
-/obj/structure/machinery/door/poddoor/hybrisa/open_shutters{
-	dir = 4
-	},
+/obj/structure/machinery/door/airlock/almayer/engineering/autoname,
 /turf/open/floor/strata/multi_tiles/southwest,
 /area/misc/tutorial/no_baselight/unpowered)
 "Gl" = (
@@ -442,6 +449,9 @@
 /obj/structure/surface/table/almayer,
 /obj/structure/machinery/light/double{
 	dir = 4
+	},
+/obj/effect/landmark/tutorial_tracking_marker{
+	tracking_target_type = /obj/structure/machinery/light/double
 	},
 /turf/open/floor/strata/orange_cover,
 /area/misc/tutorial/no_baselight/unpowered)
@@ -491,6 +501,12 @@
 /obj/structure/platform/metal/strata/east,
 /obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
+/area/misc/tutorial/no_baselight/unpowered)
+"LQ" = (
+/obj/effect/landmark/tutorial_tracking_marker{
+	tracking_target_type = /turf/open/floor/strata/multi_tiles/west
+	},
+/turf/open/floor/strata/multi_tiles/west,
 /area/misc/tutorial/no_baselight/unpowered)
 "Md" = (
 /obj/structure/platform/stone/soro,
@@ -854,7 +870,7 @@ NH
 do
 UQ
 ca
-Xu
+LQ
 Xu
 Xu
 cP
