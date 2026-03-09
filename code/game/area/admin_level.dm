@@ -196,5 +196,7 @@
 	ceiling = CEILING_NONE
 
 /area/misc/tutorial/no_baselight/unpowered
-	requires_power = TRUE
-	unlimited_power = FALSE
+	//sound_environment = 'sound/ambience/caves_ambience_alarm.ogg'
+	//ambience_exterior = 'sound/ambience/tyrargo_city_ambience.ogg'
+	requires_power = FALSE
+	unlimited_power = TRUE

@@ -11,7 +11,7 @@
  * * override_color: the color of the text to use
  */
 /mob/proc/play_screen_text(text, alert_type = /atom/movable/screen/text/screen_text, override_color = "#FFFFFF")
-	var/atom/movable/screen/text/screen_text/text_box = new alert_type()
+	var/atom/movable/screen/text/screen_text/text_box = isatom(alert_type) ? alert_type : new alert_type()
 	text_box.text_to_play = text
 	text_box.player = client
 	if(override_color)
@@ -103,6 +103,83 @@
 		qdel(tutorial_message)
 
 	return ..()
+
+/atom/movable/screen/text/screen_text/hypersleep_status
+	maptext_height = 480
+	maptext_width = 480
+	maptext_x = 0
+	maptext_y = -500
+	screen_loc = "LEFT,TOP-3"
+	play_delay = 0.25
+	letters_per_update = 1
+	fade_out_delay = 2 SECONDS
+	style_open = "<span style='font-size:15pt; text-align:center; color: #e92c2c; font-family: \"VCR OSD Mono\"' valign='top'>"
+	style_close = "</span>"
+
+/atom/movable/screen/text/screen_text/hypersleep_status/Initialize(mapload)
+	. = ..()
+	add_filter("text_glow", 2, drop_shadow_filter(x = 0, y = 0, size = 3, color = "#df2d2d"))
+
+/atom/movable/screen/text/screen_text/potrait
+	screen_loc = "LEFT,TOP-3"
+	maptext_height = 64
+	maptext_width = 400
+	maptext_x = 66
+	maptext_y = 0
+	letters_per_update = 4 // overall, pretty fast while not immediately popping in
+	play_delay = 0.1
+	fade_out_delay = 4.5 SECONDS
+	fade_out_time = 0.5 SECONDS
+	layer = INTRO_LAYER
+	plane = INTRO_PLANE
+	style_open = "<span class='langchat' style=font-size:20pt;text-align:left valign='top'>"
+	style_close = "</span>"
+
+/atom/movable/screen/text/screen_text/potrait/play_to_client()
+	if(length_char(text_to_play) >= 500)
+		return FALSE
+
+	var/aproximate_word_count = 0
+
+	for(var/character in 1 to length_char(text_to_play))
+		// ASCII 32 = spacebar thing
+		if(text2ascii(text_to_play, character) == 32)
+			aproximate_word_count++
+		character++
+
+	if(!aproximate_word_count)
+		return FALSE
+
+	// roughly 150 words per minute
+	fade_out_delay = (round(aproximate_word_count / 3, 0.1)) SECONDS
+
+	..()
+
+/atom/movable/screen/text/screen_text/potrait/Initialize(mapload, datum/hud/hud_owner, name, icon_to_use, image_to_play)
+	. = ..()
+	add_filter("text_glow", 2, drop_shadow_filter(x = 0, y = 0, size = 1, color = "#6cf0b9"))
+	var/image/alertimage = image(icon_to_use, icon_state = image_to_play)
+	alertimage.appearance_flags = APPEARANCE_UI
+	overlays += alertimage
+	var/atom/movable/holding_movable = new
+	holding_movable.appearance_flags = APPEARANCE_UI|KEEP_TOGETHER
+	holding_movable.mouse_opacity = MOUSE_OPACITY_TRANSPARENT
+
+	var/mutable_appearance/mugshot_name = mutable_appearance()
+	mugshot_name.appearance_flags = APPEARANCE_UI
+	mugshot_name.maptext_width = 66 // 64 (the icon) + 1 buffer each side
+	mugshot_name.maptext_x = -1
+	mugshot_name.maptext_y = -1
+	mugshot_name.plane = plane
+	mugshot_name.layer = layer+0.3
+
+	if(!name)
+		name = ""
+	mugshot_name.maptext = "<span class='langchat' style=font-size:6px;text-align:center>[name]</span>"
+
+	holding_movable.overlays += mugshot_name
+
+	vis_contents += holding_movable
 
 /atom/movable/screen/text/screen_text/command_order/yautja
 	letters_per_update = 2
