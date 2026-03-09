@@ -113,7 +113,10 @@
 /turf/open/gm/coast/dirt/south,
 /area/misc/tutorial/no_baselight/unpowered)
 "hA" = (
-/obj/structure/machinery/cm_vending/gear/engi,
+/obj/structure/machinery/cm_vending/clothing/engi/tutorial,
+/obj/effect/landmark/tutorial_tracking_marker{
+	tracking_target_type = /obj/structure/machinery/cm_vending/clothing/engi/tutorial
+	},
 /turf/open/floor/strata/orange_tile,
 /area/misc/tutorial/no_baselight/unpowered)
 "iq" = (
@@ -359,7 +362,10 @@
 /turf/open/gm/coast/dirt/south,
 /area/misc/tutorial/no_baselight/unpowered)
 "yi" = (
-/obj/structure/machinery/cm_vending/clothing/engi/charlie,
+/obj/structure/machinery/cm_vending/gear/engi/tutorial,
+/obj/effect/landmark/tutorial_tracking_marker{
+	tracking_target_type = /obj/structure/machinery/cm_vending/gear/engi/tutorial
+	},
 /turf/open/floor/strata/orange_tile,
 /area/misc/tutorial/no_baselight/unpowered)
 "yQ" = (
@@ -426,6 +432,7 @@
 	pixel_x = -1;
 	pixel_y = 1
 	},
+/obj/structure/blocker/invisible_wall,
 /turf/open/floor/strata/orange_cover,
 /area/misc/tutorial/no_baselight/unpowered)
 "Dp" = (
@@ -435,7 +442,9 @@
 /turf/open/floor/plating/asteroidwarning/southeast,
 /area/misc/tutorial/no_baselight/unpowered)
 "FL" = (
-/obj/structure/machinery/door/airlock/almayer/engineering/autoname,
+/obj/structure/machinery/door/airlock/almayer/engineering/autoname{
+	glass = 0
+	},
 /turf/open/floor/strata/multi_tiles/southwest,
 /area/misc/tutorial/no_baselight/unpowered)
 "Gl" = (
@@ -502,12 +511,6 @@
 /obj/structure/blocker/invisible_wall/water,
 /turf/open/gm/river/soro,
 /area/misc/tutorial/no_baselight/unpowered)
-"LQ" = (
-/obj/effect/landmark/tutorial_tracking_marker{
-	tracking_target_type = /turf/open/floor/strata/multi_tiles/west
-	},
-/turf/open/floor/strata/multi_tiles/west,
-/area/misc/tutorial/no_baselight/unpowered)
 "Md" = (
 /obj/structure/platform/stone/soro,
 /obj/effect/mist/steam{
@@ -556,6 +559,7 @@
 /obj/structure/closet/toolcloset{
 	pixel_y = 9
 	},
+/obj/structure/blocker/invisible_wall,
 /turf/open/floor/strata/multi_tiles/west,
 /area/misc/tutorial/no_baselight/unpowered)
 "Pp" = (
@@ -606,6 +610,12 @@
 /turf/open/gm/river/soro,
 /area/misc/tutorial/no_baselight/unpowered)
 "Xu" = (
+/turf/open/floor/strata/multi_tiles/west,
+/area/misc/tutorial/no_baselight/unpowered)
+"Ye" = (
+/obj/effect/landmark/tutorial_tracking_marker{
+	tracking_target_type = /turf/open/floor/strata/multi_tiles/west
+	},
 /turf/open/floor/strata/multi_tiles/west,
 /area/misc/tutorial/no_baselight/unpowered)
 "Yj" = (
@@ -870,7 +880,7 @@ NH
 do
 UQ
 ca
-LQ
+Ye
 Xu
 Xu
 cP

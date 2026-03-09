@@ -6,6 +6,7 @@
 	category = TUTORIAL_CATEGORY_MARINE
 	tutorial_template = /datum/map_template/tutorial/s17x13/ct
 	required_tutorial = "marine_basic_1"
+	var/scene_override = FALSE
 
 /datum/tutorial/marine/comtech/start_tutorial(mob/starting_mob)
 	. = ..()
@@ -13,6 +14,9 @@
 		return
 
 	init_mob()
+	if(scene_override)
+		briefing_scene_3()
+		return
 	wake_up_screen()
 
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/cryopod/tutorial, tutorial_pod)
@@ -74,16 +78,35 @@
 	addtimer(CALLBACK(src, PROC_REF(update_objective), "Enter the preperations room."), scene_length)
 
 	TUTORIAL_ATOM_FROM_TRACKING(/turf/open/floor/strata/multi_tiles/west, prep_room_entry_turf)
-	RegisterSignal(prep_room_entry_turf, COMSIG_TURF_ENTER, PROC_REF(prep_room_1))
+	RegisterSignal(prep_room_entry_turf, COMSIG_TURF_ENTERED, PROC_REF(prep_room_1))
+	prep_room_entry_turf.color = COLOR_BLUE
 
-/datum/tutorial/marine/comtech/proc/prep_room_1()
+/datum/tutorial/marine/comtech/proc/prep_room_1(source, mob/entering_mob)
 	SIGNAL_HANDLER
 
+	if(entering_mob != tutorial_mob)
+		return
+
 	TUTORIAL_ATOM_FROM_TRACKING(/turf/open/floor/strata/multi_tiles/west, prep_room_entry_turf)
-	UnregisterSignal(prep_room_entry_turf, COMSIG_TURF_ENTER)
+	prep_room_entry_turf.color = COLOR_RED
+	UnregisterSignal(prep_room_entry_turf, COMSIG_TURF_ENTERED)
+	addtimer(CALLBACK(src, PROC_REF(lock_prep_room)), 0.5 SECONDS)
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/door/airlock/almayer/maint, door)
-	addtimer(CALLBACK(door, TYPE_PROC_REF(/obj/structure/machinery/door/airlock, close), TRUE), 1 SECONDS)
-	var/obj/structure/blocker/invisible_wall/invisible_wall = new(get_step(door, NORTH))
+	new /obj/structure/blocker/invisible_wall(get_step(door, NORTH))
+
+	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/cm_vending/clothing/engi/tutorial, clothing_vendor)
+	clothing_vendor.req_access = list()
+	add_highlight(clothing_vendor, COLOR_ORANGE)
+
+/datum/tutorial/marine/comtech/proc/lock_prep_room()
+	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/door/airlock/almayer/maint, door)
+	if(!door || QDELETED(src))
+		return
+	door.unlock()
+	if(!door.close(TRUE))
+		addtimer(CALLBACK(src, PROC_REF(lock_prep_room)), 1 SECONDS)
+		return
+	door.lock(TRUE)
 
 /datum/tutorial/marine/comtech/message_to_player(message)
 	playsound_client(tutorial_mob.client, 'sound/effects/radiostatic.ogg', tutorial_mob.loc, 25, FALSE)
@@ -114,7 +137,8 @@
 
 /datum/tutorial/marine/comtech/init_mob()
 	. = ..()
-	arm_equipment(tutorial_mob, /datum/equipment_preset/tutorial)
+	arm_equipment(tutorial_mob, /datum/equipment_preset/tutorial/fed)
+	tutorial_mob.set_skills(/datum/skills/combat_engineer)
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/cryopod/tutorial, tutorial_pod)
 	tutorial_pod.go_in_cryopod(tutorial_mob, TRUE, FALSE)
 

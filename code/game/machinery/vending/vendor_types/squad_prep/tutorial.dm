@@ -173,3 +173,77 @@ GLOBAL_LIST_INIT(cm_vending_clothing_medic_sandbox, list(
 
 /obj/structure/machinery/cm_vending/clothing/medic/tutorial/get_listed_products(mob/user)
 	return GLOB.cm_vending_clothing_medic_sandbox
+
+//------------GEAR VENDOR---------------
+
+GLOBAL_LIST_INIT(cm_vending_gear_engi_tutorial, list(
+		list("ENGINEER SET (MANDATORY)", 0, null, null, null),
+		list("Essential Engineer Set", 0, /obj/effect/essentials_set/engi/tutorial, MARINE_CAN_BUY_ESSENTIALS, VENDOR_ITEM_MANDATORY),
+	))
+
+/obj/structure/machinery/cm_vending/gear/engi/tutorial
+	name = "\improper ColMarTech Squad ComTech Gear Rack"
+	desc = "An automated gear rack for combat technicians."
+	icon_state = "eng_gear"
+	vendor_role = list()
+	req_access = list(ACCESS_TUTORIAL_LOCKED)
+
+/obj/structure/machinery/cm_vending/gear/engi/tutorial/get_listed_products(mob/user)
+	return GLOB.cm_vending_gear_engi_tutorial
+
+//------------CLOTHING VENDOR---------------
+
+GLOBAL_LIST_INIT(cm_vending_clothing_engi_tutorial, list(
+		list("STANDARD EQUIPMENT (TAKE ALL)", 0, null, null, null),
+		list("Standard Marine Apparel", 0, list(/obj/item/clothing/under/marine/engineer, /obj/item/clothing/shoes/marine/knife), MARINE_CAN_BUY_UNIFORM, VENDOR_ITEM_MANDATORY),
+		list("Insulated Gloves (Yellow/Tan)", 0, /obj/item/clothing/gloves/marine/insulated, MARINE_CAN_BUY_GLOVES, VENDOR_ITEM_MANDATORY),
+
+		list("HELMET (CHOOSE 1)", 0, null, null, null),
+		list("M10 technician helmet", 0, /obj/item/clothing/head/helmet/marine/tech, MARINE_CAN_BUY_HELMET, VENDOR_ITEM_REGULAR),
+		list("M10 welding helmet", 0, /obj/item/clothing/head/helmet/marine/welding, MARINE_CAN_BUY_HELMET, VENDOR_ITEM_REGULAR),
+
+		list("ARMOR (CHOOSE 1)", 0, null, null, null),
+		list("Light Armor", 0, /obj/item/clothing/suit/storage/marine/light, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_REGULAR),
+		list("Medium Armor", 0, /obj/item/clothing/suit/storage/marine/medium, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_RECOMMENDED),
+		list("Heavy Armor", 0, /obj/item/clothing/suit/storage/marine/heavy, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_REGULAR),
+
+		list("BACKPACK (CHOOSE 1)", 0, null, null, null),
+		list("Technician Welder-Satchel", 0, /obj/item/storage/backpack/marine/engineerpack/satchel, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
+
+		list("BELT (CHOOSE 1)", 0, null, null, null),
+		list("M276 Toolbelt Rig (Full)", 0, /obj/item/storage/belt/utility/full, MARINE_CAN_BUY_BELT, VENDOR_ITEM_MANDATORY),
+
+		list("POUCHES (CHOOSE 2)", 0, null, null, null),
+		list("Construction Pouch", 0, /obj/item/storage/pouch/construction, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_RECOMMENDED),
+		list("Electronics Pouch (Full)", 0, /obj/item/storage/pouch/electronics/full, MARINE_CAN_BUY_POUCH, VENDOR_ITEM_REGULAR),
+
+		list("ACCESSORIES (CHOOSE 1)", 0, null, null, null),
+		list("Black Webbing Vest", 0, /obj/item/clothing/accessory/storage/black_vest, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
+
+		list("MASK (CHOOSE 1)", 0, null, null, null),
+		list("Gas Mask", 0, /obj/item/clothing/mask/gas, MARINE_CAN_BUY_MASK, VENDOR_ITEM_REGULAR),
+		list("Heat Absorbent Coif", 0, /obj/item/clothing/mask/rebreather/scarf, MARINE_CAN_BUY_MASK, VENDOR_ITEM_REGULAR),
+	))
+
+/obj/structure/machinery/cm_vending/clothing/engi/tutorial
+	name = "\improper ColMarTech Squad ComTech Equipment Rack"
+	desc = "An automated rack hooked up to a colossal storage of combat technician standard-issue equipment."
+	req_access = list(ACCESS_TUTORIAL_LOCKED)
+	vendor_role = list()
+
+/obj/structure/machinery/cm_vending/clothing/engi/tutorial/get_listed_products(mob/user)
+	return GLOB.cm_vending_clothing_engi_tutorial
+
+//------------ESSENTIAL SETS---------------
+
+/obj/effect/essentials_set/engi/tutorial
+	spawned_gear_list = list(
+		/obj/item/stack/sandbags_empty = 25,
+		/obj/item/stack/sheet/metal/large_stack,
+		/obj/item/stack/sheet/plasteel/med_large_stack,
+		/obj/item/circuitboard/apc,
+		/obj/item/cell/high,
+		/obj/item/tool/shovel/etool/folded,
+		/obj/item/device/lightreplacer,
+		/obj/item/weapon/gun/smg/nailgun/compact/tactical,
+	)
