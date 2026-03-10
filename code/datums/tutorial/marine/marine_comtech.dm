@@ -6,7 +6,8 @@
 	category = TUTORIAL_CATEGORY_MARINE
 	tutorial_template = /datum/map_template/tutorial/s17x13/ct
 	required_tutorial = "marine_basic_1"
-	var/scene_override = FALSE
+	var/scene_override = TRUE
+	var/clothing_items_to_vend = 10
 
 /datum/tutorial/marine/comtech/start_tutorial(mob/starting_mob)
 	. = ..()
@@ -79,7 +80,6 @@
 
 	TUTORIAL_ATOM_FROM_TRACKING(/turf/open/floor/strata/multi_tiles/west, prep_room_entry_turf)
 	RegisterSignal(prep_room_entry_turf, COMSIG_TURF_ENTERED, PROC_REF(prep_room_1))
-	prep_room_entry_turf.color = COLOR_BLUE
 
 /datum/tutorial/marine/comtech/proc/prep_room_1(source, mob/entering_mob)
 	SIGNAL_HANDLER
@@ -88,7 +88,6 @@
 		return
 
 	TUTORIAL_ATOM_FROM_TRACKING(/turf/open/floor/strata/multi_tiles/west, prep_room_entry_turf)
-	prep_room_entry_turf.color = COLOR_RED
 	UnregisterSignal(prep_room_entry_turf, COMSIG_TURF_ENTERED)
 	addtimer(CALLBACK(src, PROC_REF(lock_prep_room)), 0.5 SECONDS)
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/door/airlock/almayer/maint, door)
@@ -97,6 +96,7 @@
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/cm_vending/clothing/engi/tutorial, clothing_vendor)
 	clothing_vendor.req_access = list()
 	add_highlight(clothing_vendor, COLOR_ORANGE)
+	RegisterSignal(clothing_vendor, COMSIG_VENDOR_SUCCESSFUL_VEND, PROC_REF(on_clothing_vend))
 
 /datum/tutorial/marine/comtech/proc/lock_prep_room()
 	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/door/airlock/almayer/maint, door)
@@ -107,6 +107,24 @@
 		addtimer(CALLBACK(src, PROC_REF(lock_prep_room)), 1 SECONDS)
 		return
 	door.lock(TRUE)
+
+/datum/tutorial/marine/comtech/proc/on_clothing_vend()
+	SIGNAL_HANDLER
+
+	clothing_items_to_vend--
+	if(clothing_items_to_vend > 0)
+		return
+
+	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/cm_vending/clothing/engi/tutorial, clothing_vendor)
+	UnregisterSignal(clothing_vendor, COMSIG_VENDOR_SUCCESSFUL_VEND)
+	clothing_vendor.req_access = list(ACCESS_TUTORIAL_LOCKED)
+	remove_highlight(clothing_vendor)
+
+	message_to_player("Now, the room will darken. Take a <b>flare</b> out of your <b>flare pouch</b> by clicking on it with an empty hand, and then light it by using it in-hand with <b>[retrieve_bind("activate_inhand")]</b>.")
+
+	TUTORIAL_ATOM_FROM_TRACKING(/obj/structure/machinery/cm_vending/gear/engi/tutorial, gear_vendor)
+	gear_vendor.req_access = list()
+	add_highlight(gear_vendor, COLOR_ORANGE)
 
 /datum/tutorial/marine/comtech/message_to_player(message)
 	playsound_client(tutorial_mob.client, 'sound/effects/radiostatic.ogg', tutorial_mob.loc, 25, FALSE)
