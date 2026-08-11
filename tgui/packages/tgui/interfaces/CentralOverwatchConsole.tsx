@@ -82,7 +82,7 @@ type Data = {
 };
 
 type Props = Partial<{
-  minimised: boolean;
+  show_squad_info: boolean;
 }>;
 
 export const CentralOverwatchConsole = (props) => {
@@ -248,7 +248,7 @@ const CombinedSquadPanel = (props: Props) => {
 
   let { squad_data, squad_leader } = data;
 
-  const [minimised, setMinimised] = useState(props.minimised);
+  const [show_squad_info, setshow_squad_info] = useState(props.show_squad_info);
 
   const squadStringify = {
     alpha: 'red',
@@ -327,10 +327,12 @@ const CombinedSquadPanel = (props: Props) => {
                               align="center"
                               tooltip={
                                 '[ ' +
-                                (minimised ? 'Expand' : 'Minimise') +
+                                (show_squad_info ? 'Minimise' : 'Expand') +
                                 ' squad overview ]'
                               }
-                              onClick={() => setMinimised(!minimised)}
+                              onClick={() =>
+                                setshow_squad_info(!show_squad_info)
+                              }
                             />
                           </Flex.Item>
                           <Flex.Item grow>
@@ -352,7 +354,7 @@ const CombinedSquadPanel = (props: Props) => {
                         </Flex>
                       </Table.Cell>
                     </Table.Row>
-                    {!minimised && (
+                    {show_squad_info && (
                       <>
                         <Table.Row bold>
                           <Table.Cell textAlign="center">
@@ -961,6 +963,7 @@ const SquadMonitor = (props) => {
       fill
       fontSize="14px"
       title="Squad Monitor"
+      className="CentralOverwatchConsole"
       buttons={
         <>
           <Button
@@ -1010,14 +1013,12 @@ const SquadMonitor = (props) => {
         <Stack.Item grow>
           <Section m="0px" mb="3px" scrollable fill fitted>
             <Table>
-              <Table.Row bold fontSize="14px">
-                <Table.Cell textAlign="center">Name</Table.Cell>
-                <Table.Cell textAlign="center">Role</Table.Cell>
-                <Table.Cell textAlign="center" collapsing>
-                  State
-                </Table.Cell>
-                <Table.Cell textAlign="center">Location</Table.Cell>
-                <Table.Cell textAlign="center" collapsing fontSize="12px">
+              <Table.Row className="SquadInfoHeading">
+                <Table.Cell>Name</Table.Cell>
+                <Table.Cell>Role</Table.Cell>
+                <Table.Cell collapsing>State</Table.Cell>
+                <Table.Cell collapsing>Location</Table.Cell>
+                <Table.Cell collapsing fontSize="12px">
                   SL Dist.
                 </Table.Cell>
               </Table.Row>
@@ -1078,8 +1079,8 @@ const SquadMonitor = (props) => {
                     }
 
                     return (
-                      <Table.Row key={marine.ref}>
-                        <Table.Cell collapsing p="2px">
+                      <Table.Row className="SquadInfo" key={marine.ref}>
+                        <Table.Cell>
                           {(marine.has_helmet && (
                             <Button
                               onClick={() =>
@@ -1094,17 +1095,14 @@ const SquadMonitor = (props) => {
                             <Box color="yellow">{marine.name} (NO HELMET)</Box>
                           )}
                         </Table.Cell>
-                        <Table.Cell p="2px">{marine.role}</Table.Cell>
+                        <Table.Cell>{marine.role}</Table.Cell>
                         <Table.Cell
-                          p="2px"
                           color={determine_status_color(marine.state)}
                         >
                           {marine.state}
                         </Table.Cell>
-                        <Table.Cell p="2px">{marine.area_name}</Table.Cell>
-                        <Table.Cell p="2px" collapsing>
-                          {marine.distance}
-                        </Table.Cell>
+                        <Table.Cell>{marine.area_name}</Table.Cell>
+                        <Table.Cell>{marine.distance}</Table.Cell>
                       </Table.Row>
                     );
                   })
