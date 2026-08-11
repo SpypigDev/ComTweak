@@ -61,7 +61,7 @@
 
 	// Workaround to account for the fact that this is subsystemized
 	// See on_turf_entered
-	var/list/atom/exploded_atoms = list()
+	var/list/exploded_atoms = list()
 
 	var/obj/effect/particle_effect/shockwave/shockwave = null
 
@@ -83,7 +83,11 @@
 
 /datum/automata_cell/explosion/propagate(dir)
 	var/datum/automata_cell/explosion/new_cell = ..()
-	new_cell?.exploded_atoms += exploded_atoms
+	for(var/nested_atom in exploded_atoms)
+		var/atom/exploded_atom
+		if(!exploded_atom.gc_destroyed)
+			exploded_atoms -= exploded_atom
+	new_cell?.exploded_atoms |= exploded_atoms
 	return new_cell
 
 // Attempts to merge explosions. Will compare directions to determine effects on power.
@@ -159,18 +163,20 @@
 		return
 	// The resistance here will affect the damage taken and the falloff in the propagated explosion
 	var/resistance = max(0, in_turf.get_explosion_resistance(direction))
-	for(var/atom/thing in in_turf)
+	for(var/atom/thing as anything in in_turf)
 		resistance += max(0, thing.get_explosion_resistance())
 
 	// Blow stuff up
-	INVOKE_ASYNC(in_turf, TYPE_PROC_REF(/atom, ex_act), power, direction, explosion_cause_data, 0, enviro)
-	for(var/atom/thing in in_turf)
+	//INVOKE_ASYNC(in_turf, TYPE_PROC_REF(/atom, ex_act), power, direction, explosion_cause_data, 0, enviro)
+	in_turf.ex_act(power, direction, explosion_cause_data, 0, enviro)
+	for(var/atom/thing as anything in in_turf)
 		if(thing.gc_destroyed)
 			continue
-		if(thing in exploded_atoms)
+		if(exploded_atoms[thing])
 			continue
-		exploded_atoms += thing
-		INVOKE_ASYNC(thing, TYPE_PROC_REF(/atom, ex_act), power, direction, explosion_cause_data, 0, enviro)
+		exploded_atoms[thing] = TRUE
+		//INVOKE_ASYNC(thing, TYPE_PROC_REF(/atom, ex_act), power, direction, explosion_cause_data, 0, enviro)
+		thing.ex_act(power, direction, explosion_cause_data, 0, enviro)
 		log_explosion(thing, src)
 
 	var/reflected = FALSE
@@ -255,15 +261,16 @@ as having entered the turf.
 	// Once is enough
 	if(thing.gc_destroyed)
 		return
-	if(thing in exploded_atoms)
+	if(exploded_atoms[thing])
 		return
 
-	exploded_atoms += thing
+	exploded_atoms[thing] = TRUE
 
 	// Note that we don't want to make it a directed ex_act because
 	// it could toss them back and make them get hit by the explosion again
 	// so we indicate this with a direction < 0
-	INVOKE_ASYNC(thing, TYPE_PROC_REF(/atom, ex_act), power, -1, explosion_cause_data, 0, enviro)
+	//INVOKE_ASYNC(thing, TYPE_PROC_REF(/atom, ex_act), power, -1, explosion_cause_data, 0, enviro)
+	thing.ex_act(power, -1, explosion_cause_data, 0, enviro)
 	log_explosion(thing, src)
 
 // I'll admit most of the code from here on out is basically just copypasta from DOREC

@@ -1,8 +1,8 @@
 GLOBAL_LIST_EMPTY(cellauto_cells)
 
 SUBSYSTEM_DEF(cellauto)
-	name  = "Cellular Automata"
-	wait  = 0.05 SECONDS
+	name = "Cellular Automata"
+	wait = 0.5 SECONDS
 	priority = SS_PRIORITY_CELLAUTO
 	flags = SS_NO_INIT
 
@@ -13,17 +13,16 @@ SUBSYSTEM_DEF(cellauto)
 	return ..()
 
 /datum/controller/subsystem/cellauto/fire(resumed = FALSE)
-	if (!resumed)
+	if(!resumed)
 		currentrun = GLOB.cellauto_cells.Copy()
-
 	while(length(currentrun))
-		var/datum/automata_cell/C = currentrun[length(currentrun)]
-		currentrun.len--
+		var/datum/automata_cell/cell = currentrun[1]
+		currentrun.Cut(1, 2)
 
-		if (!C || QDELETED(C))
+		if(!cell || QDELETED(cell))
 			continue
 
-		C.update_state()
+		cell.update_state()
 
-		if (MC_TICK_CHECK)
-			return
+		//if(MC_TICK_CHECK)
+		//	return
