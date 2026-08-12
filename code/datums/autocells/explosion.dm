@@ -83,10 +83,6 @@
 
 /datum/automata_cell/explosion/propagate(dir)
 	var/datum/automata_cell/explosion/new_cell = ..()
-	for(var/nested_atom in exploded_atoms)
-		var/atom/exploded_atom
-		if(!exploded_atom.gc_destroyed)
-			exploded_atoms -= exploded_atom
 	new_cell?.exploded_atoms |= exploded_atoms
 	return new_cell
 
@@ -172,9 +168,10 @@
 	for(var/atom/thing as anything in in_turf)
 		if(thing.gc_destroyed)
 			continue
-		if(exploded_atoms[thing])
+		var/atom_reference = text_ref(thing)
+		if(exploded_atoms[atom_reference])
 			continue
-		exploded_atoms[thing] = TRUE
+		exploded_atoms[atom_reference] = atom_reference
 		//INVOKE_ASYNC(thing, TYPE_PROC_REF(/atom, ex_act), power, direction, explosion_cause_data, 0, enviro)
 		thing.ex_act(power, direction, explosion_cause_data, 0, enviro)
 		log_explosion(thing, src)
@@ -261,10 +258,10 @@ as having entered the turf.
 	// Once is enough
 	if(thing.gc_destroyed)
 		return
-	if(exploded_atoms[thing])
+	var/atom_reference = text_ref(thing)
+	if(exploded_atoms[atom_reference])
 		return
-
-	exploded_atoms[thing] = TRUE
+	exploded_atoms[atom_reference] = atom_reference
 
 	// Note that we don't want to make it a directed ex_act because
 	// it could toss them back and make them get hit by the explosion again
