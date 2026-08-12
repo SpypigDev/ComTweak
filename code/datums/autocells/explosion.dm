@@ -61,7 +61,7 @@
 
 	// Workaround to account for the fact that this is subsystemized
 	// See on_turf_entered
-	var/list/exploded_atoms = list()
+	var/list/atom/exploded_atoms = list()
 
 	var/obj/effect/particle_effect/shockwave/shockwave = null
 
@@ -79,7 +79,7 @@
 /datum/automata_cell/explosion/death()
 	if(shockwave)
 		qdel(shockwave)
-	exploded_atoms.Cut()
+	exploded_atoms = null
 
 /datum/automata_cell/explosion/propagate(dir)
 	var/datum/automata_cell/explosion/new_cell = ..()
@@ -163,17 +163,17 @@
 		resistance += max(0, thing.get_explosion_resistance())
 
 	// Blow stuff up
-	//INVOKE_ASYNC(in_turf, TYPE_PROC_REF(/atom, ex_act), power, direction, explosion_cause_data, 0, enviro)
-	in_turf.ex_act(power, direction, explosion_cause_data, 0, enviro)
+	INVOKE_ASYNC(in_turf, TYPE_PROC_REF(/atom, ex_act), power, direction, explosion_cause_data, 0, enviro)
+	//in_turf.ex_act(power, direction, explosion_cause_data, 0, enviro)
 	for(var/atom/thing as anything in in_turf)
 		if(thing.gc_destroyed)
 			continue
-		var/atom_reference = text_ref(thing)
+		var/atom_reference = "[text_ref(thing)]"
 		if(exploded_atoms[atom_reference])
 			continue
 		exploded_atoms[atom_reference] = atom_reference
-		//INVOKE_ASYNC(thing, TYPE_PROC_REF(/atom, ex_act), power, direction, explosion_cause_data, 0, enviro)
-		thing.ex_act(power, direction, explosion_cause_data, 0, enviro)
+		INVOKE_ASYNC(thing, TYPE_PROC_REF(/atom, ex_act), power, direction, explosion_cause_data, 0, enviro)
+		//thing.ex_act(power, direction, explosion_cause_data, 0, enviro)
 		log_explosion(thing, src)
 
 	var/reflected = FALSE
@@ -258,7 +258,7 @@ as having entered the turf.
 	// Once is enough
 	if(thing.gc_destroyed)
 		return
-	var/atom_reference = text_ref(thing)
+	var/atom_reference = "[text_ref(thing)]"
 	if(exploded_atoms[atom_reference])
 		return
 	exploded_atoms[atom_reference] = atom_reference
