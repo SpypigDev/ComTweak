@@ -4,7 +4,7 @@ SUBSYSTEM_DEF(cellauto)
 	name = "Cellular Automata"
 	wait = 1
 	priority = SS_PRIORITY_CELLAUTO
-	flags = SS_NO_INIT|SS_TICKER|SS_POST_FIRE_TIMING
+	flags = SS_NO_INIT|SS_TICKER
 
 	var/list/currentrun = list()
 

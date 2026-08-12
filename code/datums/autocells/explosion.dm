@@ -61,13 +61,14 @@
 
 	// Workaround to account for the fact that this is subsystemized
 	// See on_turf_entered
-	var/list/atom/exploded_atoms = list()
+	var/list/exploded_atoms
 
 	var/obj/effect/particle_effect/shockwave/shockwave = null
 
 // If we're on a fake z teleport, teleport over
 /datum/automata_cell/explosion/birth()
 	shockwave = new(in_turf)
+	exploded_atoms = list()
 
 	var/obj/effect/step_trigger/teleporter_vector/V = locate() in in_turf
 	if(!V)
@@ -83,7 +84,9 @@
 
 /datum/automata_cell/explosion/propagate(dir)
 	var/datum/automata_cell/explosion/new_cell = ..()
-	new_cell?.exploded_atoms |= exploded_atoms
+	if(QDELETED(new_cell))
+		return
+	new_cell?.exploded_atoms += exploded_atoms
 	return new_cell
 
 // Attempts to merge explosions. Will compare directions to determine effects on power.
@@ -160,20 +163,21 @@
 	// The resistance here will affect the damage taken and the falloff in the propagated explosion
 	var/resistance = max(0, in_turf.get_explosion_resistance(direction))
 	for(var/atom/thing as anything in in_turf)
-		resistance += max(0, thing.get_explosion_resistance())
+		resistance += thing.get_explosion_resistance()
 
 	// Blow stuff up
-	INVOKE_ASYNC(in_turf, TYPE_PROC_REF(/atom, ex_act), power, direction, explosion_cause_data, 0, enviro)
+	var/list/ex_act_arguments = list(power, direction, explosion_cause_data, 0, enviro)
+	CallAsync(in_turf, TYPE_PROC_REF(/atom, ex_act), ex_act_arguments)
+	//INVOKE_ASYNC(in_turf, TYPE_PROC_REF(/atom, ex_act), power, direction, explosion_cause_data, 0, enviro)
 	//in_turf.ex_act(power, direction, explosion_cause_data, 0, enviro)
-	for(var/atom/thing as anything in in_turf)
+	for(var/atom/thing in in_turf)
 		if(thing.gc_destroyed)
 			continue
 		var/atom_reference = "[text_ref(thing)]"
 		if(exploded_atoms[atom_reference])
 			continue
 		exploded_atoms[atom_reference] = atom_reference
-		INVOKE_ASYNC(thing, TYPE_PROC_REF(/atom, ex_act), power, direction, explosion_cause_data, 0, enviro)
-		//thing.ex_act(power, direction, explosion_cause_data, 0, enviro)
+		CallAsync(thing, TYPE_PROC_REF(/atom, ex_act), ex_act_arguments)
 		log_explosion(thing, src)
 
 	var/reflected = FALSE
@@ -212,33 +216,35 @@
 			continue
 
 		var/datum/automata_cell/explosion/new_cell = propagate(dir)
-		if(!QDELETED(new_cell))
-			var/new_falloff = power_falloff
-			// Handle our falloff function.
-			switch(falloff_shape)
-				if(EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL)
+		if(!new_cell)	// poor lil guy
+			continue
+
+		var/new_falloff = power_falloff
+		// Handle our falloff function.
+		switch(falloff_shape)
+			if(EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL)
+				new_falloff += new_falloff * dir_falloff
+			if(EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL_HALF)
+				new_falloff += (new_falloff*0.5) * dir_falloff
+			if(EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL_IN_PYLON)
+				if(new_cell.in_turf.get_pylon_protection_level() >= TURF_PROTECTION_OB)
 					new_falloff += new_falloff * dir_falloff
-				if(EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL_HALF)
+			if(EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL_HALF_IN_PYLON)
+				if(new_cell.in_turf.get_pylon_protection_level() >= TURF_PROTECTION_OB)
 					new_falloff += (new_falloff*0.5) * dir_falloff
-				if(EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL_IN_PYLON)
-					if(new_cell.in_turf.get_pylon_protection_level() >= TURF_PROTECTION_OB)
-						new_falloff += new_falloff * dir_falloff
-				if(EXPLOSION_FALLOFF_SHAPE_EXPONENTIAL_HALF_IN_PYLON)
-					if(new_cell.in_turf.get_pylon_protection_level() >= TURF_PROTECTION_OB)
-						new_falloff += (new_falloff*0.5) * dir_falloff
 
-			new_cell.power = new_power
-			new_cell.power_falloff = new_falloff
-			new_cell.falloff_shape = falloff_shape
-			new_cell.explosion_cause_data = explosion_cause_data
+		new_cell.power = new_power
+		new_cell.power_falloff = new_falloff
+		new_cell.falloff_shape = falloff_shape
+		new_cell.explosion_cause_data = explosion_cause_data
 
-			// Set the direction the explosion is traveling in
-			new_cell.direction = dir
-			//Diagonal cells have a small delay when branching off the center. This helps the explosion look circular
-			if(!direction && (dir in GLOB.diagonals))
-				new_cell.delay = 1
+		// Set the direction the explosion is traveling in
+		new_cell.direction = dir
+		//Diagonal cells have a small delay when branching off the center. This helps the explosion look circular
+		if(!direction && (dir in GLOB.diagonals))
+			new_cell.delay = 1
 
-			setup_new_cell(new_cell)
+		setup_new_cell(new_cell)
 
 	// We've done our duty, now die pls
 	qdel(src)
@@ -326,6 +332,8 @@ as having entered the turf.
 
 /// Handle all logging for an automata_cell explosion.
 /proc/log_explosion(mob/living/affected, datum/automata_cell/explosion/explosion)
+	set waitfor = FALSE
+
 	if(!istype(affected))
 		return
 
