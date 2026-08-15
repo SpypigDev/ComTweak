@@ -16,9 +16,6 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	plane = OPEN_SPACE_PLANE_START
 	is_weedable = NOT_WEEDABLE
 
-/turf/open_space/proc/get_projected_turf()
-	return SSmapping.get_turf_below(get_turf(src))
-
 /turf/open_space/Initialize(mapload, ...)
 	pass_flags = GLOB.pass_flags_cache[type]
 
@@ -141,11 +138,6 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 
 	user.visible_message(SPAN_WARNING("[user] climbs down."), SPAN_WARNING("You climb down."))
 
-	var/turf/below = SSmapping.get_turf_below(current_turf)
-	//var/turf/below = get_projected_turf()
-	while(istype(below, /turf/open_space))
-		below = SSmapping.get_turf_below(below)
-
 	user.forceMove(below)
 	for(var/atom/movable/thing as anything in grabbed_things) // grabbed things aren't moved to the tile immediately to: make the animation better, preserve the grab
 		thing.forceMove(below)
@@ -162,9 +154,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 		return // Ignore multiloc things unless their primary loc is here
 
 	var/height = 1
-	var/turf/below = SSmapping.get_turf_below(get_turf(src))
-	//var/turf/below = get_projected_turf()
-
+	var/turf/below = get_turf_below()
 	while(istype(below, /turf/open_space))
 		below = SSmapping.get_turf_below(below)
 		height++
@@ -214,7 +204,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 /turf/open_space/blackfoot/attack_hand(mob/user)
 	return
 
-/turf/open_space/blackfoot/get_projected_turf()
+/turf/open_space/blackfoot/get_turf_below()
 	RETURN_TYPE(/turf)
 	return locate(target_x, target_y, target_z)
 
@@ -223,7 +213,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	for(var/obj/vis_contents_holder/holder in src)
 		qdel(holder)
 
-	var/turf/below = get_projected_turf()
+	var/turf/below = get_turf_below()
 	var/depth = 0
 	while(below)
 		new /obj/vis_contents_holder(src, below, depth, backdrop)
@@ -236,7 +226,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 	if(!ishuman(mover))
 		return TRUE
 
-	var/turf/projected_turf = get_projected_turf()
+	var/turf/projected_turf = get_turf_below()
 	if(projected_turf.density)
 		return FALSE
 
@@ -251,7 +241,7 @@ GLOBAL_DATUM_INIT(openspace_backdrop_one_for_all, /atom/movable/openspace_backdr
 		return
 
 	var/height = should_fall ? 1 : 0
-	var/turf/below = get_projected_turf()
+	var/turf/below = get_turf_below()
 
 	while(istype(below, /turf/open_space))
 		below = SSmapping.get_turf_below(below)
