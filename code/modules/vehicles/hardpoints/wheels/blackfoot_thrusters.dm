@@ -36,13 +36,31 @@
 	for(var/atom/movable/screen/blackfoot/custom_screen as anything in blackfoot_owner.custom_hud)
 		custom_screen.update(blackfoot_owner.fuel, blackfoot_owner.max_fuel, blackfoot_owner.health, blackfoot_owner.maxhealth, blackfoot_owner.battery, blackfoot_owner.max_battery)
 
-	if(world.time > last_idle_sound + idle_sound_cooldown)
-		playsound(blackfoot_owner.loc, 'sound/vehicles/vtol/engineidle.ogg', 10, FALSE)
-		last_idle_sound = world.time
-
 	blackfoot_owner.fuel = max(0, blackfoot_owner.fuel - deltatime / 2)
 
 	if(blackfoot_owner.fuel < 0)
 		blackfoot_owner.toggle_engines()
+		blackfoot_owner.engine_sound_loop.stop()
 		STOP_PROCESSING(SSobj, src)
 
+/datum/looping_sound/blackfoot/thruster
+	start_sound = 'sound/vehicles/vtol/enginestartup.ogg'
+	start_length = 2 SECONDS
+	start_volume = 25
+	mid_sounds = 'sound/vehicles/vtol/engineidleloop.ogg'
+	mid_length = 3.3 SECONDS
+	end_sound = 'sound/vehicles/vtol/engineshutdown.ogg'
+	volume = 20
+
+/datum/looping_sound/blackfoot/thruster/start()
+	var/obj/vehicle/multitile/blackfoot/blackfoot_owner = parent
+	if(blackfoot_owner.state != "deployed")
+		skip_starting_sounds = TRUE
+	end_sound = initial(end_sound)
+	return ..()
+
+/datum/looping_sound/blackfoot/thruster/stop()
+	var/obj/vehicle/multitile/blackfoot/blackfoot_owner = parent
+	if(blackfoot_owner.state != "idling")
+		end_sound = null
+	return ..()

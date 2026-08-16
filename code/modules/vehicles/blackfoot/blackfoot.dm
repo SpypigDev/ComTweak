@@ -84,9 +84,11 @@
 	var/turn_delay = 1 SECONDS
 
 	var/state = STATE_STOWED
+	var/state_brake_locked = TRUE
 
 	var/last_flight_sound = 0
 	var/flight_sound_cooldown = 4 SECONDS
+	var/datum/looping_sound/blackfoot/thruster/engine_sound_loop
 
 	var/obj/blackfoot_shadow/shadow_holder
 
@@ -128,10 +130,12 @@
 	. = ..()
 	AddComponent(/datum/component/tacmap, has_drawing_tools=FALSE, minimap_flag=minimap_type, has_update=FALSE)
 	RegisterSignal(src, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(update_rear_view))
+	engine_sound_loop = new(src)
 	update_icon()
 
 /obj/vehicle/multitile/blackfoot/Destroy()
 	QDEL_NULL(shadow_holder)
+	QDEL_NULL(engine_sound_loop)
 	UnregisterSignal(src, COMSIG_MOVABLE_Z_CHANGED)
 	. = ..()
 
@@ -206,22 +210,23 @@
 	if(shadow_holder)
 		shadow_holder.icon_state = "[get_sprite_state()]_shadow"
 
+/obj/vehicle/multitile/blackfoot/Moved()
+	if(state != STATE_TUGGED)
+		return ..()
+
+	var/turf/possible_pad_turf = locate(x - 1, y - 1, z)
+	var/obj/structure/landing_pad/landing_pad = locate() in possible_pad_turf
+
+	if(!landing_pad)
+		return ..()
+
+	to_chat(seats[VEHICLE_DRIVER], SPAN_NOTICE("Landing pad detected, Starting fueling procedures."))
+	START_PROCESSING(SSobj, landing_pad)
+
+	. = ..()
+
 /obj/vehicle/multitile/blackfoot/relaymove(mob/user, direction)
-	if(state == STATE_TUGGED)
-		. = ..()
-
-		var/turf/possible_pad_turf = locate(x - 1, y - 1, z)
-		var/obj/structure/landing_pad/landing_pad = locate() in possible_pad_turf
-
-		if(!landing_pad)
-			return
-
-		to_chat(seats[VEHICLE_DRIVER], SPAN_NOTICE("Landing pad detected, Starting fueling procedures."))
-		START_PROCESSING(SSobj, landing_pad)
-
-		return
-
-	if(state == STATE_VTOL)
+	if(state == (STATE_TUGGED || STATE_VTOL))
 		return ..()
 
 	if(last_turn + turn_delay > world.time)
@@ -230,7 +235,7 @@
 	if(state != STATE_FLIGHT)
 		return
 
-	if (dir == turn(direction, 180) || dir == direction)
+	if(dir == turn(direction, 180) || dir == direction)
 		return FALSE
 
 	try_rotate(turning_angle(dir, direction))
@@ -743,12 +748,7 @@
 		return
 
 	busy = TRUE
-	if(state == STATE_DEPLOYED)
-		playsound(loc, 'sound/vehicles/vtol/enginestartup.ogg', 25, FALSE)
-	else
-		playsound(loc, 'sound/vehicles/vtol/engineshutdown.ogg', 25, FALSE)
-
-	addtimer(CALLBACK(src, PROC_REF(transition_engines)), 3 SECONDS)
+	addtimer(CALLBACK(src, PROC_REF(transition_engines)), 2 SECONDS)
 	addtimer(VARSET_CALLBACK(src, busy, FALSE), 3 SECONDS)
 
 /obj/vehicle/multitile/blackfoot/proc/transition_engines()
@@ -756,13 +756,16 @@
 		var/obj/item/hardpoint/locomotion/blackfoot_thrusters/thrusters = locate() in hardpoints
 		if(!thrusters)
 			return
+		engine_sound_loop.start()
 		START_PROCESSING(SSobj, thrusters)
+		engine_sound_loop.start()
 		change_state(STATE_IDLING)
 	else
 		var/obj/item/hardpoint/locomotion/blackfoot_thrusters/thrusters = locate() in hardpoints
 		if(!thrusters)
 			return
 		STOP_PROCESSING(SSobj, thrusters)
+		engine_sound_loop.stop()
 		change_state(STATE_DEPLOYED)
 
 /obj/vehicle/multitile/blackfoot/proc/toggle_targeting()
@@ -902,6 +905,31 @@
 	vehicle.toggle_stowed()
 	return
 
+/obj/vehicle/multitile/blackfoot/proc/toggle_brakes()
+	set name = "Toggle Vehicle Brakes"
+	set desc = "Toggle the Blackfoot's stationary brakes."
+	set category = "Vehicle"
+
+	var/mob/user = usr
+	if(QDELETED(user) || !user.client)
+		return
+
+	var/user_in_seat
+	for(var/vehicle_seat in seats)
+		if(seats[vehicle_seat] == user)
+			user_in_seat = vehicle_seat
+			break
+	if(!user_in_seat)
+		return
+
+	if(state != (STATE_TUGGED || STATE_DEPLOYED) && !state_brake_locked)
+		to_chat(seats[VEHICLE_DRIVER], SPAN_WARNING("You cannot deploy brakes in this flight mode."))
+		playsound_client(user.client, 'sound/machines/terminal_button08.ogg', 25, FALSE)
+		return
+
+	state_brake_locked = !state_brake_locked
+	to_chat(seats[VEHICLE_DRIVER], SPAN_NOTICE("You [state_brake_locked ? "retract" : "engage"] the vehicles stationary brakes."))
+	playsound(loc, state_brake_locked ? 'sound/machines/elevator_openclose.ogg' : 'sound/machines/hydraulics_2.ogg', 25, FALSE)
 
 /datum/action/human_action/blackfoot/New(Target, obj/item/holder)
 	. = ..()
@@ -909,10 +937,18 @@
 	button.overlays.Cut()
 	button.overlays += image('icons/mob/hud/actions.dmi', button, action_icon_state)
 
-/datum/action/human_action/blackfoot/action_activate()
+/datum/action/human_action/blackfoot/action_activate(action_outcome = TRUE)
 	. = ..()
 
-	playsound(owner.loc, 'sound/vehicles/vtol/buttonpress.ogg', 25, FALSE)
+	playsound(owner.loc, action_outcome ? "terminal_button" : 'sound/vehicles/vtol/buttonpress.ogg', 25, FALSE)
+
+/datum/action/human_action/blackfoot/can_use_action()
+	if(hidden)
+		return FALSE
+	if(!owner)
+		return FALSE
+
+	return action_cooldown_check()
 
 /datum/action/human_action/blackfoot/takeoff
 	name = "Takeoff"
@@ -924,9 +960,7 @@
 	if(!istype(vehicle))
 		return
 
-	. = ..()
-
-	vehicle.takeoff()
+	return ..(vehicle.takeoff())
 
 /datum/action/human_action/blackfoot/land
 	name = "Land"
@@ -966,9 +1000,20 @@
 	if(!istype(vehicle))
 		return
 
-	. = ..()
+	return ..(vehicle.toggle_stow())
 
-	vehicle.toggle_stow()
+
+/datum/action/human_action/blackfoot/toggle_brake
+	name = "Toggle Stationary Brakes"
+	action_icon_state = "id_lock_locked"
+
+/datum/action/human_action/blackfoot/toggle_brake/action_activate()
+	var/obj/vehicle/multitile/blackfoot/vehicle = owner.interactee
+
+	if(!istype(vehicle))
+		return
+
+	return ..(vehicle.toggle_brakes())
 
 /datum/action/human_action/blackfoot/disconnect_tug
 	name = "Disconnect Tug"
