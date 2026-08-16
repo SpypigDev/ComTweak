@@ -244,7 +244,8 @@
 	if(back_door.open)
 		update_rear_view()
 
-	shadow_holder.dir = dir
+	if(shadow_holder)
+		shadow_holder.dir = dir
 	last_turn = world.time
 
 /obj/vehicle/multitile/blackfoot/process(deltatime)
@@ -1370,6 +1371,36 @@
 			icon_state = "indicator_landing"
 		if(STATE_VTOL, STATE_FLIGHT)
 			icon_state = "indicator_flight"
+
+/*
+** PRESETS SPAWNERS
+*/
+/obj/effect/vehicle_spawner/blackfoot
+	name = "AD-71E Blackfoot Spawner"
+	icon = 'icons/obj/vehicles/blackfoot.dmi'
+	icon_state = "stowed"
+	pixel_x = -64
+	pixel_y = -32
+
+/obj/effect/vehicle_spawner/blackfoot/Initialize()
+	. = ..()
+	spawn_vehicle()
+	return INITIALIZE_HINT_QDEL
+
+/obj/effect/vehicle_spawner/blackfoot/spawn_vehicle()
+	var/obj/vehicle/multitile/blackfoot/blackfoot = new (loc)
+
+	//load_misc(blackfoot)
+	load_hardpoints(blackfoot)
+	//handle_direction(blackfoot)
+	blackfoot.update_icon()
+
+/obj/effect/vehicle_spawner/blackfoot/load_hardpoints(obj/vehicle/multitile/blackfoot/vehicle)
+	vehicle.add_hardpoint(new /obj/item/hardpoint/primary/chimera_launchers)
+	vehicle.add_hardpoint(new /obj/item/hardpoint/locomotion/blackfoot_thrusters)
+	vehicle.add_hardpoint(new /obj/item/hardpoint/support/arc_antenna)
+	vehicle.add_hardpoint(new /obj/item/hardpoint/support/sensor_array)
+	vehicle.add_hardpoint(new /obj/item/hardpoint/secondary/doorgun)
 
 #undef STATE_TUGGED
 #undef STATE_STOWED
