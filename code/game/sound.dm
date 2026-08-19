@@ -31,8 +31,18 @@
 /proc/get_free_channel()
 	var/static/cur_chan = 1
 	. = cur_chan++
-	if(cur_chan > FREE_CHAN_END)
+	if(cur_chan > FREE_CHAN_END || (cur_chan in GLOB.semi_reserved_sound_channels))
 		cur_chan = 1
+
+/proc/register_reserved_channel()
+	var/channel_reservation = FREE_CHAN_END - 1
+	var/list/reservations = GLOB.semi_reserved_sound_channels
+	if(!length(reservations))
+		reservations += channel_reservation
+		return channel_reservation
+	channel_reservation = reservations[1] -1
+	reservations.Insert(1, channel_reservation)
+	return channel_reservation
 
 //Proc used to play a sound effect. Avoid using this proc for non-IC sounds, as there are others
 //source: self-explanatory.
@@ -87,7 +97,7 @@
 
 	if(!SSinterior)
 		SSsound.queue(template)
-		return template.channel
+		return template
 
 	var/list/datum/interior/extra_interiors = list()
 	// If we're in an interior, range the chunk, then adjust to do so from outside instead
@@ -108,7 +118,7 @@
 			extra_interiors |= vehicle_interior
 
 	SSsound.queue(template, null, extra_interiors)
-	return template.channel
+	return template
 
 
 

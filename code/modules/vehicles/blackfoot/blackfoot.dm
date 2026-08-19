@@ -756,16 +756,15 @@
 		var/obj/item/hardpoint/locomotion/blackfoot_thrusters/thrusters = locate() in hardpoints
 		if(!thrusters)
 			return
-		engine_sound_loop.start()
-		START_PROCESSING(SSobj, thrusters)
-		engine_sound_loop.start()
+		START_PROCESSING(SSfastobj, thrusters)
+		//engine_sound_loop.start()
 		change_state(STATE_IDLING)
 	else
 		var/obj/item/hardpoint/locomotion/blackfoot_thrusters/thrusters = locate() in hardpoints
 		if(!thrusters)
 			return
-		STOP_PROCESSING(SSobj, thrusters)
-		engine_sound_loop.stop()
+		STOP_PROCESSING(SSfastobj, thrusters)
+		//engine_sound_loop.stop()
 		change_state(STATE_DEPLOYED)
 
 /obj/vehicle/multitile/blackfoot/proc/toggle_targeting()

@@ -20,6 +20,8 @@
 
 #define ITEM_EQUIP_VOLUME 50
 
+GLOBAL_LIST_EMPTY(semi_reserved_sound_channels)
+
 //Reserved channels
 #define SOUND_CHANNEL_NOTIFY 1016
 #define SOUND_CHANNEL_VOX    1017

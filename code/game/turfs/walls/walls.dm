@@ -694,7 +694,8 @@
 		return FALSE
 
 	for(var/i = 1 to amount_needed)
-		var/soundchannel = playsound(src, NG.repair_sound, 25, 1)
+		var/datum/sound_template/template = playsound(src, NG.repair_sound, 25, 1)
+		var/soundchannel = template.channel
 		if(!do_after(user, NG.nailing_speed, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, src))
 			playsound(src, null, channel = soundchannel)
 			return FALSE

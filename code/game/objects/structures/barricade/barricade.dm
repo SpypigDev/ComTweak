@@ -559,7 +559,8 @@
 		to_chat(user, SPAN_WARNING("You'll need some adequate repair material in your other hand to patch up [src]!"))
 		return FALSE
 
-	var/soundchannel = playsound(src, nailgun.repair_sound, 25, 1)
+	var/datum/sound_template/template = playsound(src, nailgun.repair_sound, 25, 1)
+	var/soundchannel = template.channel
 	if(!do_after(user, nailgun.nailing_speed, INTERRUPT_ALL, BUSY_ICON_FRIENDLY, src))
 		playsound(src, null, channel = soundchannel)
 		return FALSE
