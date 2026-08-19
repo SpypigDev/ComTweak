@@ -130,12 +130,10 @@
 	. = ..()
 	AddComponent(/datum/component/tacmap, has_drawing_tools=FALSE, minimap_flag=minimap_type, has_update=FALSE)
 	RegisterSignal(src, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(update_rear_view))
-	engine_sound_loop = new(src)
 	update_icon()
 
 /obj/vehicle/multitile/blackfoot/Destroy()
 	QDEL_NULL(shadow_holder)
-	QDEL_NULL(engine_sound_loop)
 	UnregisterSignal(src, COMSIG_MOVABLE_Z_CHANGED)
 	. = ..()
 
@@ -748,7 +746,9 @@
 		return
 
 	busy = TRUE
-	addtimer(CALLBACK(src, PROC_REF(transition_engines)), 2 SECONDS)
+	if(state == STATE_DEPLOYED)
+		playsound(src, 'sound/vehicles/vtol/enginestartup.ogg', 20, FALSE, channel=thrusters.semi_reserved_channel, status=SOUND_STREAM)
+	addtimer(CALLBACK(src, PROC_REF(transition_engines)), 1.5 SECONDS)
 	addtimer(VARSET_CALLBACK(src, busy, FALSE), 3 SECONDS)
 
 /obj/vehicle/multitile/blackfoot/proc/transition_engines()
@@ -757,14 +757,13 @@
 		if(!thrusters)
 			return
 		START_PROCESSING(SSfastobj, thrusters)
-		//engine_sound_loop.start()
 		change_state(STATE_IDLING)
 	else
 		var/obj/item/hardpoint/locomotion/blackfoot_thrusters/thrusters = locate() in hardpoints
 		if(!thrusters)
 			return
 		STOP_PROCESSING(SSfastobj, thrusters)
-		//engine_sound_loop.stop()
+		playsound(src, sound('sound/vehicles/vtol/engineshutdown.ogg', 0, 0, thrusters.semi_reserved_channel, 20), 20, FALSE, channel=thrusters.semi_reserved_channel)
 		change_state(STATE_DEPLOYED)
 
 /obj/vehicle/multitile/blackfoot/proc/toggle_targeting()

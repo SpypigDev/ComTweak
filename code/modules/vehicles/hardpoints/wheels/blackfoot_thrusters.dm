@@ -20,12 +20,10 @@
 	var/semi_reserved_channel
 	var/list/hear
 	var/list/listeners
-	var/active_processing = FALSE
 
 /obj/item/hardpoint/locomotion/blackfoot_thrusters/on_install(obj/vehicle/multitile/V)
 	hear = list()
 	listeners = list()
-	var/obj/vehicle/multitile/blackfoot/blackfoot_owner = owner
 	semi_reserved_channel = register_reserved_channel()
 	return ..()
 
@@ -51,9 +49,8 @@
 	blackfoot_owner.fuel = max(0, blackfoot_owner.fuel - deltatime / 2)
 
 	if(!idle_sound)
-		idle_sound = sound('sound/vehicles/vtol/engineidleloop.ogg', 1, 1, semi_reserved_channel)
+		idle_sound = sound('sound/vehicles/vtol/engineidleloop.ogg', 1, 1, semi_reserved_channel, 20)
 		idle_sound.status = SOUND_STREAM
-		idle_sound.volume = 20
 		playsound(owner.loc, idle_sound, 20, FALSE, channel=semi_reserved_channel, status=SOUND_STREAM)
 		return
 
@@ -80,32 +77,4 @@
 
 	if(blackfoot_owner.fuel < 0)
 		blackfoot_owner.toggle_engines()
-		blackfoot_owner.engine_sound_loop.stop()
 		STOP_PROCESSING(SSobj, src)
-
-/datum/looping_sound/blackfoot/thruster
-	start_sound = 'sound/vehicles/vtol/enginestartup.ogg'
-	start_length = 2 SECONDS
-	start_volume = 25
-	mid_sounds = 'sound/vehicles/vtol/engineidleloop.ogg'
-	mid_length = 2 SECONDS
-	end_sound = 'sound/vehicles/vtol/engineshutdown.ogg'
-	volume = 20
-
-/datum/looping_sound/blackfoot/thruster/start()
-	var/obj/vehicle/multitile/blackfoot/blackfoot_owner = parent
-	if(blackfoot_owner.state != "deployed")
-		skip_starting_sounds = TRUE
-	end_sound = initial(end_sound)
-	return ..()
-
-/datum/looping_sound/blackfoot/thruster/start_sound_loop()
-	loop_started = TRUE
-	sound_loop()
-	timer_id = addtimer(CALLBACK(src, PROC_REF(sound_loop), world.time), mid_length, TIMER_CLIENT_TIME | TIMER_STOPPABLE | TIMER_LOOP | TIMER_DELETE_ME, timer_subsystem = SSsound_loops)
-
-/datum/looping_sound/blackfoot/thruster/stop()
-	var/obj/vehicle/multitile/blackfoot/blackfoot_owner = parent
-	if(blackfoot_owner.state != "idling")
-		end_sound = null
-	return ..()
