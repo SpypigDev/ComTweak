@@ -53,6 +53,7 @@
 	if(!idle_sound)
 		idle_sound = sound('sound/vehicles/vtol/engineidleloop.ogg', 1, 1, semi_reserved_channel)
 		idle_sound.status = SOUND_STREAM
+		idle_sound.volume = 20
 		playsound(owner.loc, idle_sound, 20, FALSE, channel=semi_reserved_channel, status=SOUND_STREAM)
 		return
 
@@ -64,13 +65,18 @@
 			listeners |= mob.client
 	hear -= listeners
 	var/sound/break_sound = sound(null, 1, 0, semi_reserved_channel)
-	break_sound.status = SOUND_UPDATE
+	break_sound.status = SOUND_STREAM | SOUND_MUTE | SOUND_UPDATE
 	for(var/client/player as anything in hear)
 		sound_to(player, break_sound)
 
-	var/sound/update_sound = sound(null, 1, 1, semi_reserved_channel)
-	update_sound.status = SOUND_STREAM
-	playsound(owner.loc, update_sound, 20, FALSE, channel=semi_reserved_channel, status=SOUND_STREAM | SOUND_UPDATE)
+	for(var/client/player as anything in listeners)
+		var/sound/update_sound = sound(null, 1, 0, semi_reserved_channel, null)
+		update_sound.status = SOUND_STREAM | SOUND_UPDATE
+		update_sound.atom = owner
+		update_sound.volume = idle_sound.volume
+		update_sound.falloff = 5
+		update_sound.echo = SOUND_ECHO_REVERB_ON //enable environment reverb for positional sounds
+		sound_to(player, update_sound)
 
 	if(blackfoot_owner.fuel < 0)
 		blackfoot_owner.toggle_engines()
