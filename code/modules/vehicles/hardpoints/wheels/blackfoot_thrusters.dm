@@ -14,12 +14,17 @@
 	move_momentum_build_factor = 1.5
 	move_turn_momentum_loss_factor = 0.5
 
-	var/idle_sound_cooldown = 3 SECONDS
+	var/idle_sound_cooldown = 2 SECONDS
 	var/last_idle_sound = 0
 	var/sound/idle_sound
 	var/semi_reserved_channel
 	var/list/hear
 	var/list/listeners
+
+	var/datum/interior/vehicle_interior
+	var/list/turf/vehicle_bounds
+	var/turf/bottom_left
+	var/turf/top_right
 
 /obj/item/hardpoint/locomotion/blackfoot_thrusters/on_install(obj/vehicle/multitile/V)
 	hear = list()
@@ -49,30 +54,40 @@
 	blackfoot_owner.fuel = max(0, blackfoot_owner.fuel - deltatime / 2)
 
 	if(!idle_sound)
-		idle_sound = sound('sound/vehicles/vtol/engineidleloop.ogg', 1, 1, semi_reserved_channel, 20)
+		idle_sound = sound('sound/vehicles/vtol/engineidleloop.ogg', 1, 0, semi_reserved_channel, 20)
 		idle_sound.status = SOUND_STREAM
 		playsound(owner.loc, idle_sound, 20, FALSE, channel=semi_reserved_channel, status=SOUND_STREAM)
+		vehicle_bounds = list(owner.interior.reservation.bottom_left_turfs[1], owner.interior.reservation.top_right_turfs[1])
+		bottom_left = vehicle_bounds[1]
+		top_right = vehicle_bounds[2]
 		return
 
 	hear = listeners.Copy()
 	listeners = list()
 	var/list/atom/movable/all_contents = SSmapgrids.get_movables_in_region(owner.z, owner.x - 5, owner.x + 5, owner.y - 5, owner.y + 5)
+	var/list/interior_contents = SSmapgrids.get_movables_in_region(bottom_left.z, bottom_left.x, top_right.x, bottom_left.y, top_right.y )
+	all_contents |= interior_contents
 	for(var/mob/mob in all_contents)
 		if(mob.client)
 			listeners |= mob.client
 	hear -= listeners
+
 	var/sound/break_sound = sound(null, 1, 0, semi_reserved_channel)
 	break_sound.status = SOUND_STREAM | SOUND_MUTE | SOUND_UPDATE
 	for(var/client/player as anything in hear)
 		sound_to(player, break_sound)
 
 	for(var/client/player as anything in listeners)
-		var/sound/update_sound = sound(null, 1, 0, semi_reserved_channel, null)
+		var/sound/update_sound = sound(null, 1, 1, semi_reserved_channel, null)
 		update_sound.status = SOUND_STREAM | SOUND_UPDATE
-		update_sound.atom = owner
-		update_sound.volume = idle_sound.volume
-		update_sound.falloff = 5
-		update_sound.echo = SOUND_ECHO_REVERB_ON //enable environment reverb for positional sounds
+		if(!locate(player.mob) in interior_contents)
+			update_sound.atom = owner
+			update_sound.falloff = 5
+			update_sound.echo = SOUND_ECHO_REVERB_ON //enable environment reverb for positional sounds
+			update_sound.volume = 15
+		else
+			update_sound.echo = list(MUFFLE_HIGH)
+			update_sound.volume = idle_sound.volume
 		sound_to(player, update_sound)
 
 	if(blackfoot_owner.fuel < 0)

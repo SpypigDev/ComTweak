@@ -747,7 +747,7 @@
 
 	busy = TRUE
 	if(state == STATE_DEPLOYED)
-		playsound(src, 'sound/vehicles/vtol/enginestartup.ogg', 20, FALSE, channel=thrusters.semi_reserved_channel, status=SOUND_STREAM)
+		playsound(src, 'sound/vehicles/vtol/enginestartup.ogg', 20, FALSE)
 	addtimer(CALLBACK(src, PROC_REF(transition_engines)), 1.5 SECONDS)
 	addtimer(VARSET_CALLBACK(src, busy, FALSE), 3 SECONDS)
 
@@ -763,7 +763,7 @@
 		if(!thrusters)
 			return
 		STOP_PROCESSING(SSfastobj, thrusters)
-		playsound(src, sound('sound/vehicles/vtol/engineshutdown.ogg', 0, 0, thrusters.semi_reserved_channel, 20), 20, FALSE, channel=thrusters.semi_reserved_channel)
+		playsound(src, 'sound/vehicles/vtol/engineshutdown.ogg', 20, FALSE)
 		change_state(STATE_DEPLOYED)
 
 /obj/vehicle/multitile/blackfoot/proc/toggle_targeting()
